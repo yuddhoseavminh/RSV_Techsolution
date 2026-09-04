@@ -39,7 +39,7 @@ This workspace contains two project folders:
 ### Option 1: Using Docker (Recommended)
 
 ```bash
-# Start all services
+# From project root
 docker compose up -d
 
 # View logs
@@ -49,17 +49,20 @@ docker compose logs -f
 docker compose down
 ```
 
+> **Note:** All Docker commands use service names like `backend`, `frontend`, `mysql` - these are Docker service names, not directories.
+
 Default local URLs:
 - Frontend: `http://localhost:3000`
 - Backend: `http://localhost:8000/api/v1`
 - Nginx: `http://localhost`
 - MySQL: `localhost:3306`
 
-### Option 2: Manual Setup
+### Option 2: Manual Setup (Without Docker)
 
 Backend:
 
 ```bash
+# From project root
 cd backend
 composer install
 cp .env.example .env
@@ -71,6 +74,7 @@ php artisan serve
 Frontend:
 
 ```bash
+# From project root (in a new terminal)
 cd frontend
 npm install
 npm run dev
