@@ -253,42 +253,46 @@ Cloudflare Tunnel is a better option than traditional SSL setup. It provides:
 - DDoS protection
 - Global CDN
 
-**Setup:**
+**Setup (Docker-based - Recommended):**
 
-```bash
-# Install cloudflared
-curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb -o cloudflared.deb
-sudo dpkg -i cloudflared.deb
+1. **Create Tunnel in Cloudflare Dashboard:**
+   - Go to [Cloudflare Zero Trust](https://one.dash.cloudflare.com/)
+   - Go to **Networks** → **Tunnels**
+   - Click **Create a tunnel**
+   - Name: `rsv-techsolution`
+   - Copy the **tunnel token**
 
-# Login to Cloudflare
-cloudflared tunnel login
+2. **Add Token to .env.production:**
+   ```bash
+   echo "CLOUDFLARE_TUNNEL_TOKEN=your_tunnel_token_here" >> .env.production
+   ```
 
-# Create tunnel
-cloudflared tunnel create rsv-techsolution
+3. **Configure Tunnel Routes in Cloudflare Dashboard:**
 
-# Configure tunnel
-cat > ~/.cloudflared/config.yml << EOF
-tunnel: <YOUR_TUNNEL_ID>
-credentials-file: /root/.cloudflared/<YOUR_TUNNEL_ID>.json
-ingress:
-  - hostname: yourdomain.com
-    service: http://rsv_nginx:80
-  - service: http_status:404
-EOF
+   | Domain | Service |
+   |--------|---------|
+   | `yourdomain.com` | `http://rsv_nginx:80` |
+   | `api.yourdomain.com` | `http://rsv_nginx:80` |
 
-# Start tunnel
-cloudflared tunnel run rsv-techsolution
+4. **Deploy:**
+   ```bash
+   docker compose -f docker-compose.prod.yml up -d --build
+   ```
+
+5. **Check Tunnel Logs:**
+   ```bash
+   docker compose -f docker-compose.prod.yml logs cloudflared
+   ```
+
+**Architecture with Cloudflare Tunnel:**
+
+```
+Internet → Cloudflare (SSL + CDN) → Cloudflare Tunnel → Nginx → Your App
+                                              ↓
+                                    No open ports on server!
 ```
 
-**Note:** When using Cloudflare Tunnel, you can remove port exposure from `docker-compose.prod.yml`:
-
-```yaml
-nginx:
-  # Remove ports section - not needed with tunnel
-  # ports:
-  #   - "80:80"
-  #   - "443:443"
-```
+**Note:** The `docker-compose.prod.yml` already includes the cloudflared service and has removed all exposed ports for security.
 
 ---
 
