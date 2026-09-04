@@ -116,15 +116,22 @@ logout
 ```bash
 # Clone the project
 git clone <your-repo-url> /var/www/rsv-techsolution
+
+# Enter project directory (ALL commands must run from here)
 cd /var/www/rsv-techsolution
 
 # Set permissions
 chmod -R 755 storage bootstrap/cache
 ```
 
+> **Important:** Always run commands from the project root directory `/var/www/rsv-techsolution`
+
 ### Step 3: Configure Environment
 
 ```bash
+# Make sure you're in project root
+cd /var/www/rsv-techsolution
+
 # Copy and edit production environment
 cp .env.production.example .env.production
 nano .env.production
@@ -144,11 +151,17 @@ DB_ROOT_PASSWORD=your_secure_root_password_here
 # Sanctum
 SANCTUM_STATEFUL_DOMAINS=yourdomain.com,www.yourdomain.com
 SESSION_DOMAIN=yourdomain.com
+
+# Cloudflare Tunnel (REQUIRED)
+CLOUDFLARE_TUNNEL_TOKEN=your_tunnel_token_here
 ```
 
 ### Step 4: Update Nginx Configuration
 
 ```bash
+# Make sure you're in project root
+cd /var/www/rsv-techsolution
+
 # Edit nginx config for your domain
 nano nginx/default.conf
 ```
@@ -166,6 +179,9 @@ server {
 ### Step 5: Build and Deploy
 
 ```bash
+# Make sure you're in project root
+cd /var/www/rsv-techsolution
+
 # Build production images
 docker compose -f docker-compose.prod.yml build
 
@@ -179,6 +195,9 @@ docker compose -f docker-compose.prod.yml ps
 ### Step 6: Database Setup
 
 ```bash
+# Make sure you're in project root
+cd /var/www/rsv-techsolution
+
 # Run migrations
 docker compose -f docker-compose.prod.yml exec backend php artisan migrate --force
 
@@ -192,6 +211,9 @@ docker compose -f docker-compose.prod.yml exec backend php artisan key:generate
 ### Step 7: Optimize for Production
 
 ```bash
+# Make sure you're in project root
+cd /var/www/rsv-techsolution
+
 # Cache configurations
 docker compose -f docker-compose.prod.yml exec backend php artisan config:cache
 docker compose -f docker-compose.prod.yml exec backend php artisan route:cache
@@ -205,6 +227,9 @@ docker compose -f docker-compose.prod.yml exec backend chown -R www:www storage 
 ### Step 8: Setup SSL (Recommended)
 
 ```bash
+# Make sure you're in project root
+cd /var/www/rsv-techsolution
+
 # Install Certbot
 sudo apt install certbot -y
 
@@ -264,6 +289,9 @@ Cloudflare Tunnel is a better option than traditional SSL setup. It provides:
 
 2. **Add Token to .env.production:**
    ```bash
+   # Make sure you're in project root
+   cd /var/www/rsv-techsolution
+   
    echo "CLOUDFLARE_TUNNEL_TOKEN=your_tunnel_token_here" >> .env.production
    ```
 
@@ -276,11 +304,17 @@ Cloudflare Tunnel is a better option than traditional SSL setup. It provides:
 
 4. **Deploy:**
    ```bash
+   # Make sure you're in project root
+   cd /var/www/rsv-techsolution
+   
    docker compose -f docker-compose.prod.yml up -d --build
    ```
 
 5. **Check Tunnel Logs:**
    ```bash
+   # Make sure you're in project root
+   cd /var/www/rsv-techsolution
+   
    docker compose -f docker-compose.prod.yml logs cloudflared
    ```
 
@@ -298,9 +332,14 @@ Internet → Cloudflare (SSL + CDN) → Cloudflare Tunnel → Nginx → Your App
 
 ## Useful Commands
 
+> **Important:** Always run these commands from the project root directory `/var/www/rsv-techsolution`
+
 ### Development
 
 ```bash
+# Make sure you're in project root
+cd /var/www/rsv-techsolution
+
 make dev                    # Start development
 make dev-build             # Rebuild and start
 make stop                  # Stop all services
@@ -311,6 +350,9 @@ make shell                 # Access app shell
 ### Production
 
 ```bash
+# Make sure you're in project root
+cd /var/www/rsv-techsolution
+
 make prod                  # Start production
 make prod-build            # Rebuild production
 make prod-deploy           # Full deployment
@@ -320,6 +362,9 @@ make prod-logs             # View production logs
 ### Database
 
 ```bash
+# Make sure you're in project root
+cd /var/www/rsv-techsolution
+
 make migrate               # Run migrations
 make seed                  # Seed database
 make fresh                 # Fresh migrate + seed
@@ -329,6 +374,9 @@ make db-shell              # Access database shell
 ### Troubleshooting
 
 ```bash
+# Make sure you're in project root
+cd /var/www/rsv-techsolution
+
 # View container logs
 docker compose -f docker-compose.prod.yml logs -f
 
