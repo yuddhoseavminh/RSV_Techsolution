@@ -31,6 +31,18 @@ use App\Http\Controllers\Api\Public\ServiceController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function (): void {
+    // Health check endpoint
+    Route::get('/health', function () {
+        return response()->json([
+            'status' => 'ok',
+            'timestamp' => now()->toISOString(),
+            'services' => [
+                'database' => DB::connection()->getPdo() ? 'connected' : 'disconnected',
+                'cache' => Cache::store('redis')->getStore() ? 'connected' : 'disconnected',
+            ],
+        ]);
+    });
+
     Route::get('/home', HomeController::class);
     Route::apiResource('/services', ServiceController::class)->only(['index', 'show']);
     Route::apiResource('/portfolio', PortfolioController::class)->only(['index', 'show']);
