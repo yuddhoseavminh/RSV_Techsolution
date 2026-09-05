@@ -91,6 +91,8 @@ npm run dev
 
 ## Production Deployment Guide
 
+> **Important:** All production Docker Compose commands require the `--env-file .env.production` flag to resolve environment variables (e.g., `DB_ROOT_PASSWORD`, `CLOUDFLARE_TUNNEL_TOKEN`). Alternatively, use `make prod`, `make prod-build`, etc., which include this flag automatically.
+
 ### Prerequisites
 
 - Ubuntu 20.04/22.04/24.04 LTS server
@@ -187,14 +189,16 @@ server {
 cd /var/www/rsv-techsolution
 
 # Build production images
-docker compose -f docker-compose.prod.yml build
+docker compose --env-file .env.production -f docker-compose.prod.yml build
 
 # Start all services
-docker compose -f docker-compose.prod.yml up -d
+docker compose --env-file .env.production -f docker-compose.prod.yml up -d
 
 # Check status
-docker compose -f docker-compose.prod.yml ps
+docker compose --env-file .env.production -f docker-compose.prod.yml ps
 ```
+
+> **Important:** The `--env-file .env.production` flag is **required** for all production Docker Compose commands. Without it, environment variables like `DB_ROOT_PASSWORD` and `CLOUDFLARE_TUNNEL_TOKEN` will not be resolved, causing build/startup failures.
 
 ### Step 6: Database Setup
 
@@ -203,13 +207,13 @@ docker compose -f docker-compose.prod.yml ps
 cd /var/www/rsv-techsolution
 
 # Run migrations
-docker compose -f docker-compose.prod.yml exec backend php artisan migrate --force
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend php artisan migrate --force
 
 # Seed database (optional)
-docker compose -f docker-compose.prod.yml exec backend php artisan db:seed --force
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend php artisan db:seed --force
 
 # Generate application key (if not set in .env)
-docker compose -f docker-compose.prod.yml exec backend php artisan key:generate
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend php artisan key:generate
 ```
 
 ### Step 7: Optimize for Production
@@ -219,13 +223,13 @@ docker compose -f docker-compose.prod.yml exec backend php artisan key:generate
 cd /var/www/rsv-techsolution
 
 # Cache configurations
-docker compose -f docker-compose.prod.yml exec backend php artisan config:cache
-docker compose -f docker-compose.prod.yml exec backend php artisan route:cache
-docker compose -f docker-compose.prod.yml exec backend php artisan view:cache
-docker compose -f docker-compose.prod.yml exec backend php artisan event:cache
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend php artisan config:cache
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend php artisan route:cache
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend php artisan view:cache
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend php artisan event:cache
 
 # Fix permissions
-docker compose -f docker-compose.prod.yml exec backend chown -R www:www storage bootstrap/cache
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend chown -R www:www storage bootstrap/cache
 ```
 
 ### Step 8: Setup SSL (Recommended)
@@ -238,7 +242,7 @@ cd /var/www/rsv-techsolution
 sudo apt install certbot -y
 
 # Stop nginx temporarily
-docker compose -f docker-compose.prod.yml stop nginx
+docker compose --env-file .env.production -f docker-compose.prod.yml stop nginx
 
 # Get SSL certificate
 sudo certbot certonly --standalone -d yourdomain.com -d www.yourdomain.com
@@ -271,7 +275,7 @@ nginx:
 Restart nginx:
 
 ```bash
-docker compose -f docker-compose.prod.yml up -d nginx
+docker compose --env-file .env.production -f docker-compose.prod.yml up -d nginx
 ```
 
 ### Alternative: Using Cloudflare Tunnel (Recommended)
@@ -311,7 +315,7 @@ Cloudflare Tunnel is a better option than traditional SSL setup. It provides:
    # Make sure you're in project root
    cd /var/www/rsv-techsolution
    
-   docker compose -f docker-compose.prod.yml up -d --build
+   docker compose --env-file .env.production -f docker-compose.prod.yml up -d --build
    ```
 
 5. **Check Tunnel Logs:**
@@ -319,7 +323,7 @@ Cloudflare Tunnel is a better option than traditional SSL setup. It provides:
    # Make sure you're in project root
    cd /var/www/rsv-techsolution
    
-   docker compose -f docker-compose.prod.yml logs cloudflared
+   docker compose --env-file .env.production -f docker-compose.prod.yml logs cloudflared
    ```
 
 **Architecture with Cloudflare Tunnel:**
@@ -357,11 +361,14 @@ make shell                 # Access app shell
 # Make sure you're in project root
 cd /var/www/rsv-techsolution
 
-make prod                  # Start production
-make prod-build            # Rebuild production
-make prod-deploy           # Full deployment
+make prod                  # Start production (builds + starts)
+make prod-build            # Rebuild production images
+make prod-up               # Start production services
+make prod-down             # Stop production services
 make prod-logs             # View production logs
 ```
+
+> **Tip:** The Makefile automatically passes `--env-file .env.production` to all production commands, so you don't need to type it manually.
 
 ### Database
 
@@ -382,21 +389,21 @@ make db-shell              # Access database shell
 cd /var/www/rsv-techsolution
 
 # View container logs
-docker compose -f docker-compose.prod.yml logs -f
+docker compose --env-file .env.production -f docker-compose.prod.yml logs -f
 
 # Check specific service
-docker compose -f docker-compose.prod.yml logs -f backend
+docker compose --env-file .env.production -f docker-compose.prod.yml logs -f backend
 
 # Access container shell
-docker compose -f docker-compose.prod.yml exec backend sh
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend sh
 
 # Restart a service
-docker compose -f docker-compose.prod.yml restart backend
+docker compose --env-file .env.production -f docker-compose.prod.yml restart backend
 
 # Full rebuild (if images are corrupted)
-docker compose -f docker-compose.prod.yml down
-docker compose -f docker-compose.prod.yml build --no-cache
-docker compose -f docker-compose.prod.yml up -d
+docker compose --env-file .env.production -f docker-compose.prod.yml down
+docker compose --env-file .env.production -f docker-compose.prod.yml build --no-cache
+docker compose --env-file .env.production -f docker-compose.prod.yml up -d
 ```
 
 ---
@@ -467,18 +474,18 @@ sudo lsof -i :443
 
 ```bash
 # Fix storage permissions
-docker compose -f docker-compose.prod.yml exec backend chown -R www:www storage bootstrap/cache
-docker compose -f docker-compose.prod.yml exec backend chmod -R 775 storage bootstrap/cache
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend chown -R www:www storage bootstrap/cache
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend chmod -R 775 storage bootstrap/cache
 ```
 
 ### Database Connection Failed
 
 ```bash
 # Check if MySQL is running
-docker compose -f docker-compose.prod.yml ps mysql
+docker compose --env-file .env.production -f docker-compose.prod.yml ps mysql
 
 # Check logs
-docker compose -f docker-compose.prod.yml logs mysql
+docker compose --env-file .env.production -f docker-compose.prod.yml logs mysql
 
 # Verify credentials in .env.production match docker-compose.prod.yml
 ```
@@ -486,16 +493,16 @@ docker compose -f docker-compose.prod.yml logs mysql
 ### Application Key Not Set
 
 ```bash
-docker compose -f docker-compose.prod.yml exec backend php artisan key:generate
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend php artisan key:generate
 ```
 
 ### Cache Issues
 
 ```bash
-docker compose -f docker-compose.prod.yml exec backend php artisan cache:clear
-docker compose -f docker-compose.prod.yml exec backend php artisan config:clear
-docker compose -f docker-compose.prod.yml exec backend php artisan route:clear
-docker compose -f docker-compose.prod.yml exec backend php artisan view:clear
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend php artisan cache:clear
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend php artisan config:clear
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend php artisan route:clear
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend php artisan view:clear
 ```
 
 ---
@@ -506,17 +513,17 @@ docker compose -f docker-compose.prod.yml exec backend php artisan view:clear
 
 ```bash
 # Create backup
-docker compose -f docker-compose.prod.yml exec mysql mysqldump -u root -p rsv_techsolution > backup_$(date +%Y%m%d).sql
+docker compose --env-file .env.production -f docker-compose.prod.yml exec mysql mysqldump -u root -p rsv_techsolution > backup_$(date +%Y%m%d).sql
 
 # Restore backup
-docker compose -f docker-compose.prod.yml exec -T mysql mysql -u root -p rsv_techsolution < backup_20260904.sql
+docker compose --env-file .env.production -f docker-compose.prod.yml exec -T mysql mysql -u root -p rsv_techsolution < backup_20260904.sql
 ```
 
 ### Full Backup
 
 ```bash
 # Backup database
-docker compose -f docker-compose.prod.yml exec mysql mysqldump -u root -p rsv_techsolution > db_backup.sql
+docker compose --env-file .env.production -f docker-compose.prod.yml exec mysql mysqldump -u root -p rsv_techsolution > db_backup.sql
 
 # Backup storage
 tar -czf storage_backup.tar.gz storage/

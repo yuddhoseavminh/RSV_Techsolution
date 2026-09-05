@@ -1,5 +1,7 @@
 .PHONY: help dev prod stop clean logs status shell-backend shell-frontend migrate seed
 
+PROD_COMPOSE = docker compose --env-file .env.production -f docker-compose.prod.yml
+
 # Default target
 help: ## Show this help message
 	@echo "Usage: make [command]"
@@ -17,37 +19,43 @@ dev: ## Start development environment
 
 # Production Commands
 prod: ## Start production environment
-	@cp .env.production.example .env.production 2>/dev/null || true
-	docker compose -f docker-compose.prod.yml up -d --build
+	@test -f .env.production || (echo "Error: .env.production not found. Copy .env.production.example and fill in values." && exit 1)
+	$(PROD_COMPOSE) up -d --build
 	@echo "Production environment started!"
-	@echo "Application: http://localhost"
+	@echo "Application: https://rvstechsolution.com"
 
 prod-build: ## Rebuild production images
-	docker compose -f docker-compose.prod.yml build --no-cache
+	$(PROD_COMPOSE) build --no-cache
+
+prod-up: ## Start production services
+	$(PROD_COMPOSE) up -d
+
+prod-down: ## Stop production services
+	$(PROD_COMPOSE) down
 
 prod-logs: ## Show production logs
-	docker compose -f docker-compose.prod.yml logs -f
+	$(PROD_COMPOSE) logs -f
 
 # Stop Commands
 stop: ## Stop all containers
 	docker compose down
-	docker compose -f docker-compose.prod.yml down 2>/dev/null || true
+	$(PROD_COMPOSE) down 2>/dev/null || true
 
 stop-all: ## Stop all containers and remove volumes
 	docker compose down -v
-	docker compose -f docker-compose.prod.yml down -v 2>/dev/null || true
+	$(PROD_COMPOSE) down -v 2>/dev/null || true
 
 # Clean Commands
 clean: ## Remove all containers, images, and volumes
 	docker compose down -v --rmi all
-	docker compose -f docker-compose.prod.yml down -v --rmi all 2>/dev/null || true
+	$(PROD_COMPOSE) down -v --rmi all 2>/dev/null || true
 	@echo "Cleaned up all Docker resources"
 
 # Status Commands
 status: ## Show container status
 	docker compose ps
 	@echo ""
-	docker compose -f docker-compose.prod.yml ps 2>/dev/null || true
+	$(PROD_COMPOSE) ps 2>/dev/null || true
 
 # Log Commands
 logs: ## Show development logs
