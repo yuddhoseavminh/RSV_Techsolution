@@ -28,6 +28,8 @@ use App\Http\Controllers\Api\Public\ContactController;
 use App\Http\Controllers\Api\Public\HomeController;
 use App\Http\Controllers\Api\Public\PortfolioController;
 use App\Http\Controllers\Api\Public\ServiceController;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function (): void {
@@ -63,11 +65,11 @@ Route::prefix('v1')->group(function (): void {
     Route::middleware('auth:sanctum')->group(function (): void {
         Route::prefix('portal')->group(function (): void {
             Route::get('/dashboard', PortalDashboardController::class);
-            Route::apiResource('/projects', PortalProjectController::class)->only(['index', 'show']);
-            Route::apiResource('/invoices', PortalInvoiceController::class)->only(['index', 'show']);
+            Route::apiResource('/projects', PortalProjectController::class)->only(['index', 'show'])->names('portal.projects');
+            Route::apiResource('/invoices', PortalInvoiceController::class)->only(['index', 'show'])->names('portal.invoices');
             Route::get('/profile', [ProfileController::class, 'show']);
             Route::put('/profile', [ProfileController::class, 'update']);
-            Route::apiResource('/tickets', PortalTicketController::class)->only(['index', 'store', 'show']);
+            Route::apiResource('/tickets', PortalTicketController::class)->only(['index', 'store', 'show'])->names('portal.tickets');
             Route::post('/tickets/{ticket}/replies', [PortalTicketController::class, 'reply']);
         });
 
@@ -77,17 +79,17 @@ Route::prefix('v1')->group(function (): void {
             Route::apiResource('/roles', RoleController::class);
             Route::apiResource('/permissions', PermissionController::class)->only(['index', 'show']);
             Route::apiResource('/clients', ClientController::class);
-            Route::apiResource('/projects', AdminProjectController::class);
+            Route::apiResource('/projects', AdminProjectController::class)->names('admin.projects');
             Route::apiResource('/service-categories', ServiceCategoryController::class);
-            Route::apiResource('/services', AdminServiceController::class);
+            Route::apiResource('/services', AdminServiceController::class)->names('admin.services');
             Route::apiResource('/technologies', TechnologyController::class);
             Route::apiResource('/portfolio-projects', AdminPortfolioProjectController::class);
             Route::apiResource('/blog-categories', BlogCategoryController::class);
             Route::apiResource('/blog-posts', AdminBlogPostController::class);
             Route::apiResource('/tags', TagController::class);
             Route::apiResource('/contact-requests', AdminContactRequestController::class)->only(['index', 'show', 'update', 'destroy']);
-            Route::apiResource('/tickets', AdminTicketController::class)->only(['index', 'show', 'update', 'destroy']);
-            Route::apiResource('/invoices', AdminInvoiceController::class);
+            Route::apiResource('/tickets', AdminTicketController::class)->only(['index', 'show', 'update', 'destroy'])->names('admin.tickets');
+            Route::apiResource('/invoices', AdminInvoiceController::class)->names('admin.invoices');
             Route::get('/settings', [SettingController::class, 'index']);
             Route::put('/settings', [SettingController::class, 'update']);
         });

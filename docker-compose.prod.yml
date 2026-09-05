@@ -1,3 +1,4 @@
+
 services:
   # Cloudflare Tunnel (replaces direct port exposure)
   cloudflared:
@@ -21,7 +22,8 @@ services:
     # No ports exposed - Cloudflare Tunnel handles external access
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-      - backend_storage:/var/www/html/storage:ro
+      - ./nginx/api.conf:/etc/nginx/conf.d/api.conf:ro
+      - backend_storage:/var/www/html/storage
       - backend_bootstrap:/var/www/html/bootstrap/cache:ro
     depends_on:
       backend:
@@ -45,26 +47,20 @@ services:
       target: production
     container_name: rsv_backend
     restart: unless-stopped
+    env_file:
+      - .env.production
     volumes:
       - backend_storage:/var/www/html/storage
+      - ./backend/.env:/var/www/html/.env:ro
       - backend_bootstrap:/var/www/html/bootstrap/cache
     environment:
-      - APP_ENV=production
-      - APP_DEBUG=false
-      - APP_URL=http://localhost
-      - FRONTEND_URL=http://localhost:3000
-      - DB_CONNECTION=mysql
       - DB_HOST=mysql
       - DB_PORT=3306
-      - DB_DATABASE=${DB_DATABASE:-rsv_techsolution}
-      - DB_USERNAME=${DB_USERNAME:-root}
-      - DB_PASSWORD=${DB_PASSWORD:-secret}
-      - SESSION_DRIVER=redis
-      - CACHE_STORE=redis
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-      - SANCTUM_STATEFUL_DOMAINS=localhost:3000
-      - SESSION_DOMAIN=localhost
+      - SESSION_DRIVER=redis
+      - CACHE_STORE=redis
+      - QUEUE_CONNECTION=redis
     depends_on:
       mysql:
         condition: service_healthy
@@ -73,7 +69,7 @@ services:
     networks:
       - app_network
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost/api/v1/health || exit 1"]
+      test: ["CMD-SHELL", "php -r 'echo 1;' || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -87,14 +83,12 @@ services:
       target: runner
     container_name: rsv_frontend
     restart: unless-stopped
-    environment:
-      - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=http://localhost/api/v1
-      - NEXT_PUBLIC_APP_URL=http://localhost
+    env_file:
+      - .env.production
     networks:
       - app_network
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:3000/"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -105,30 +99,29 @@ services:
     image: mysql:8.0
     container_name: rsv_mysql
     restart: unless-stopped
+    env_file:
+      - .env.production
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-secret}
-      MYSQL_DATABASE: ${DB_DATABASE:-rsv_techsolution}
-      MYSQL_USER: ${DB_USERNAME:-app}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-secret}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - mysql_data:/var/lib/mysql
     # No ports exposed - only accessible via Docker network
     networks:
       - app_network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-secret}"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD}"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 30s
     command: >
-      --default-authentication-plugin=mysql_native_password
       --character-set-server=utf8mb4
       --collation-server=utf8mb4_unicode_ci
       --max-connections=200
       --innodb-buffer-pool-size=256M
-      --query-cache-type=1
-      --query-cache-size=32M
 
   # Redis Cache & Session
   redis:

@@ -34,13 +34,8 @@ RUN apk add --no-cache \
         mbstring \
         intl \
         opcache \
-    && apk del --purge \
-        libpng-dev \
-        libjpeg-turbo-dev \
-        freetype-dev \
-        libzip-dev \
-        icu-dev \
-        oniguruma-dev
+    && apk del --purge libpng-dev libjpeg-turbo-dev freetype-dev libzip-dev icu-dev oniguruma-dev \
+    && apk add --no-cache libpng libjpeg-turbo freetype libzip icu oniguruma
 
 # Install Redis extension
 RUN apk add --no-cache $PHPIZE_DEPS \
@@ -77,8 +72,9 @@ RUN chown -R www:www /var/www/html \
 
 # Copy PHP-FPM configuration
 RUN echo "[www]" > /usr/local/etc/php-fpm.d/www.conf \
+    && echo "user = www" >> /usr/local/etc/php-fpm.d/www.conf \
+    && echo "group = www" >> /usr/local/etc/php-fpm.d/www.conf \
     && echo "listen = 9000" >> /usr/local/etc/php-fpm.d/www.conf \
-    && echo "listen.allowed_clients = any" >> /usr/local/etc/php-fpm.d/www.conf \
     && echo "pm = dynamic" >> /usr/local/etc/php-fpm.d/www.conf \
     && echo "pm.max_children = 50" >> /usr/local/etc/php-fpm.d/www.conf \
     && echo "pm.start_servers = 5" >> /usr/local/etc/php-fpm.d/www.conf \
