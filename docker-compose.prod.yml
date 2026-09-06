@@ -1,19 +1,5 @@
 
 services:
-  # Cloudflare Tunnel (replaces direct port exposure)
-  cloudflared:
-    image: cloudflare/cloudflared:latest
-    container_name: rsv_cloudflared
-    restart: unless-stopped
-    command: tunnel run
-    environment:
-      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
-    depends_on:
-      nginx:
-        condition: service_healthy
-    networks:
-      - app_network
-
   # Nginx Reverse Proxy
   nginx:
     image: nginx:alpine
