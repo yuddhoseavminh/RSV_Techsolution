@@ -48,9 +48,10 @@ export function clearStoredToken(): void {
 
 export async function apiClient<T>(path: string, init?: RequestInit): Promise<T> {
   const token = getStoredToken();
+  const isFormData = typeof FormData !== "undefined" && init?.body instanceof FormData;
   const headers: Record<string, string> = {
     Accept: "application/json",
-    "Content-Type": "application/json",
+    ...(isFormData ? {} : { "Content-Type": "application/json" }),
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
     ...((init?.headers as Record<string, string>) ?? {})
   };

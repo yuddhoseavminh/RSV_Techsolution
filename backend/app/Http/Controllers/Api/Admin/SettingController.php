@@ -39,4 +39,24 @@ class SettingController extends Controller
 
         return $this->ok(null, 'Settings updated');
     }
+
+    public function uploadLogo(Request $request): JsonResponse
+    {
+        $request->validate([
+            'logo' => ['required', 'file', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:5120'],
+        ]);
+
+        $path = $request->file('logo')->store('settings', 'public');
+        $url = asset('storage/' . $path);
+
+        Setting::updateOrCreate(
+            ['group' => 'company', 'key' => 'logo'],
+            ['value' => $url]
+        );
+
+        return $this->ok([
+            'url' => $url,
+            'path' => $path,
+        ], 'Logo uploaded successfully');
+    }
 }
