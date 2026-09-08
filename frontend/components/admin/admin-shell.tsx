@@ -145,23 +145,14 @@ export function AdminShell({ children }: { children: ReactNode }) {
               <Link
                 key={module.href}
                 href={module.href}
-                className={`flex items-center justify-between rounded-lg px-3 py-2.5 text-sm transition ${
+                className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition ${
                   active
                     ? "bg-blue-50 text-blue-700 font-semibold shadow-xs"
                     : "font-medium text-slate-700 hover:bg-slate-100 hover:text-blue-600"
                 }`}
               >
-                <span className="flex items-center gap-3">
-                  <Icon className={`h-4 w-4 ${active ? "text-blue-600" : "text-slate-400"}`} />
-                  {title}
-                </span>
-                <span
-                  className={`text-xs px-2 py-0.5 rounded-md ${
-                    active ? "bg-blue-100 text-blue-800 font-medium" : "text-slate-400"
-                  }`}
-                >
-                  {module.count}
-                </span>
+                <Icon className={`h-4 w-4 shrink-0 ${active ? "text-blue-600" : "text-slate-400"}`} />
+                <span>{title}</span>
               </Link>
             );
           })}
@@ -200,17 +191,14 @@ export function AdminShell({ children }: { children: ReactNode }) {
                     key={module.href}
                     href={module.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center justify-between rounded-lg px-3 py-2.5 text-sm transition ${
+                    className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition ${
                       active
                         ? "bg-blue-50 text-blue-700 font-semibold"
                         : "font-medium text-slate-700 hover:bg-slate-100 hover:text-blue-600"
                     }`}
                   >
-                    <span className="flex items-center gap-3">
-                      <Icon className={`h-4 w-4 ${active ? "text-blue-600" : "text-slate-400"}`} />
-                      {title}
-                    </span>
-                    <span className="text-xs text-slate-400">{module.count}</span>
+                    <Icon className={`h-4 w-4 shrink-0 ${active ? "text-blue-600" : "text-slate-400"}`} />
+                    <span>{title}</span>
                   </Link>
                 );
               })}
