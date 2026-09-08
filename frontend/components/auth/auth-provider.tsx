@@ -24,6 +24,9 @@ type AuthContextValue = {
   user: AuthUser | null;
   token: string | null;
   isLoading: boolean;
+  isAuthenticated: boolean;
+  isAdmin: boolean;
+  isClient: boolean;
   login: (email: string, password: string) => Promise<AuthUser>;
   register: (payload: Record<string, string>) => Promise<AuthUser>;
   logout: () => Promise<void>;
@@ -116,9 +119,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     [user]
   );
 
+  const isAuthenticated = Boolean(user && token);
+  const isAdmin = (user?.roles ?? []).some((role) => role === "admin" || role === "manager");
+  const isClient = (user?.roles ?? []).includes("client");
+
   const value = useMemo(
-    () => ({ user, token, isLoading, login, register, logout, refreshUser, setUser, hasAnyRole }),
-    [user, token, isLoading, login, register, logout, refreshUser, setUser, hasAnyRole]
+    () => ({
+      user,
+      token,
+      isLoading,
+      isAuthenticated,
+      isAdmin,
+      isClient,
+      login,
+      register,
+      logout,
+      refreshUser,
+      setUser,
+      hasAnyRole
+    }),
+    [user, token, isLoading, isAuthenticated, isAdmin, isClient, login, register, logout, refreshUser, setUser, hasAnyRole]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

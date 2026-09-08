@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use client";
 
 import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
@@ -197,3 +198,6 @@ export function useAuth() {
   }
   return context;
 }
+=======
+export * from "@/components/auth/auth-provider";
+>>>>>>> 35775272cdf1eff770c1a38f111c6bfd7469eff8
