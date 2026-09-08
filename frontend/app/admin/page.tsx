@@ -1,10 +1,14 @@
-import { redirect } from "next/navigation";
+import { AdminShell } from "@/components/admin/admin-shell";
+import { AdminDashboard } from "@/components/admin/admin-dashboard";
 
 export const metadata = {
-  title: "Admin Dashboard"
+  title: "Admin Dashboard | KT Solution"
 };
 
 export default function AdminDashboardPage() {
-  redirect("/admin_page");
+  return (
+    <AdminShell>
+      <AdminDashboard />
+    </AdminShell>
+  );
 }
-

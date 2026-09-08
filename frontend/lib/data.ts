@@ -9,6 +9,7 @@ import {
   GraduationCap,
   Handshake,
   Layers3,
+  LayoutDashboard,
   LineChart,
   MonitorSmartphone,
   PackageCheck,
@@ -278,6 +279,7 @@ export const timeline = [
 ];
 
 export const adminModules = [
+  { title: "Dashboard", href: "/admin", icon: LayoutDashboard, count: "Overview" },
   { title: "Users", href: "/admin/users", icon: UsersRound, count: "CRUD" },
   { title: "Roles", href: "/admin/roles", icon: ShieldCheck, count: "CRUD" },
   { title: "Permissions", href: "/admin/permissions", icon: BadgeCheck, count: "Read" },
