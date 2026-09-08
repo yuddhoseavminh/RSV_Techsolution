@@ -8,7 +8,20 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { apiClient } from "@/lib/api-client";
+import { useLanguage } from "@/lib/language-context";
 import { services as fallbackServices } from "@/lib/data";
+
+const khmerServiceTitles: Record<string, string> = {
+  "Custom Web Applications": "កម្មវិធីគេហទំព័រតាមតម្រូវការ",
+  "Enterprise Admin Dashboards": "ផ្ទាំងគ្រប់គ្រងសហគ្រាស",
+  "API & Backend Architecture": "ស្ថាបត្យកម្ម API និង Backend",
+  "Mobile Application Delivery": "ការបង្កើតកម្មវិធីទូរស័ព្ទ",
+  "POS & Retail Workflows": "ប្រព័ន្ធលក់ POS & ស្តុកទំនិញ",
+  "Business Process Automation": "ស្វ័យប្រវត្តិកម្មអាជីវកម្ម",
+  "HR & Payroll Platform": "ប្រព័ន្ធគ្រប់គ្រងបុគ្គលិក និងប្រាក់ខែ",
+  "School Management System": "ប្រព័ន្ធគ្រប់គ្រងសាលារៀន",
+  "Custom Software Development": "ការអភិវឌ្ឍសូហ្វវែរតាមតម្រូវការ"
+};
 
 type ApiService = {
   id?: number;
@@ -51,6 +64,7 @@ const initialServices: ApiService[] = fallbackServices.map((service) => ({
 }));
 
 export function ServicesGrid() {
+  const { isKhmer } = useLanguage();
   const [services, setServices] = useState<ApiService[]>(initialServices);
 
   useEffect(() => {
@@ -70,6 +84,7 @@ export function ServicesGrid() {
       <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {services.map((service, index) => {
           const Icon = service.icon ? iconMap[service.icon] ?? Code2 : Code2;
+          const displayTitle = isKhmer && khmerServiceTitles[service.name] ? khmerServiceTitles[service.name] : service.name;
 
           return (
             <FadeIn key={service.slug} delay={index * 0.03}>
@@ -78,7 +93,7 @@ export function ServicesGrid() {
                   <span className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-blue-50 text-brand-blue">
                     <Icon className="h-5 w-5" />
                   </span>
-                  <CardTitle>{service.name}</CardTitle>
+                  <CardTitle>{displayTitle}</CardTitle>
                   <CardDescription>{service.summary}</CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -106,7 +121,7 @@ export function ServicesGrid() {
       <div className="mt-10 flex justify-center">
         <Button asChild>
           <a href="/contact">
-            Discuss Your Project
+            {isKhmer ? "ពិភាក្សាអំពីគម្រោងរបស់អ្នក" : "Discuss Your Project"}
             <ArrowRight className="h-4 w-4" />
           </a>
         </Button>

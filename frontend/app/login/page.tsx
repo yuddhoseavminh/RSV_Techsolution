@@ -22,6 +22,7 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/components/auth/auth-provider";
 import { useSettings } from "@/lib/settings-context";
 import { useLanguage } from "@/lib/language-context";
+import { LanguageSwitcher } from "@/components/ui/language-switcher";
 import { apiMessage } from "@/lib/api-client";
 
 function LoginFormContent() {
@@ -121,12 +122,15 @@ function LoginFormContent() {
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/10 text-brand-blue ring-1 ring-blue-500/20">
                       <LockKeyhole className="h-6 w-6" />
                     </div>
-                    {isAuthenticated && (
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-600/20">
-                        <CheckCircle2 className="h-3.5 w-3.5" />
-                        Signed in
-                      </span>
-                    )}
+                    <div className="flex items-center gap-2">
+                      <LanguageSwitcher variant="dropdown" size="sm" />
+                      {isAuthenticated && (
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-600/20">
+                          <CheckCircle2 className="h-3.5 w-3.5" />
+                          {isKhmer ? "បានចូល" : "Signed in"}
+                        </span>
+                      )}
+                    </div>
                   </div>
                   <CardTitle className="text-2xl font-bold tracking-tight text-slate-900">
                     {isKhmer ? "ចូលប្រើប្រាស់គណនីរបស់អ្នក" : "Sign in to your account"}

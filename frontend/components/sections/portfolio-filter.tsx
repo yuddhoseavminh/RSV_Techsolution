@@ -4,9 +4,19 @@ import { useEffect, useMemo, useState } from "react";
 import { Layers3 } from "lucide-react";
 import { projects } from "@/lib/data";
 import { apiClient } from "@/lib/api-client";
+import { useLanguage } from "@/lib/language-context";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
+const khmerFilterLabels: Record<string, string> = {
+  All: "ទាំងអស់",
+  Website: "គេហទំព័រ",
+  "Mobile App": "កម្មវិធីទូរស័ព្ទ",
+  POS: "ប្រព័ន្ធលក់ POS",
+  Inventory: "គ្រប់គ្រងស្តុក",
+  ERP: "ប្រព័ន្ធ ERP"
+};
 
 const filters = ["All", "Website", "Mobile App", "POS", "Inventory", "ERP"] as const;
 
@@ -42,6 +52,7 @@ const fallbackProjects: PortfolioItem[] = projects.map((project) => ({
 }));
 
 export function PortfolioFilter() {
+  const { isKhmer } = useLanguage();
   const [active, setActive] = useState<(typeof filters)[number]>("All");
   const [items, setItems] = useState<PortfolioItem[]>(fallbackProjects);
 
@@ -65,16 +76,19 @@ export function PortfolioFilter() {
   return (
     <>
       <div className="mb-8 flex flex-wrap justify-center gap-2">
-        {filters.map((filter) => (
-          <Button
-            key={filter}
-            variant={active === filter ? "default" : "outline"}
-            size="sm"
-            onClick={() => setActive(filter)}
-          >
-            {filter}
-          </Button>
-        ))}
+        {filters.map((filter) => {
+          const label = isKhmer && khmerFilterLabels[filter] ? khmerFilterLabels[filter] : filter;
+          return (
+            <Button
+              key={filter}
+              variant={active === filter ? "default" : "outline"}
+              size="sm"
+              onClick={() => setActive(filter)}
+            >
+              {label}
+            </Button>
+          );
+        })}
       </div>
       <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {filteredProjects.map((project) => (
@@ -95,7 +109,9 @@ export function PortfolioFilter() {
               <CardDescription>{project.summary || project.description}</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="mb-5 text-sm text-slate-600">Client: {project.client_name ?? "Internal"}</div>
+              <div className="mb-5 text-sm text-slate-600">
+                {isKhmer ? `អតិថិជន៖ ${project.client_name ?? "ផ្ទៃក្នុង"}` : `Client: ${project.client_name ?? "Internal"}`}
+              </div>
               <div className="flex flex-wrap gap-2">
                 {project.technologies.map((technology) => (
                   <Badge key={technology} className="border-slate-200 bg-slate-50 text-slate-700">

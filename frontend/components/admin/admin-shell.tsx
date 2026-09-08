@@ -25,6 +25,27 @@ import { useLanguage } from "@/lib/language-context";
 import { adminModules } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { BrandLogo } from "@/components/ui/brand-logo";
+import { LanguageSwitcher } from "@/components/ui/language-switcher";
+
+const adminModuleTitlesKhmer: Record<string, string> = {
+  Dashboard: "ផ្ទាំងគ្រប់គ្រង",
+  Users: "អ្នកប្រើប្រាស់",
+  Roles: "តួនាទី",
+  Permissions: "សិទ្ធិអនុញ្ញាត",
+  Clients: "អតិថិជន",
+  Projects: "គម្រោងការងារ",
+  "Service Categories": "ប្រភេទទំនិញ/សេវា",
+  Services: "សេវាកម្ម",
+  Technologies: "បច្ចេកវិទ្យា",
+  Portfolio: "ស្នាដៃការងារ",
+  "Blog Categories": "ប្រភេទអត្ថបទ",
+  Blog: "អត្ថបទប្លុក",
+  Tags: "ស្លាក Tags",
+  Contacts: "សំណើទំនាក់ទំនង",
+  Tickets: "សំបុត្រជំនួយ",
+  Invoices: "វិក្កយបត្រ",
+  Settings: "ការកំណត់"
+};
 
 export function AdminShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -119,6 +140,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
           {adminModules.map((module) => {
             const Icon = module.icon;
             const active = isModuleActive(module.href);
+            const title = isKhmer && adminModuleTitlesKhmer[module.title] ? adminModuleTitlesKhmer[module.title] : module.title;
             return (
               <Link
                 key={module.href}
@@ -131,7 +153,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
               >
                 <span className="flex items-center gap-3">
                   <Icon className={`h-4 w-4 ${active ? "text-blue-600" : "text-slate-400"}`} />
-                  {module.title}
+                  {title}
                 </span>
                 <span
                   className={`text-xs px-2 py-0.5 rounded-md ${
@@ -172,6 +194,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
               {adminModules.map((module) => {
                 const Icon = module.icon;
                 const active = isModuleActive(module.href);
+                const title = isKhmer && adminModuleTitlesKhmer[module.title] ? adminModuleTitlesKhmer[module.title] : module.title;
                 return (
                   <Link
                     key={module.href}
@@ -185,7 +208,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
                   >
                     <span className="flex items-center gap-3">
                       <Icon className={`h-4 w-4 ${active ? "text-blue-600" : "text-slate-400"}`} />
-                      {module.title}
+                      {title}
                     </span>
                     <span className="text-xs text-slate-400">{module.count}</span>
                   </Link>
@@ -219,18 +242,8 @@ export function AdminShell({ children }: { children: ReactNode }) {
 
           {/* Right Side Controls */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Language Switcher */}
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={toggleLanguage}
-              className="inline-flex gap-1.5 border-slate-200 text-slate-700 hover:text-blue-600 hover:bg-blue-50"
-              title={isKhmer ? "ប្តូរទៅជាភាសាអង់គ្លេស" : "Switch to Khmer"}
-            >
-              <Languages className="h-4 w-4 text-blue-600" />
-              <span className="text-xs font-bold">{language}</span>
-            </Button>
+            {/* Professional Language Switcher */}
+            <LanguageSwitcher variant="dropdown" size="sm" />
 
             <Button asChild variant="outline" size="sm" className="inline-flex gap-1.5 border-slate-200 text-slate-700 hover:text-blue-600 hover:bg-blue-50" title="View Live Website (CMS)">
               <Link href="/" target="_blank">

@@ -472,6 +472,12 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      document.documentElement.lang = language === "KH" ? "km" : "en";
+    }
+  }, [language]);
+
   const setLanguage = useCallback((updater: Language | ((prev: Language) => Language)) => {
     setLanguageState((prev) => {
       const next = typeof updater === "function" ? updater(prev) : updater;

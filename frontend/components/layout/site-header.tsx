@@ -7,6 +7,7 @@ import type { ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, ChevronDown, Languages, LayoutDashboard, LogIn, Menu, Moon, Search, Sparkles, Sun, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { LanguageSwitcher } from "@/components/ui/language-switcher";
 import { services, siteConfig } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/components/auth/auth-provider";
@@ -130,10 +131,7 @@ export function SiteHeader() {
             <IconButton label={t("nav_search")} onClick={() => setSearchOpen(true)}>
               <Search className="h-4 w-4" />
             </IconButton>
-            <IconButton label={t("lang_toggle")} onClick={toggleLanguage}>
-              <Languages className="h-4 w-4 text-blue-600" />
-              <span className="text-xs font-black">{language}</span>
-            </IconButton>
+            <LanguageSwitcher variant="dropdown" size="sm" />
             <IconButton label={t("theme_toggle")} onClick={() => setTheme((current) => (current === "dark" ? "light" : "dark"))}>
               {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </IconButton>
@@ -297,10 +295,9 @@ function MobileMenu({
                   {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
                   {t("theme_toggle")}
                 </button>
-                <button type="button" onClick={toggleLanguage} className="flex h-11 items-center justify-center gap-2 rounded-lg border border-slate-200 font-bold text-slate-700 dark:border-white/10 dark:text-white">
-                  <Languages className="h-4 w-4 text-blue-600" />
-                  {language === "EN" ? "ភាសាខ្មែរ" : "English"}
-                </button>
+                <div className="flex items-center justify-center">
+                  <LanguageSwitcher variant="segmented" className="w-full justify-center" />
+                </div>
               </div>
               {isAdmin && (
                 <Button asChild className="rounded-lg bg-blue-600 hover:bg-blue-700 text-white">
