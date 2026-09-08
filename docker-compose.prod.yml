@@ -60,6 +60,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
+    command: sh -c "php artisan storage:link --force && php artisan config:cache && php artisan route:cache && php artisan view:cache && php-fpm"
 
   # Next.js Frontend
   frontend:
