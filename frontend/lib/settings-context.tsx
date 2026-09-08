@@ -14,10 +14,16 @@ export type CompanySettings = {
   [key: string]: string;
 };
 
+export type AuthSettings = {
+  demo_admin_login: boolean;
+  demo_client_login: boolean;
+};
+
 type SettingsContextValue = {
   company: CompanySettings;
   companyName: string;
   logoUrl: string | null;
+  auth: AuthSettings;
   seo: Record<string, string>;
   social: Record<string, string>;
   isLoading: boolean;
@@ -33,10 +39,16 @@ const defaultCompany: CompanySettings = {
   logo: ""
 };
 
+const defaultAuth: AuthSettings = {
+  demo_admin_login: true,
+  demo_client_login: true
+};
+
 const SettingsContext = createContext<SettingsContextValue | undefined>(undefined);
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
   const [company, setCompany] = useState<CompanySettings>(defaultCompany);
+  const [auth, setAuth] = useState<AuthSettings>(defaultAuth);
   const [seo, setSeo] = useState<Record<string, string>>({});
   const [social, setSocial] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(true);
@@ -53,6 +65,12 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
             address: data.company.address || siteConfig.address,
             logo: data.company.logo || "",
             ...data.company
+          });
+        }
+        if (data.auth) {
+          setAuth({
+            demo_admin_login: data.auth.demo_admin_login !== "0" && data.auth.demo_admin_login !== "false",
+            demo_client_login: data.auth.demo_client_login !== "0" && data.auth.demo_client_login !== "false"
           });
         }
         if (data.seo) setSeo(data.seo);
@@ -81,13 +99,14 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       company,
       companyName: company.name || siteConfig.name,
       logoUrl: company.logo?.trim() || null,
+      auth,
       seo,
       social,
       isLoading,
       refreshSettings,
       updateCompanyLogo
     }),
-    [company, seo, social, isLoading, refreshSettings, updateCompanyLogo]
+    [company, auth, seo, social, isLoading, refreshSettings, updateCompanyLogo]
   );
 
   return <SettingsContext.Provider value={value}>{children}</SettingsContext.Provider>;
@@ -100,6 +119,7 @@ export function useSettings(): SettingsContextValue {
       company: defaultCompany,
       companyName: siteConfig.name,
       logoUrl: null,
+      auth: defaultAuth,
       seo: {},
       social: {},
       isLoading: false,

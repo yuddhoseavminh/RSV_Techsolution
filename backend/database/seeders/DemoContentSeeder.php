@@ -168,6 +168,10 @@ class DemoContentSeeder extends Seeder
                 'facebook' => 'https://facebook.com/rvstrustsolutions',
                 'linkedin' => 'https://linkedin.com/company/rvstrustsolutions',
             ],
+            'auth' => [
+                'demo_admin_login' => '1',
+                'demo_client_login' => '1',
+            ],
         ];
 
         foreach ($settings as $group => $items) {

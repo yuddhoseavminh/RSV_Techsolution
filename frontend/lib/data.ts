@@ -281,7 +281,6 @@ export const timeline = [
 
 export const adminModules = [
   { title: "Dashboard", href: "/admin", icon: LayoutDashboard, count: "Overview" },
-  { title: "Website (CMS)", href: "/", icon: Globe, count: "Live" },
   { title: "Users", href: "/admin/users", icon: UsersRound, count: "CRUD" },
   { title: "Roles", href: "/admin/roles", icon: ShieldCheck, count: "CRUD" },
   { title: "Permissions", href: "/admin/permissions", icon: BadgeCheck, count: "Read" },

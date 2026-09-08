@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import { LockKeyhole, Mail, KeyRound, ArrowRight, ShieldAlert, Sparkles } from "lucide-react";
 import { useAuth } from "@/components/auth/auth-provider";
+import { useSettings } from "@/lib/settings-context";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { AdminDashboard } from "@/components/admin/admin-dashboard";
 import { apiMessage } from "@/lib/api-client";
@@ -10,6 +11,7 @@ import { Button } from "@/components/ui/button";
 
 export default function AdminPage() {
   const { user, isLoading, login } = useAuth();
+  const { auth } = useSettings();
   
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -177,16 +179,18 @@ export default function AdminPage() {
           </form>
 
           {/* Quick Login Helper */}
-          <div className="mt-8 border-t border-white/[0.06] pt-6 text-center">
-            <button
-              type="button"
-              onClick={handleQuickLogin}
-              className="group inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/5 px-4 py-1.5 text-xs text-blue-400 transition hover:bg-blue-500/10 hover:border-blue-500/50"
-            >
-              <Sparkles className="h-3.5 w-3.5 animate-pulse text-blue-400" />
-              <span>Quick Login as Admin (Demo)</span>
-            </button>
-          </div>
+          {auth.demo_admin_login && (
+            <div className="mt-8 border-t border-white/[0.06] pt-6 text-center">
+              <button
+                type="button"
+                onClick={handleQuickLogin}
+                className="group inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/5 px-4 py-1.5 text-xs text-blue-400 transition hover:bg-blue-500/10 hover:border-blue-500/50"
+              >
+                <Sparkles className="h-3.5 w-3.5 animate-pulse text-blue-400" />
+                <span>Quick Login as Admin (Demo)</span>
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Footer */}

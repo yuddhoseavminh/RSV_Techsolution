@@ -7,12 +7,15 @@ import {
   CheckCircle2,
   ExternalLink,
   Image as ImageIcon,
+  KeyRound,
   Loader2,
   Plus,
   RefreshCw,
   Save,
+  ShieldCheck,
   Trash2,
-  Upload
+  Upload,
+  UserCheck
 } from "lucide-react";
 import { apiClient, apiMessage } from "@/lib/api-client";
 import { Button } from "@/components/ui/button";
@@ -166,6 +169,17 @@ export function AdminSettings() {
   };
 
   const companyLogo = settings.company?.logo || "";
+
+  const isDemoAdminEnabled = settings.auth?.demo_admin_login !== "0" && settings.auth?.demo_admin_login !== "false";
+  const isDemoClientEnabled = settings.auth?.demo_client_login !== "0" && settings.auth?.demo_client_login !== "false";
+
+  const toggleDemoAdmin = () => {
+    updateValue("auth", "demo_admin_login", isDemoAdminEnabled ? "0" : "1");
+  };
+
+  const toggleDemoClient = () => {
+    updateValue("auth", "demo_client_login", isDemoClientEnabled ? "0" : "1");
+  };
 
   return (
     <div className="grid gap-6">
@@ -366,9 +380,126 @@ export function AdminSettings() {
               </div>
             </Card>
 
+            {/* Demo Login Access Controls Card */}
+            <Card className="p-6 border-slate-200 shadow-xs">
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600">
+                  <KeyRound className="h-5 w-5" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-slate-950">Demo Login Access Controls</h2>
+                  <p className="text-xs text-slate-500">
+                    Enable or disable 1-click demo login buttons and sample credentials on the login screen.
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-6 grid gap-4 md:grid-cols-2">
+                {/* Admin Demo Login Toggle */}
+                <div className="flex flex-col justify-between rounded-xl border border-slate-200 bg-slate-50/60 p-4 transition hover:border-slate-300">
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2.5">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white shadow-xs">
+                          <ShieldCheck className="h-4 w-4" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-wider text-blue-700">Administrator</p>
+                          <p className="text-sm font-semibold text-slate-900">Admin Demo Login</p>
+                        </div>
+                      </div>
+                      <span
+                        className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                          isDemoAdminEnabled
+                            ? "bg-emerald-100 text-emerald-800"
+                            : "bg-slate-200 text-slate-600"
+                        }`}
+                      >
+                        {isDemoAdminEnabled ? "Enabled" : "Disabled"}
+                      </span>
+                    </div>
+                    <p className="mt-2.5 text-xs text-slate-600 leading-relaxed">
+                      Controls the demo card and auto-login button for <strong className="font-mono text-slate-700">admin@ktsolution.local</strong> on the login page and terminal.
+                    </p>
+                  </div>
+
+                  <div className="mt-4 pt-3 border-t border-slate-200/80 flex items-center justify-between">
+                    <span className="text-xs font-medium text-slate-500">
+                      Status: <span className="font-semibold text-slate-800">{isDemoAdminEnabled ? "Active on Login Page" : "Hidden from Login Page"}</span>
+                    </span>
+                    <button
+                      type="button"
+                      onClick={toggleDemoAdmin}
+                      className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden ${
+                        isDemoAdminEnabled ? "bg-blue-600" : "bg-slate-300"
+                      }`}
+                      role="switch"
+                      aria-checked={isDemoAdminEnabled}
+                    >
+                      <span
+                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
+                          isDemoAdminEnabled ? "translate-x-5" : "translate-x-0"
+                        }`}
+                      />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Client Demo Login Toggle */}
+                <div className="flex flex-col justify-between rounded-xl border border-slate-200 bg-slate-50/60 p-4 transition hover:border-slate-300">
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2.5">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600 text-white shadow-xs">
+                          <UserCheck className="h-4 w-4" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-wider text-emerald-700">Client Portal</p>
+                          <p className="text-sm font-semibold text-slate-900">Client Demo Login</p>
+                        </div>
+                      </div>
+                      <span
+                        className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                          isDemoClientEnabled
+                            ? "bg-emerald-100 text-emerald-800"
+                            : "bg-slate-200 text-slate-600"
+                        }`}
+                      >
+                        {isDemoClientEnabled ? "Enabled" : "Disabled"}
+                      </span>
+                    </div>
+                    <p className="mt-2.5 text-xs text-slate-600 leading-relaxed">
+                      Controls the demo card and auto-login button for <strong className="font-mono text-slate-700">client@example.com</strong> on the login page.
+                    </p>
+                  </div>
+
+                  <div className="mt-4 pt-3 border-t border-slate-200/80 flex items-center justify-between">
+                    <span className="text-xs font-medium text-slate-500">
+                      Status: <span className="font-semibold text-slate-800">{isDemoClientEnabled ? "Active on Login Page" : "Hidden from Login Page"}</span>
+                    </span>
+                    <button
+                      type="button"
+                      onClick={toggleDemoClient}
+                      className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden ${
+                        isDemoClientEnabled ? "bg-emerald-600" : "bg-slate-300"
+                      }`}
+                      role="switch"
+                      aria-checked={isDemoClientEnabled}
+                    >
+                      <span
+                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
+                          isDemoClientEnabled ? "translate-x-5" : "translate-x-0"
+                        }`}
+                      />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </Card>
+
             {/* Other Settings Groups (SEO, Social, etc.) */}
             {Object.entries(settings)
-              .filter(([group]) => group !== "company")
+              .filter(([group]) => group !== "company" && group !== "auth")
               .map(([group, items]) => (
                 <Card key={group} className="p-6 border-slate-200 shadow-xs">
                   <div className="border-b border-slate-100 pb-3">

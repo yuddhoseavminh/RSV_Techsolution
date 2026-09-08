@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/components/auth/auth-provider";
+import { useSettings } from "@/lib/settings-context";
 import { apiMessage } from "@/lib/api-client";
 
 function LoginFormContent() {
@@ -28,6 +29,11 @@ function LoginFormContent() {
   const redirectUrl = searchParams.get("redirect");
 
   const { login, user, isAuthenticated, isAdmin, logout } = useAuth();
+  const { auth } = useSettings();
+
+  const showAdminDemo = auth.demo_admin_login;
+  const showClientDemo = auth.demo_client_login;
+  const showDemoSection = showAdminDemo || showClientDemo;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -103,10 +109,10 @@ function LoginFormContent() {
   return (
     <PublicLayout>
       <section className="min-h-[85vh] bg-gradient-to-b from-slate-50 via-white to-slate-100 py-16 px-4">
-        <div className="mx-auto max-w-4xl">
-          <div className="grid gap-8 lg:grid-cols-12 lg:items-center">
+        <div className={`mx-auto ${showDemoSection ? "max-w-4xl" : "max-w-md"}`}>
+          <div className={showDemoSection ? "grid gap-8 lg:grid-cols-12 lg:items-center" : ""}>
             {/* Left Column: Form */}
-            <div className="lg:col-span-7">
+            <div className={showDemoSection ? "lg:col-span-7" : "w-full"}>
               <Card className="border-slate-200/80 bg-white/95 shadow-xl backdrop-blur-md">
                 <CardHeader className="space-y-2 pb-6">
                   <div className="flex items-center justify-between">
@@ -258,127 +264,133 @@ function LoginFormContent() {
             </div>
 
             {/* Right Column: Quick Demo Credentials */}
-            <div className="lg:col-span-5 space-y-4">
-              <div className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm">
-                <div className="flex items-center gap-2 text-slate-900 font-semibold mb-1">
-                  <KeyRound className="h-5 w-5 text-brand-blue" />
-                  <h3>Quick Demo Credentials</h3>
-                </div>
-                <p className="text-xs text-slate-500 mb-4">
-                  Click any demo account below to instantly fill credentials or test single-click login.
-                </p>
+            {showDemoSection && (
+              <div className="lg:col-span-5 space-y-4">
+                <div className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm">
+                  <div className="flex items-center gap-2 text-slate-900 font-semibold mb-1">
+                    <KeyRound className="h-5 w-5 text-brand-blue" />
+                    <h3>Quick Demo Credentials</h3>
+                  </div>
+                  <p className="text-xs text-slate-500 mb-4">
+                    Click any demo account below to instantly fill credentials or test single-click login.
+                  </p>
 
-                <div className="space-y-3">
-                  {/* Admin Card */}
-                  <div
-                    className={`group relative rounded-xl border p-4 transition-all hover:border-brand-blue hover:shadow-md ${
-                      activeDemo === "admin"
-                        ? "border-brand-blue bg-blue-50/50 ring-1 ring-brand-blue"
-                        : "border-slate-200 bg-slate-50/70"
-                    }`}
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-center gap-2.5">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white shadow-sm">
-                          <ShieldCheck className="h-4 w-4" />
+                  <div className="space-y-3">
+                    {/* Admin Card */}
+                    {showAdminDemo && (
+                      <div
+                        className={`group relative rounded-xl border p-4 transition-all hover:border-brand-blue hover:shadow-md ${
+                          activeDemo === "admin"
+                            ? "border-brand-blue bg-blue-50/50 ring-1 ring-brand-blue"
+                            : "border-slate-200 bg-slate-50/70"
+                        }`}
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-center gap-2.5">
+                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white shadow-sm">
+                              <ShieldCheck className="h-4 w-4" />
+                            </div>
+                            <div>
+                              <p className="text-xs font-bold uppercase tracking-wider text-blue-700">Administrator</p>
+                              <p className="text-sm font-semibold text-slate-900">admin@ktsolution.local</p>
+                            </div>
+                          </div>
+                          <span className="rounded bg-slate-200 px-1.5 py-0.5 font-mono text-[11px] text-slate-700">
+                            password
+                          </span>
                         </div>
-                        <div>
-                          <p className="text-xs font-bold uppercase tracking-wider text-blue-700">Administrator</p>
-                          <p className="text-sm font-semibold text-slate-900">admin@ktsolution.local</p>
+
+                        <p className="mt-2 text-xs text-slate-500">
+                          Full access to administrative console, users, CMS, services, projects &amp; settings.
+                        </p>
+
+                        <div className="mt-3 flex items-center gap-2">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            disabled={isSubmitting}
+                            onClick={() => handleQuickFill("admin@ktsolution.local", "password", "admin", false)}
+                            className="h-8 flex-1 text-xs bg-white"
+                          >
+                            Auto-fill
+                          </Button>
+                          <Button
+                            type="button"
+                            size="sm"
+                            disabled={isSubmitting}
+                            onClick={() => handleQuickFill("admin@ktsolution.local", "password", "admin", true)}
+                            className="h-8 flex-1 text-xs bg-brand-slate hover:bg-slate-800 text-white"
+                          >
+                            Login as Admin
+                          </Button>
                         </div>
                       </div>
-                      <span className="rounded bg-slate-200 px-1.5 py-0.5 font-mono text-[11px] text-slate-700">
-                        password
-                      </span>
-                    </div>
+                    )}
 
-                    <p className="mt-2 text-xs text-slate-500">
-                      Full access to administrative console, users, CMS, services, projects &amp; settings.
-                    </p>
-
-                    <div className="mt-3 flex items-center gap-2">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        disabled={isSubmitting}
-                        onClick={() => handleQuickFill("admin@ktsolution.local", "password", "admin", false)}
-                        className="h-8 flex-1 text-xs bg-white"
+                    {/* Client Card */}
+                    {showClientDemo && (
+                      <div
+                        className={`group relative rounded-xl border p-4 transition-all hover:border-emerald-500 hover:shadow-md ${
+                          activeDemo === "client"
+                            ? "border-emerald-500 bg-emerald-50/50 ring-1 ring-emerald-500"
+                            : "border-slate-200 bg-slate-50/70"
+                        }`}
                       >
-                        Auto-fill
-                      </Button>
-                      <Button
-                        type="button"
-                        size="sm"
-                        disabled={isSubmitting}
-                        onClick={() => handleQuickFill("admin@ktsolution.local", "password", "admin", true)}
-                        className="h-8 flex-1 text-xs bg-brand-slate hover:bg-slate-800 text-white"
-                      >
-                        Login as Admin
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Client Card */}
-                  <div
-                    className={`group relative rounded-xl border p-4 transition-all hover:border-emerald-500 hover:shadow-md ${
-                      activeDemo === "client"
-                        ? "border-emerald-500 bg-emerald-50/50 ring-1 ring-emerald-500"
-                        : "border-slate-200 bg-slate-50/70"
-                    }`}
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-center gap-2.5">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600 text-white shadow-sm">
-                          <UserCheck className="h-4 w-4" />
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-center gap-2.5">
+                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600 text-white shadow-sm">
+                              <UserCheck className="h-4 w-4" />
+                            </div>
+                            <div>
+                              <p className="text-xs font-bold uppercase tracking-wider text-emerald-700">Client Portal</p>
+                              <p className="text-sm font-semibold text-slate-900">client@example.com</p>
+                            </div>
+                          </div>
+                          <span className="rounded bg-slate-200 px-1.5 py-0.5 font-mono text-[11px] text-slate-700">
+                            password
+                          </span>
                         </div>
-                        <div>
-                          <p className="text-xs font-bold uppercase tracking-wider text-emerald-700">Client Portal</p>
-                          <p className="text-sm font-semibold text-slate-900">client@example.com</p>
+
+                        <p className="mt-2 text-xs text-slate-500">
+                          Client access for tracking active projects, reviewing invoices, and support tickets.
+                        </p>
+
+                        <div className="mt-3 flex items-center gap-2">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            disabled={isSubmitting}
+                            onClick={() => handleQuickFill("client@example.com", "password", "client", false)}
+                            className="h-8 flex-1 text-xs bg-white"
+                          >
+                            Auto-fill
+                          </Button>
+                          <Button
+                            type="button"
+                            size="sm"
+                            disabled={isSubmitting}
+                            onClick={() => handleQuickFill("client@example.com", "password", "client", true)}
+                            className="h-8 flex-1 text-xs bg-emerald-700 hover:bg-emerald-800 text-white"
+                          >
+                            Login as Client
+                          </Button>
                         </div>
                       </div>
-                      <span className="rounded bg-slate-200 px-1.5 py-0.5 font-mono text-[11px] text-slate-700">
-                        password
-                      </span>
-                    </div>
-
-                    <p className="mt-2 text-xs text-slate-500">
-                      Client access for tracking active projects, reviewing invoices, and support tickets.
-                    </p>
-
-                    <div className="mt-3 flex items-center gap-2">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        disabled={isSubmitting}
-                        onClick={() => handleQuickFill("client@example.com", "password", "client", false)}
-                        className="h-8 flex-1 text-xs bg-white"
-                      >
-                        Auto-fill
-                      </Button>
-                      <Button
-                        type="button"
-                        size="sm"
-                        disabled={isSubmitting}
-                        onClick={() => handleQuickFill("client@example.com", "password", "client", true)}
-                        className="h-8 flex-1 text-xs bg-emerald-700 hover:bg-emerald-800 text-white"
-                      >
-                        Login as Client
-                      </Button>
-                    </div>
+                    )}
                   </div>
                 </div>
-              </div>
 
-              {/* Security info note */}
-              <div className="rounded-xl border border-slate-200/80 bg-slate-50/50 p-4 text-xs text-slate-600">
-                <p className="font-semibold text-slate-800 mb-1">Secure Token Authentication</p>
-                <p>
-                  Sessions are authenticated via Laravel Sanctum API tokens with role-based authorization for the Client Portal and Admin Console.
-                </p>
+                {/* Security info note */}
+                <div className="rounded-xl border border-slate-200/80 bg-slate-50/50 p-4 text-xs text-slate-600">
+                  <p className="font-semibold text-slate-800 mb-1">Secure Token Authentication</p>
+                  <p>
+                    Sessions are authenticated via Laravel Sanctum API tokens with role-based authorization for the Client Portal and Admin Console.
+                  </p>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </section>
