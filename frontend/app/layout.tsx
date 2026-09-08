@@ -1,26 +1,27 @@
 import type { Metadata } from "next";
+import { AuthProvider } from "@/components/auth/auth-provider";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth-context";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
   title: {
-    default: "KT Solution - Smart Digital Solutions",
-    template: "%s | KT Solution"
+    default: "RVS Trust Solutions Cambodia - Trusted Technology Solutions",
+    template: "%s | RVS Trust Solutions Cambodia"
   },
   description:
-    "Custom software, web applications, mobile apps, POS, inventory, ERP, and enterprise systems built for growth.",
-  keywords: ["KT Solution", "software development", "Laravel", "Next.js", "POS", "inventory system"],
+    "Trusted software development, websites, SaaS portals, mobile apps, POS, inventory, ERP, CRM, and enterprise systems for Cambodian businesses.",
+  keywords: ["RVS Trust Solutions Cambodia", "software development Cambodia", "Laravel", "Next.js", "POS", "inventory system"],
   openGraph: {
-    title: "KT Solution",
-    description: "Transform your business with smart digital solutions.",
+    title: "RVS Trust Solutions Cambodia",
+    description: "Trusted technology solutions for growing Cambodian businesses.",
     images: ["/images/kt-hero.png"]
   }
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
         <AuthProvider>{children}</AuthProvider>
       </body>

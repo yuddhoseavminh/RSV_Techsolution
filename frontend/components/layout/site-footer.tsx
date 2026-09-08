@@ -1,64 +1,117 @@
 import Link from "next/link";
-import { Mail, MapPin, Phone } from "lucide-react";
-import { navigation, services, siteConfig } from "@/lib/data";
+import { ArrowRight, Mail, MapPin, Phone, Sparkles } from "lucide-react";
+import { FaFacebookF, FaGithub, FaLinkedinIn, FaTelegramPlane } from "react-icons/fa";
+import { services, siteConfig } from "@/lib/data";
+
+const footerLinks = [
+  { label: "Home", href: "/#home" },
+  { label: "Features", href: "/#features" },
+  { label: "Services", href: "/#services" },
+  { label: "Portfolio", href: "/#portfolio" },
+  { label: "Pricing", href: "/#pricing" },
+  { label: "Contact", href: "/#contact" }
+];
+
+const socialLinks = [
+  { label: "Facebook", href: "#", icon: FaFacebookF },
+  { label: "LinkedIn", href: "#", icon: FaLinkedinIn },
+  { label: "GitHub", href: "#", icon: FaGithub },
+  { label: "Telegram", href: "#", icon: FaTelegramPlane }
+];
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-slate-200 bg-slate-950 text-white">
-      <div className="section-shell grid gap-10 py-14 md:grid-cols-[1.3fr_0.8fr_0.8fr_1fr]">
-        <div>
-          <div className="mb-4 flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-white text-sm font-bold text-brand-blue">
-              KT
-            </span>
-            <span className="font-bold">{siteConfig.name}</span>
+    <footer className="relative overflow-hidden border-t border-slate-200 bg-[#F8FAFC] text-slate-950 dark:border-white/10 dark:bg-slate-950 dark:text-white">
+      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(37,99,235,0.08),transparent_34%,rgba(6,182,212,0.08)_62%,rgba(139,92,246,0.08))] dark:bg-[linear-gradient(135deg,rgba(37,99,235,0.16),transparent_34%,rgba(6,182,212,0.1)_62%,rgba(139,92,246,0.14))]" />
+      <div className="section-shell relative py-14 lg:py-18">
+        <div className="mb-10 grid gap-5 rounded-lg border border-white/70 bg-white/72 p-6 shadow-soft backdrop-blur-2xl dark:border-white/10 dark:bg-white/8 md:grid-cols-[1fr_auto] md:items-center">
+          <div>
+            <div className="mb-3 inline-flex items-center gap-2 rounded-lg bg-blue-50 px-3 py-1.5 text-xs font-black uppercase tracking-[0.16em] text-[#2563EB] dark:bg-white/10 dark:text-cyan-200">
+              <Sparkles className="h-3.5 w-3.5" />
+              Newsletter
+            </div>
+            <h2 className="font-display text-2xl font-black tracking-normal md:text-3xl">Get practical digital strategy notes.</h2>
+            <p className="mt-2 max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-300">
+              Ideas for websites, SaaS portals, POS, inventory, ERP, CRM, mobile apps, and automation.
+            </p>
           </div>
-          <p className="max-w-sm text-sm leading-6 text-slate-300">
-            Custom software, web applications, mobile apps, and enterprise systems for business growth.
-          </p>
+          <form className="flex w-full gap-2 md:w-[380px]">
+            <input
+              type="email"
+              placeholder="Email address"
+              className="h-12 min-w-0 flex-1 rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold outline-none transition focus:border-[#2563EB] dark:border-white/10 dark:bg-slate-950/70"
+            />
+            <button type="button" className="grid h-12 w-12 shrink-0 place-items-center rounded-lg bg-[#2563EB] text-white shadow-[0_16px_40px_rgba(37,99,235,0.24)]" aria-label="Subscribe">
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          </form>
         </div>
-        <div>
-          <h3 className="mb-4 text-sm font-semibold">Company</h3>
-          <div className="grid gap-3">
-            {navigation.map((item) => (
-              <Link key={item.href} href={item.href} className="text-sm text-slate-300 transition hover:text-white">
-                {item.label}
-              </Link>
-            ))}
+
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.15fr_0.8fr_0.9fr_1fr]">
+          <div>
+            <Link href="/" className="mb-5 flex items-center gap-3">
+              <span className="grid h-11 w-11 place-items-center rounded-lg bg-gradient-to-br from-[#2563EB] to-[#8B5CF6] text-[11px] font-black text-white shadow-[0_16px_40px_rgba(37,99,235,0.24)]">
+                RVS
+              </span>
+              <span className="font-display text-lg font-black tracking-normal">{siteConfig.name}</span>
+            </Link>
+            <p className="max-w-sm text-sm leading-7 text-slate-600 dark:text-slate-300">
+              Trusted websites, web applications, mobile apps, POS, inventory, ERP, CRM, and enterprise systems for growth-focused Cambodian teams.
+            </p>
+            <div className="mt-6 flex gap-2">
+              {socialLinks.map((social) => {
+                const Icon = social.icon;
+                return (
+                  <Link key={social.label} href={social.href} aria-label={social.label} className="grid h-10 w-10 place-items-center rounded-lg border border-slate-200 bg-white text-slate-600 shadow-sm transition hover:-translate-y-1 hover:border-blue-200 hover:text-[#2563EB] dark:border-white/10 dark:bg-white/8 dark:text-slate-300 dark:hover:text-cyan-200">
+                    <Icon className="h-4 w-4" />
+                  </Link>
+                );
+              })}
+            </div>
           </div>
-        </div>
-        <div>
-          <h3 className="mb-4 text-sm font-semibold">Services</h3>
-          <div className="grid gap-3">
-            {services.slice(0, 5).map((service) => (
-              <Link key={service.slug} href="/services" className="text-sm text-slate-300 transition hover:text-white">
-                {service.title}
-              </Link>
-            ))}
+          <div>
+            <h3 className="mb-4 text-sm font-black uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">Useful Links</h3>
+            <div className="grid gap-3">
+              {footerLinks.map((item) => (
+                <Link key={item.href} href={item.href} className="text-sm font-semibold text-slate-600 transition hover:text-[#2563EB] dark:text-slate-300 dark:hover:text-cyan-200">
+                  {item.label}
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-        <div>
-          <h3 className="mb-4 text-sm font-semibold">Contact</h3>
-          <div className="grid gap-3 text-sm text-slate-300">
-            <span className="flex items-center gap-2">
-              <Mail className="h-4 w-4 text-brand-cyan" />
-              {siteConfig.email}
-            </span>
-            <span className="flex items-center gap-2">
-              <Phone className="h-4 w-4 text-brand-cyan" />
-              {siteConfig.phone}
-            </span>
-            <span className="flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-brand-cyan" />
-              {siteConfig.address}
-            </span>
+          <div>
+            <h3 className="mb-4 text-sm font-black uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">Services</h3>
+            <div className="grid gap-3">
+              {services.slice(0, 6).map((service) => (
+                <Link key={service.slug} href="/#services" className="text-sm font-semibold text-slate-600 transition hover:text-[#2563EB] dark:text-slate-300 dark:hover:text-cyan-200">
+                  {service.title}
+                </Link>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 className="mb-4 text-sm font-black uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">Contact</h3>
+            <div className="grid gap-4 text-sm font-semibold text-slate-600 dark:text-slate-300">
+              <span className="flex items-center gap-3">
+                <Mail className="h-4 w-4 text-[#2563EB] dark:text-cyan-300" />
+                {siteConfig.email}
+              </span>
+              <span className="flex items-center gap-3">
+                <Phone className="h-4 w-4 text-[#2563EB] dark:text-cyan-300" />
+                {siteConfig.phone}
+              </span>
+              <span className="flex items-center gap-3">
+                <MapPin className="h-4 w-4 text-[#2563EB] dark:text-cyan-300" />
+                {siteConfig.address}
+              </span>
+            </div>
           </div>
         </div>
       </div>
-      <div className="border-t border-white/10 py-5">
-        <div className="section-shell flex flex-col gap-3 text-sm text-slate-400 md:flex-row md:items-center md:justify-between">
-          <span>Copyright 2026 KT Solution. All rights reserved.</span>
-          <span>Software, web, mobile, POS, inventory, ERP, and consulting.</span>
+      <div className="relative border-t border-slate-200 py-5 dark:border-white/10">
+        <div className="section-shell flex flex-col gap-3 text-sm font-semibold text-slate-500 dark:text-slate-400 md:flex-row md:items-center md:justify-between">
+          <span>Copyright 2026 RVS Trust Solutions Cambodia. All rights reserved.</span>
+          <span>Built with Next.js, TypeScript, Tailwind CSS, Framer Motion, GSAP, and React Icons.</span>
         </div>
       </div>
     </footer>

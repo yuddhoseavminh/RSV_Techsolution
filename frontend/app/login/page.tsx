@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use client";
 
 import React, { useState, useEffect, Suspense } from "react";
@@ -407,3 +408,5 @@ export default function LoginPage() {
     </Suspense>
   );
 }
+=======
+>>>>>>> 8a106133af52c502709dcb77625a690ceedd6ce1

@@ -13,7 +13,14 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->validateCsrfTokens(except: [
             'api/*',
+<<<<<<< HEAD
             'sanctum/csrf-cookie',
+=======
+        ]);
+
+        $middleware->api(prepend: [
+            Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+>>>>>>> 8a106133af52c502709dcb77625a690ceedd6ce1
         ]);
 
         $middleware->alias([

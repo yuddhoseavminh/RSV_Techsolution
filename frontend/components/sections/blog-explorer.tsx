@@ -1,20 +1,70 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Search } from "lucide-react";
 import { posts } from "@/lib/data";
+import { apiClient } from "@/lib/api-client";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
+type BlogItem = {
+  id?: number;
+  title: string;
+  excerpt: string;
+  category: string;
+  tags: string[];
+  published_at?: string | null;
+  date?: string;
+};
+
+function extractRows(payload: unknown): BlogItem[] {
+  if (Array.isArray(payload)) {
+    return payload as BlogItem[];
+  }
+
+  if (payload && typeof payload === "object" && Array.isArray((payload as { data?: unknown }).data)) {
+    return (payload as { data: BlogItem[] }).data;
+  }
+
+  return [];
+}
+
+const fallbackPosts: BlogItem[] = posts;
+
+function formatDate(post: BlogItem) {
+  if (post.date) {
+    return post.date;
+  }
+
+  if (!post.published_at) {
+    return "Draft";
+  }
+
+  return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(new Date(post.published_at));
+}
+
 export function BlogExplorer() {
   const [query, setQuery] = useState("");
   const [tag, setTag] = useState("All");
-  const tags = ["All", ...Array.from(new Set(posts.flatMap((post) => post.tags)))];
+  const [items, setItems] = useState<BlogItem[]>(fallbackPosts);
+  const tags = ["All", ...Array.from(new Set(items.flatMap((post) => post.tags)))];
+
+  useEffect(() => {
+    async function loadPosts() {
+      const rows = extractRows(await apiClient<unknown>("/blog?per_page=60"));
+
+      if (rows.length) {
+        setItems(rows);
+      }
+    }
+
+    void loadPosts().catch(() => undefined);
+  }, []);
 
   const filteredPosts = useMemo(
     () =>
-      posts.filter((post) => {
+      items.filter((post) => {
         const matchesQuery = [post.title, post.category, post.excerpt]
           .join(" ")
           .toLowerCase()
@@ -22,7 +72,7 @@ export function BlogExplorer() {
         const matchesTag = tag === "All" || post.tags.includes(tag);
         return matchesQuery && matchesTag;
       }),
-    [query, tag]
+    [items, query, tag]
   );
 
   return (
@@ -50,11 +100,11 @@ export function BlogExplorer() {
       </div>
       <div className="grid gap-5 md:grid-cols-3">
         {filteredPosts.map((post) => (
-          <Card key={post.title} className="h-full">
+          <Card key={post.id ?? post.title} className="h-full">
             <CardHeader>
               <div className="mb-3 flex items-center justify-between gap-3">
                 <Badge>{post.category}</Badge>
-                <span className="text-xs font-medium text-slate-500">{post.date}</span>
+                <span className="text-xs font-medium text-slate-500">{formatDate(post)}</span>
               </div>
               <CardTitle>{post.title}</CardTitle>
               <CardDescription>{post.excerpt}</CardDescription>

@@ -28,10 +28,10 @@ class DashboardController extends Controller
             'projects_by_status' => Project::query()->selectRaw('status, count(*) as total')->groupBy('status')->pluck('total', 'status'),
             'tickets_by_priority' => Ticket::query()->selectRaw('priority, count(*) as total')->groupBy('priority')->pluck('total', 'priority'),
             'monthly_revenue' => Invoice::query()
-                ->selectRaw("date_format(paid_at, '%Y-%m') as month, sum(total) as total")
+                ->selectRaw("to_char(paid_at, 'YYYY-MM') as month, sum(total) as total")
                 ->where('status', 'paid')
                 ->whereNotNull('paid_at')
-                ->groupBy('month')
+                ->groupByRaw("to_char(paid_at, 'YYYY-MM')")
                 ->orderBy('month')
                 ->take(12)
                 ->pluck('total', 'month'),

@@ -1,4 +1,4 @@
-# KT Solution Website and Management System
+# RVS Trust Solutions Cambodia Website and Management System
 
 This workspace contains two project folders:
 

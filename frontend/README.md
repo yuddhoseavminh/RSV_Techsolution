@@ -1,6 +1,6 @@
-# KT Solution Frontend
+# RVS Trust Solutions Cambodia Frontend
 
-Next.js 15 frontend for the KT Solution public website, user portal, and admin dashboard.
+Next.js 15 frontend for the RVS Trust Solutions Cambodia public website, user portal, and admin dashboard.
 
 ## Stack
 
