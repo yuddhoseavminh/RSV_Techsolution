@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 "use client";
 
 import React, { useState, useEffect, Suspense } from "react";
@@ -20,14 +19,15 @@ import { PublicLayout } from "@/components/layout/public-layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { useAuth } from "@/lib/auth-context";
+import { useAuth } from "@/components/auth/auth-provider";
+import { apiMessage } from "@/lib/api-client";
 
 function LoginFormContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectUrl = searchParams.get("redirect");
 
-  const { login, user, isAuthenticated, isAdmin, isClient, logout } = useAuth();
+  const { login, user, isAuthenticated, isAdmin, logout } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,7 +37,6 @@ function LoginFormContent() {
   const [activeDemo, setActiveDemo] = useState<"admin" | "client" | null>(null);
 
   useEffect(() => {
-    // If already authenticated and not actively submitting, redirect to destination
     if (isAuthenticated && user) {
       if (redirectUrl) {
         router.push(redirectUrl);
@@ -60,22 +59,17 @@ function LoginFormContent() {
     setIsSubmitting(true);
 
     try {
-      const res = await login(email, password);
-      if (!res.success) {
-        setError(res.error || "Invalid email or password.");
+      const loggedUser = await login(email, password);
+      const userRoles = loggedUser.roles ?? [];
+      if (redirectUrl) {
+        router.push(redirectUrl);
+      } else if (userRoles.includes("admin") || userRoles.includes("manager")) {
+        router.push("/admin");
       } else {
-        // Redirection will trigger via useEffect or manually here
-        const userRoles = res.user?.roles ?? [];
-        if (redirectUrl) {
-          router.push(redirectUrl);
-        } else if (userRoles.includes("admin") || userRoles.includes("manager")) {
-          router.push("/admin");
-        } else {
-          router.push("/portal/dashboard");
-        }
+        router.push("/portal/dashboard");
       }
-    } catch {
-      setError("An unexpected error occurred. Please try again.");
+    } catch (err) {
+      setError(apiMessage(err));
     } finally {
       setIsSubmitting(false);
     }
@@ -89,12 +83,9 @@ function LoginFormContent() {
 
     if (autoSubmit) {
       setIsSubmitting(true);
-      const res = await login(demoEmail, demoPass);
-      if (!res.success) {
-        setError(res.error || "Failed to log in with demo credentials.");
-        setIsSubmitting(false);
-      } else {
-        const userRoles = res.user?.roles ?? [];
+      try {
+        const loggedUser = await login(demoEmail, demoPass);
+        const userRoles = loggedUser.roles ?? [];
         if (redirectUrl) {
           router.push(redirectUrl);
         } else if (userRoles.includes("admin") || userRoles.includes("manager")) {
@@ -102,6 +93,9 @@ function LoginFormContent() {
         } else {
           router.push("/portal/dashboard");
         }
+      } catch (err) {
+        setError(apiMessage(err));
+        setIsSubmitting(false);
       }
     }
   };
@@ -144,7 +138,7 @@ function LoginFormContent() {
                             Currently signed in as {user.name}
                           </p>
                           <p className="text-xs text-slate-600">
-                            {user.email} &bull; <span className="capitalize font-medium">{user.roles.join(", ")}</span>
+                            {user.email} &bull; <span className="capitalize font-medium">{(user.roles ?? []).join(", ")}</span>
                           </p>
                         </div>
                         <Button
@@ -408,5 +402,3 @@ export default function LoginPage() {
     </Suspense>
   );
 }
-=======
->>>>>>> 8a106133af52c502709dcb77625a690ceedd6ce1
