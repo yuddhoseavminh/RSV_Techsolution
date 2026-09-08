@@ -10,8 +10,8 @@ RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
 # Copy the rest of the application
 COPY . .
 
-# Generate optimized autoloader (skip artisan scripts that need full PHP runtime)
-RUN composer dump-autoload --optimize --no-scripts
+# Generate optimized autoloader
+RUN composer dump-autoload --optimize
 
 # Stage 2: Production image
 FROM php:8.4-fpm-alpine AS production
