@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-import { LoginForm } from "@/components/auth/login-form";
-import { PublicLayout } from "@/components/layout/public-layout";
-
-export const metadata = {
-  title: "Login"
-};
-=======
 "use client";
 
 import React, { useState, useEffect, Suspense } from "react";
@@ -107,16 +99,9 @@ function LoginFormContent() {
       }
     }
   };
->>>>>>> 35775272cdf1eff770c1a38f111c6bfd7469eff8
 
-export default function LoginPage() {
   return (
     <PublicLayout>
-<<<<<<< HEAD
-      <section className="bg-slate-50 py-20">
-        <div className="section-shell flex justify-center">
-          <LoginForm />
-=======
       <section className="min-h-[85vh] bg-gradient-to-b from-slate-50 via-white to-slate-100 py-16 px-4">
         <div className="mx-auto max-w-4xl">
           <div className="grid gap-8 lg:grid-cols-12 lg:items-center">
@@ -395,14 +380,11 @@ export default function LoginPage() {
               </div>
             </div>
           </div>
->>>>>>> 35775272cdf1eff770c1a38f111c6bfd7469eff8
         </div>
       </section>
     </PublicLayout>
   );
 }
-<<<<<<< HEAD
-=======
 
 export default function LoginPage() {
   return (
@@ -420,4 +402,3 @@ export default function LoginPage() {
     </Suspense>
   );
 }
->>>>>>> 35775272cdf1eff770c1a38f111c6bfd7469eff8
