@@ -1,4 +1,3 @@
-import { AdminShell } from "@/components/admin/admin-shell";
 import { AdminDashboard } from "@/components/admin/admin-dashboard";
 
 export const metadata = {
@@ -6,9 +5,5 @@ export const metadata = {
 };
 
 export default function AdminDashboardPage() {
-  return (
-    <AdminShell>
-      <AdminDashboard />
-    </AdminShell>
-  );
+  return <AdminDashboard />;
 }

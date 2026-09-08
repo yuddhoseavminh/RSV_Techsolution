@@ -85,7 +85,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
       {/* Desktop Sidebar */}
       <aside className="fixed inset-y-0 left-0 hidden w-72 flex-col border-r border-slate-200 bg-white lg:flex">
         <div className="flex h-[72px] shrink-0 items-center gap-3 border-b border-slate-200 px-6">
-          <Link href="/" className="flex items-center gap-3">
+          <Link href="/admin" className="flex items-center gap-3">
             <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-slate text-sm font-bold text-white shadow-sm">
               KT
             </span>
@@ -137,7 +137,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
           />
           <div className="fixed inset-y-0 left-0 flex w-72 flex-col bg-white shadow-2xl">
             <div className="flex h-[72px] items-center justify-between border-b border-slate-200 px-6">
-              <Link href="/" className="flex items-center gap-3" onClick={() => setMobileMenuOpen(false)}>
+              <Link href="/admin" className="flex items-center gap-3" onClick={() => setMobileMenuOpen(false)}>
                 <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-slate text-sm font-bold text-white shadow-sm">
                   KT
                 </span>
