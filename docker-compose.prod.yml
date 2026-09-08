@@ -186,7 +186,7 @@ configs:
           }
 
           location /storage/ {
-              alias /var/www/html/storage/;
+              alias /var/www/html/storage/app/public/;
               expires 30d;
               add_header Cache-Control "public, immutable";
           }

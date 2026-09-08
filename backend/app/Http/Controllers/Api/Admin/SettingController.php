@@ -47,7 +47,7 @@ class SettingController extends Controller
         ]);
 
         $path = $request->file('logo')->store('settings', 'public');
-        $url = asset('storage/' . $path);
+        $url = config('app.url') . '/storage/' . $path;
 
         Setting::updateOrCreate(
             ['group' => 'company', 'key' => 'logo'],
