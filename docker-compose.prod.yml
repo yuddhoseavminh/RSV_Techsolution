@@ -54,6 +54,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+    volumes:
+      - backend_storage:/var/www/html/storage
     networks:
       - app_network
     healthcheck:
