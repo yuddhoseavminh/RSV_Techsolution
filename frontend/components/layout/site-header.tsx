@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, ChevronDown, Languages, LogIn, Menu, Moon, Search, Sparkles, Sun, X } from "lucide-react";
+import { ArrowRight, ChevronDown, Languages, LayoutDashboard, LogIn, Menu, Moon, Search, Sparkles, Sun, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { services, siteConfig } from "@/lib/data";
 import { cn } from "@/lib/utils";
@@ -24,6 +24,7 @@ const sectionNav = [
 
 export function SiteHeader() {
   const pathname = usePathname();
+  const { isAuthenticated, isAdmin } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -132,12 +133,21 @@ export function SiteHeader() {
             <IconButton label="Toggle theme" onClick={() => setTheme((current) => (current === "dark" ? "light" : "dark"))}>
               {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </IconButton>
-            <Button asChild variant="ghost" size="sm" className="rounded-lg">
-              <Link href="/login">
-                <LogIn className="h-4 w-4" />
-                Portal
-              </Link>
-            </Button>
+            {isAuthenticated && isAdmin ? (
+              <Button asChild size="sm" className="rounded-lg bg-blue-600 hover:bg-blue-700 text-white shadow-xs">
+                <Link href="/admin">
+                  <LayoutDashboard className="h-4 w-4" />
+                  Admin
+                </Link>
+              </Button>
+            ) : (
+              <Button asChild variant="ghost" size="sm" className="rounded-lg">
+                <Link href="/login">
+                  <LogIn className="h-4 w-4" />
+                  Portal
+                </Link>
+              </Button>
+            )}
             <Button asChild size="sm" className="rounded-lg">
               <Link href="/contact">
                 Consultation
@@ -158,7 +168,16 @@ export function SiteHeader() {
       </header>
 
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
-      <MobileMenu open={mobileOpen} onClose={() => setMobileOpen(false)} nav={resolvedNav} theme={theme} setTheme={setTheme} language={language} setLanguage={setLanguage} />
+      <MobileMenu
+        open={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        nav={resolvedNav}
+        theme={theme}
+        setTheme={setTheme}
+        language={language}
+        setLanguage={setLanguage}
+        isAdmin={Boolean(isAuthenticated && isAdmin)}
+      />
     </>
   );
 }
@@ -235,7 +254,8 @@ function MobileMenu({
   theme,
   setTheme,
   language,
-  setLanguage
+  setLanguage,
+  isAdmin
 }: {
   open: boolean;
   onClose: () => void;
@@ -244,6 +264,7 @@ function MobileMenu({
   setTheme: (value: "light" | "dark") => void;
   language: string;
   setLanguage: (value: string) => void;
+  isAdmin?: boolean;
 }) {
   return (
     <AnimatePresence>
@@ -274,6 +295,14 @@ function MobileMenu({
                   {language}
                 </button>
               </div>
+              {isAdmin && (
+                <Button asChild className="rounded-lg bg-blue-600 hover:bg-blue-700 text-white">
+                  <Link href="/admin" onClick={onClose}>
+                    <LayoutDashboard className="h-4 w-4" />
+                    Admin Console
+                  </Link>
+                </Button>
+              )}
               <Button asChild className="rounded-lg">
                 <Link href="/contact" onClick={onClose}>
                   <Sparkles className="h-4 w-4" />

@@ -7,6 +7,7 @@ import {
   Bell,
   ChevronDown,
   ExternalLink,
+  Globe,
   LogOut,
   Search,
   Settings,
@@ -67,6 +68,9 @@ export function AdminShell({ children }: { children: ReactNode }) {
   };
 
   const isModuleActive = (href: string) => {
+    if (href === "/") {
+      return pathname === "/";
+    }
     if (href === "/admin") {
       return pathname === "/admin" || pathname === "/admin_page";
     }
@@ -211,7 +215,13 @@ export function AdminShell({ children }: { children: ReactNode }) {
           </div>
 
           {/* Right Side Controls */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Button asChild variant="outline" size="sm" className="inline-flex gap-1.5 border-slate-200 text-slate-700 hover:text-blue-600 hover:bg-blue-50" title="View Live Website (CMS)">
+              <Link href="/" target="_blank">
+                <Globe className="h-4 w-4 text-blue-600" />
+                <span className="text-xs font-semibold">Web</span>
+              </Link>
+            </Button>
             <Button variant="outline" size="sm" className="hidden sm:inline-flex">
               <Bell className="h-4 w-4" />
             </Button>
@@ -282,8 +292,8 @@ export function AdminShell({ children }: { children: ReactNode }) {
                       onClick={() => setUserMenuOpen(false)}
                       className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-slate-700 transition hover:bg-slate-100 hover:text-blue-600"
                     >
-                      <ExternalLink className="h-4 w-4 text-slate-400" />
-                      <span>View Public Website</span>
+                      <Globe className="h-4 w-4 text-slate-400" />
+                      <span>View Live Website (CMS)</span>
                     </Link>
                   </div>
 
