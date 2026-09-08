@@ -33,8 +33,6 @@ services:
       target: production
     container_name: rsv_backend
     restart: unless-stopped
-    env_file:
-      - .env.production
     volumes:
       - backend_storage:/var/www/html/storage
       - ./backend/.env:/var/www/html/.env:ro
@@ -69,8 +67,6 @@ services:
       target: runner
     container_name: rsv_frontend
     restart: unless-stopped
-    env_file:
-      - .env.production
     networks:
       - app_network
     healthcheck:
@@ -85,8 +81,6 @@ services:
     image: mysql:8.0
     container_name: rsv_mysql
     restart: unless-stopped
-    env_file:
-      - .env.production
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       MYSQL_DATABASE: ${DB_DATABASE}
