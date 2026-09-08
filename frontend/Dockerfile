@@ -1,43 +1,60 @@
-# Stage 1: Dependencies
-FROM node:20-alpine AS deps
+# Build stage
+FROM node:20-alpine AS builder
+
 WORKDIR /app
+
+# Copy dependency files
 COPY package.json package-lock.json ./
+
+# Install dependencies
 RUN npm ci
 
-# Stage 2: Build
-FROM node:20-alpine AS builder
-WORKDIR /app
-ARG NEXT_PUBLIC_API_URL
-ARG NEXT_PUBLIC_APP_URL
-ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
-ENV NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL
-COPY --from=deps /app/node_modules ./node_modules
+# Copy the rest of the source code
 COPY . .
-ENV NEXT_TELEMETRY_DISABLED=1
+
+# Build Next.js application
 RUN npm run build
 
-# Stage 3: Production
+# Production runner stage
 FROM node:20-alpine AS runner
+
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 nextjs
+# Copy package files
+COPY package.json package-lock.json ./
 
+# Install only production dependencies
+RUN npm ci --omit=dev
+
+# Copy built application from builder stage
+COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/static ./.next/static
 
-RUN mkdir -p .next/standalone .next/static
-
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-USER nextjs
-
+# Expose Next.js default port
 EXPOSE 3000
 
-ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
-
+# Start production server
 CMD ["node", "server.js"]
+
+# Development stage
+FROM node:20-alpine AS development
+
+WORKDIR /app
+
+# Copy dependency files
+COPY package.json package-lock.json ./
+
+# Install dependencies
+RUN npm ci
+
+# Copy the rest of the source code
+COPY . .
+
+# Expose Next.js default port
+EXPOSE 3000
+
+# Start development server
+CMD ["npm", "run", "dev"]
