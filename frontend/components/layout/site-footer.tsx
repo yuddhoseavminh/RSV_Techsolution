@@ -92,11 +92,22 @@ export function SiteFooter() {
               {isKhmer ? "សេវាកម្ម" : "Services"}
             </h3>
             <div className="grid gap-3">
-              {services.slice(0, 6).map((service) => (
-                <Link key={service.slug} href="/#services" className="text-sm font-semibold text-slate-600 transition hover:text-[#2563EB] dark:text-slate-300 dark:hover:text-cyan-200">
-                  {service.title}
-                </Link>
-              ))}
+              {services.slice(0, 6).map((service) => {
+                const khmerServiceTitles: Record<string, string> = {
+                  "Web Development": "ការអភិវឌ្ឍគេហទំព័រ",
+                  "Mobile App Development": "ការអភិវឌ្ឍកម្មវិធីទូរស័ព្ទ",
+                  "POS System": "ប្រព័ន្ធគ្រប់គ្រងការលក់ (POS)",
+                  "Inventory System": "ប្រព័ន្ធគ្រប់គ្រងស្តុកទំនិញ",
+                  "ERP System": "ប្រព័ន្ធគ្រប់គ្រងសហគ្រាស (ERP)",
+                  "CRM System": "ប្រព័ន្ធទំនាក់ទំនងអតិថិជន (CRM)"
+                };
+                const displayTitle = isKhmer && khmerServiceTitles[service.title] ? khmerServiceTitles[service.title] : service.title;
+                return (
+                  <Link key={service.slug} href="/#services" className="text-sm font-semibold text-slate-600 transition hover:text-[#2563EB] dark:text-slate-300 dark:hover:text-cyan-200">
+                    {displayTitle}
+                  </Link>
+                );
+              })}
             </div>
           </div>
           <div>

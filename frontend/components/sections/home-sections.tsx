@@ -367,21 +367,21 @@ function FeaturesSection() {
   const { isKhmer } = useLanguage();
 
   const khmerFeatureTitles: Record<string, string> = {
-    "High-Impact Landing Pages": "ទំព័រដើមទាក់ទាញ និងល្បឿនលឿន",
-    "Enterprise Admin Portal": "ផ្ទាំងគ្រប់គ្រងសហគ្រាសពេញលេញ",
-    "Role-Based Access": "ការកំណត់សិទ្ធិអ្នកប្រើប្រាស់ច្បាស់លាស់",
-    "Scalable Architecture": "ស្ថាបត្យកម្មបច្ចេកវិទ្យាទំហំធំ",
-    "Real-time Ready": "ប្រព័ន្ធដំណើរការផ្ទាល់ Real-Time",
-    "Bilingual & Global Ready": "គាំទ្រពីរភាសា ខ្មែរ និងអង់គ្លេស"
+    "Strategy-led delivery": "ការអនុវត្តតាមយុទ្ធសាស្ត្រច្បាស់លាស់",
+    "Secure portals": "ច្រកចូលប្រព័ន្ធមានសុវត្ថិភាពខ្ពស់",
+    "Polished UX": "បទពិសោធន៍ប្រើប្រាស់ទាន់សម័យ និងរលូន",
+    "Cloud-ready architecture": "ស្ថាបត្យកម្ម Cloud-Ready ទំនើប",
+    "Operational intelligence": "ការវិភាគ និងទិន្នន័យប្រតិបត្តិការ",
+    "Long-term support": "ការគាំទ្រ និងថែទាំយូរអង្វែង"
   };
 
   const khmerFeatureDesc: Record<string, string> = {
-    "High-Impact Landing Pages": "គេហទំព័របង្ហាញផលិតផល និងសេវាកម្មដែលទាក់ទាញ ផ្ទុកទិន្នន័យលឿន និង SEO ល្អបំផុត។",
-    "Enterprise Admin Portal": "គ្រប់គ្រងទិន្នន័យ របាយការណ៍ គណនី និងប្រតិបត្តិការអាជីវកម្មនៅកន្លែងតែមួយ។",
-    "Role-Based Access": "គ្រប់គ្រងសិទ្ធិអ្នកគ្រប់គ្រង បុគ្គលិក និងអតិថិជនប្រកបដោយសុវត្ថិភាពខ្ពស់។",
-    "Scalable Architecture": "បង្កើតឡើងដោយ Next.js, Laravel និង Database ស្តង់ដារសកល ងាយស្រួលពង្រីក។",
-    "Real-time Ready": "ការជូនដំណឹងផ្ទាល់ ការធ្វើបច្ចុប្បន្នភាពទិន្នន័យភ្លាមៗ និងការតាមដានរលូន។",
-    "Bilingual & Global Ready": "ប្តូរភាសាខ្មែរ និងអង់គ្លេសបានភ្លាមៗ ស័ក្តិសមសម្រាប់ទីផ្សារក្នុងស្រុក និងអន្តរជាតិ។"
+    "Strategy-led delivery": "ការសិក្សាតម្រូវការ ការរចនាផ្ទាំងប្រើប្រាស់ ការរៀបចំ API និងការគ្រប់គ្រងការចេញផ្សាយតាមលំហូរការងារជាក់ស្តែងរបស់អ្នក។",
+    "Secure portals": "ផ្ទាំងគ្រប់គ្រងតាមតួនាទីសម្រាប់គម្រោង វិក្កយបត្រ សំបុត្រជំនួយ អ្នកប្រើប្រាស់ សិទ្ធិ របាយការណ៍ និងទិន្នន័យអាជីវកម្ម។",
+    "Polished UX": "ផ្ទាំងកម្មវិធីឆ្លើយតបរហ័សលើគ្រប់ឧបករណ៍ មានចលនារលូន ឆ្លើយតបភ្លាមៗ និងងាយស្រួលសម្រាប់ប្រតិបត្តិការប្រចាំថ្ងៃ។",
+    "Cloud-ready architecture": "ប្រព័ន្ធ Laravel API, Next.js frontend, ប្រព័ន្ធ queue ដំណើរការផ្ទៃខាងក្រោយ គំរូទិន្នន័យស្អាត និងការដំឡើងប្រព័ន្ធមានស្ថិរភាព។",
+    "Operational intelligence": "ស្ថិតិផ្ទាល់ ការតាមដានវឌ្ឍនភាព ទិដ្ឋភាពហិរញ្ញវត្ថុ ការគ្រប់គ្រងស្តុក បណ្តាញអតិថិជន និងការទាញយករបាយការណ៍។",
+    "Long-term support": "ការបណ្តុះបណ្តាលប្រើប្រាស់ ការតាមដានប្រព័ន្ធ ការដោះស្រាយបញ្ហារហ័ស និងជាដៃគូសហការបច្ចេកវិទ្យាដែលអាចទុកចិត្តបាន។"
   };
 
   return (
@@ -418,12 +418,27 @@ function ServicesSection() {
   const { isKhmer } = useLanguage();
 
   const khmerServiceTitles: Record<string, string> = {
-    "Custom Web Applications": "កម្មវិធីគេហទំព័រតាមតម្រូវការ",
-    "Enterprise Admin Dashboards": "ផ្ទាំងគ្រប់គ្រងសហគ្រាស",
-    "API & Backend Architecture": "ស្ថាបត្យកម្ម API និង Backend",
-    "Mobile Application Delivery": "ការបង្កើតកម្មវិធីទូរស័ព្ទ",
-    "POS & Retail Workflows": "ប្រព័ន្ធលក់ POS & ស្តុកទំនិញ",
-    "Business Process Automation": "ស្វ័យប្រវត្តិកម្មអាជីវកម្ម"
+    "Web Development": "ការអភិវឌ្ឍគេហទំព័រ (Web Development)",
+    "Mobile App Development": "ការបង្កើតកម្មវិធីទូរស័ព្ទ (Mobile Apps)",
+    "POS System": "ប្រព័ន្ធគ្រប់គ្រងការលក់ (POS System)",
+    "Inventory System": "ប្រព័ន្ធគ្រប់គ្រងស្តុកទំនិញ (Inventory)",
+    "ERP System": "ប្រព័ន្ធគ្រប់គ្រងសហគ្រាស (ERP System)",
+    "CRM System": "ប្រព័ន្ធគ្រប់គ្រងទំនាក់ទំនងអតិថិជន (CRM)",
+    "HR Management System": "ប្រព័ន្ធគ្រប់គ្រងធនធានមនុស្ស (HRM)",
+    "School Management System": "ប្រព័ន្ធគ្រប់គ្រងសាលារៀន",
+    "Custom Software Development": "ការអភិវឌ្ឍកម្មវិធីតាមតម្រូវការជាក់លាក់"
+  };
+
+  const khmerServiceDescriptions: Record<string, string> = {
+    "Web Development": "គេហទំព័រពាណិជ្ជកម្មល្បឿនលឿន ផ្ទាំងគ្រប់គ្រង ផតថល និងកម្មវិធីគេហទំព័រអាជីវកម្មរឹងមាំ។",
+    "Mobile App Development": "កម្មវិធីទូរស័ព្ទ iOS និង Android ភ្ជាប់ទៅកាន់ប្រព័ន្ធ API មានសុវត្ថិភាព និងដំណើរការទិន្នន័យផ្ទាល់។",
+    "POS System": "ប្រព័ន្ធគ្រប់គ្រងការលក់ ចេញវិក្កយបត្រ គ្រប់គ្រងអ្នកគិតប្រាក់ ស្តុកទំនិញ និងរបាយការណ៍ហិរញ្ញវត្ថុប្រចាំថ្ងៃ។",
+    "Inventory System": "ការគ្រប់គ្រងស្តុកទំនិញ បញ្ជាទិញ ផ្ទេរទំនិញរវាងសាខា រាប់ស្តុក អ្នកផ្គត់ផ្គង់ និងឃ្លាំងទំនិញ។",
+    "ERP System": "ប្រព័ន្ធរួមបញ្ចូលគ្នារវាងហិរញ្ញវត្ថុ ការលក់ ប្រតិបត្តិការ លទ្ធកម្ម និងរបាយការណ៍គ្រប់គ្រងទូទៅ។",
+    "CRM System": "ឧបករណ៍តាមដានអតិថិជនសក្តានុពល បណ្តាញលក់ ការទំនាក់ទំនង និងប្រវត្តិអតិថិជន។",
+    "HR Management System": "គ្រប់គ្រងព័ត៌មានបុគ្គលិក វត្តមាន ច្បាប់ឈប់សម្រាក ប្រាក់បៀវត្សរ៍ និងឯកសាររដ្ឋបាល។",
+    "School Management System": "គ្រប់គ្រងសិស្ស គ្រូបង្រៀន វត្តមាន វិក្កយបត្រសិក្សា ពិន្ទុ និងការទំនាក់ទំនងជាមួយអាណាព្យាបាល។",
+    "Custom Software Development": "ប្រព័ន្ធរៀបចំឡើងជាពិសេសសម្រាប់លំហូរអាជីវកម្មជាក់លាក់ ការតភ្ជាប់ប្រព័ន្ធ និងតម្រូវការរបាយការណ៍។"
   };
 
   return (
@@ -439,6 +454,7 @@ function ServicesSection() {
           {services.slice(0, 6).map((service, index) => {
             const Icon = service.icon;
             const displayTitle = isKhmer && khmerServiceTitles[service.title] ? khmerServiceTitles[service.title] : service.title;
+            const displayDesc = isKhmer && khmerServiceDescriptions[service.title] ? khmerServiceDescriptions[service.title] : service.description;
             return (
               <motion.article key={service.slug} className="group perspective-1000" initial={{ opacity: 0, y: 26 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-90px" }} transition={{ duration: 0.48, delay: index * 0.05 }}>
                 <div className="h-full overflow-hidden rounded-lg border border-slate-200 bg-white shadow-soft transition duration-300 group-hover:-translate-y-2 group-hover:shadow-[0_28px_90px_rgba(37,99,235,0.14)] dark:border-white/10 dark:bg-white/8">
@@ -451,7 +467,7 @@ function ServicesSection() {
                   </div>
                   <div className="p-6">
                     <h3 className="font-display text-xl font-bold tracking-normal">{displayTitle}</h3>
-                    <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{service.description}</p>
+                    <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{displayDesc}</p>
                     <div className="mt-5 flex flex-wrap gap-2">
                       {service.technologies.map((technology) => (
                         <span key={technology} className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-600 dark:border-white/10 dark:bg-white/8 dark:text-slate-300">
@@ -474,10 +490,10 @@ function StatisticsSection() {
   const { isKhmer } = useLanguage();
 
   const statLabelsKhmer: Record<string, string> = {
-    "Faster Implementation": "ការអនុវត្តរហ័សជាងមុន",
-    "Uptime Reliability": "ភាពជឿជាក់ប្រព័ន្ធដំណើរការ",
-    "Client Satisfaction": "ការពេញចិត្តពីអតិថិជន",
-    "Delivered Modules": "ម៉ូឌុលដែលបានប្រគល់ជូន"
+    "Projects delivered": "គម្រោងដែលបានប្រគល់ជូន",
+    "Business systems launched": "ប្រព័ន្ធអាជីវកម្មដាក់ឱ្យប្រើ",
+    "Client satisfaction": "កម្រិតពេញចិត្តរបស់អតិថិជន",
+    "Support coverage": "សេវាគាំទ្រ និងថែទាំ 24/7"
   };
 
   return (
@@ -494,9 +510,9 @@ function StatisticsSection() {
             />
             <div className="mt-6 grid gap-3">
               {[
-                isKhmer ? "ស្ថាបត្យកម្មផ្ទុកល្បឿនលឿន" : "Fast loading architecture",
-                isKhmer ? "ចំណុចប្រទាក់ឆ្លើយតបងាយស្រួលប្រើ" : "Accessible responsive UI",
-                isKhmer ? "លំហូរការងារសុវត្ថិភាពខ្ពស់" : "Secure role-based workflows"
+                isKhmer ? "ស្ថាបត្យកម្មផ្ទុកទិន្នន័យល្បឿនលឿន" : "Fast loading architecture",
+                isKhmer ? "ចំណុចប្រទាក់ឆ្លើយតបងាយស្រួលប្រើប្រាស់" : "Accessible responsive UI",
+                isKhmer ? "លំហូរការងារបែងចែកសិទ្ធិសុវត្ថិភាពខ្ពស់" : "Secure role-based workflows"
               ].map((item) => (
                 <div key={item} className="flex items-center gap-3 text-sm font-semibold text-slate-200">
                   <Check className="h-4 w-4 text-cyan-300" />
@@ -530,6 +546,15 @@ function PortfolioSection() {
   const [selectedProject, setSelectedProject] = useState<(typeof projects)[number] | null>(null);
   const filteredProjects = useMemo(() => projects.filter((project) => activeCategory === "All" || project.category === activeCategory), [activeCategory]);
 
+  const khmerCategoryMap: Record<string, string> = {
+    "All": "ទាំងអស់",
+    "ERP & Portals": "ប្រព័ន្ធ ERP & ផតថល",
+    "POS & Inventory": "ប្រព័ន្ធ POS & ស្តុក",
+    "Web Development": "ការអភិវឌ្ឍគេហទំព័រ",
+    "Mobile Apps": "កម្មវិធីទូរស័ព្ទ",
+    "SaaS Platforms": "វេទិកា SaaS"
+  };
+
   return (
     <section id="portfolio" className="bg-[#F8FAFC] py-20 text-[#0F172A] dark:bg-[#0F172A] dark:text-white lg:py-28">
       <div className="section-shell">
@@ -543,7 +568,7 @@ function PortfolioSection() {
           <div className="flex flex-wrap gap-2">
             {portfolioCategories.map((category) => (
               <button key={category} type="button" onClick={() => setActiveCategory(category)} className={cn("rounded-lg border px-4 py-2 text-sm font-semibold transition", activeCategory === category ? "border-[#2563EB] bg-[#2563EB] text-white shadow-[0_16px_40px_rgba(37,99,235,0.22)]" : "border-slate-200 bg-white text-slate-600 hover:border-blue-200 hover:text-[#2563EB] dark:border-white/10 dark:bg-white/8 dark:text-slate-300")}>
-                {category === "All" ? (isKhmer ? "ទាំងអស់" : "All") : category}
+                {isKhmer ? (khmerCategoryMap[category] ?? category) : category}
               </button>
             ))}
           </div>
@@ -557,7 +582,9 @@ function PortfolioSection() {
                     <Image src="/images/kt-hero.png" alt={`${project.title} project preview`} fill className="object-cover transition duration-700 group-hover:scale-110" sizes="(min-width: 1280px) 31vw, (min-width: 768px) 48vw, 100vw" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/82 via-slate-950/18 to-transparent opacity-90" />
                     <div className="absolute inset-x-0 bottom-0 p-5 text-white">
-                      <Badge className="mb-3 border-white/15 bg-white/15 text-white backdrop-blur">{project.category}</Badge>
+                      <Badge className="mb-3 border-white/15 bg-white/15 text-white backdrop-blur">
+                        {isKhmer ? (khmerCategoryMap[project.category] ?? project.category) : project.category}
+                      </Badge>
                       <h3 className="font-display text-xl font-bold tracking-normal">{project.title}</h3>
                       <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-200">{project.description}</p>
                     </div>
@@ -585,13 +612,15 @@ function PortfolioSection() {
               </div>
               <div className="grid gap-8 p-6 md:grid-cols-[1.2fr_0.8fr] md:p-8">
                 <div>
-                  <Badge className="mb-4">{selectedProject.category}</Badge>
+                  <Badge className="mb-4">
+                    {isKhmer ? (khmerCategoryMap[selectedProject.category] ?? selectedProject.category) : selectedProject.category}
+                  </Badge>
                   <h3 className="font-display text-3xl font-black tracking-normal text-slate-950 dark:text-white">{selectedProject.title}</h3>
                   <p className="mt-4 leading-7 text-slate-600 dark:text-slate-300">{selectedProject.description}</p>
                 </div>
                 <div className="space-y-4 text-sm">
                   <MetaRow label={isKhmer ? "អតិថិជន" : "Client"} value={selectedProject.client} />
-                  <MetaRow label={isKhmer ? "ស្ថានភាព" : "Status"} value={selectedProject.status ?? "Active"} />
+                  <MetaRow label={isKhmer ? "ស្ថានភាព" : "Status"} value={isKhmer ? "ដំណើរការល្អ" : (selectedProject.status ?? "Active")} />
                   <MetaRow label={isKhmer ? "វឌ្ឍនភាព" : "Progress"} value={`${selectedProject.progress ?? 100}%`} />
                   <div className="flex flex-wrap gap-2">
                     {selectedProject.technologies.map((technology) => (
@@ -614,12 +643,20 @@ function TestimonialsSection() {
   const { isKhmer } = useLanguage();
   const [active, setActive] = useState(0);
 
-  useEffect(() => {
-    const timer = window.setInterval(() => setActive((current) => (current + 1) % testimonials.length), 4200);
-    return () => window.clearInterval(timer);
-  }, []);
+  const khmerTestimonials = [
+    ["RVS Trust Solutions Cambodia បានជួយយើងជំនួសការកត់ត្រាលើកាតត្រា Excel ដោយប្រព័ន្ធឌីជីថលស្វ័យប្រវត្តិកម្មច្បាស់លាស់ ផ្តល់ព័ត៌មានលម្អិតដល់ក្រុមការងារភ្លាមៗ។", "សុខា លីម", "នាយកប្រតិបត្តិការ", "SL"],
+    ["ប្រព័ន្ធគ្រប់គ្រងមានភាពទំនើប និងងាយស្រួលប្រើប្រាស់ជាក់ស្តែង។ អ្នកគ្រប់គ្រងរបស់យើងអាចតាមដានគម្រោង វិក្កយបត្រ និងការងារគាំទ្រដោយគ្មានភាពស្មុគស្មាញ។", "ដារ៉ា ជា", "ដៃគូគ្រប់គ្រង", "DC"],
+    ["ក្រុមការងារ RVS បានសិក្សាពីលំហូរការងាររបស់យើងយ៉ាងលម្អិត រួចបង្កើតកម្មវិធីដែលត្រូវនឹងដំណើរការជាក់ស្តែងនៃសាលារបស់យើង។", "ម៉ាលីស ចាន់", "នាយិកាសាលា", "MC"]
+  ];
 
-  const [quote, name, role, initials] = testimonials[active];
+  const currentTestimonials = isKhmer ? khmerTestimonials : testimonials;
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setActive((current) => (current + 1) % currentTestimonials.length), 4200);
+    return () => window.clearInterval(timer);
+  }, [currentTestimonials.length]);
+
+  const [quote, name, role, initials] = currentTestimonials[active % currentTestimonials.length];
 
   return (
     <section id="testimonials" className="bg-white py-20 text-[#0F172A] dark:bg-slate-950 dark:text-white lg:py-28">
@@ -652,8 +689,8 @@ function TestimonialsSection() {
             </AnimatePresence>
           </div>
           <div className="mt-5 flex justify-center gap-2">
-            {testimonials.map((item, index) => (
-              <button key={item[1]} type="button" onClick={() => setActive(index)} className={cn("h-2.5 rounded-full transition-all", index === active ? "w-8 bg-[#2563EB]" : "w-2.5 bg-slate-300 dark:bg-white/20")} aria-label={`Show testimonial from ${item[1]}`} />
+            {currentTestimonials.map((item, index) => (
+              <button key={item[1]} type="button" onClick={() => setActive(index)} className={cn("h-2.5 rounded-full transition-all", index === (active % currentTestimonials.length) ? "w-8 bg-[#2563EB]" : "w-2.5 bg-slate-300 dark:bg-white/20")} aria-label={`Show testimonial from ${item[1]}`} />
             ))}
           </div>
         </div>
@@ -665,6 +702,30 @@ function TestimonialsSection() {
 function PricingSection() {
   const { isKhmer } = useLanguage();
 
+  const khmerPricingPlans = [
+    {
+      name: "កញ្ចប់ចាប់ផ្តើម",
+      price: "$1,500+",
+      description: "សម្រាប់ក្រុមហ៊ុន ឬអាជីវកម្មដែលចាប់ផ្តើមគេហទំព័រកម្រិតខ្ពស់ ឬឧបករណ៍គ្រប់គ្រងខ្នាតតូច។",
+      features: ["គេហទំព័រឆ្លើយតបគ្រប់ឧបករណ៍", "រចនាសម្ព័ន្ធ CMS ងាយស្រួលកែសម្រួល", "រៀបចំគ្រឹះ SEO តាមស្តង់ដារ", "ទម្រង់ទំនាក់ទំនង និងផ្ញើសារ"]
+    },
+    {
+      name: "កញ្ចប់រីកចម្រើន",
+      price: "$4,500+",
+      description: "សម្រាប់ក្រុមការងារដែលត្រូវការផតថល ផ្ទាំងគ្រប់គ្រង និងស្វ័យប្រវត្តិកម្មប្រតិបត្តិការអាជីវកម្ម។",
+      features: ["Next.js Frontend ល្បឿនលឿន", "ប្រព័ន្ធ Laravel API រឹងមាំ", "ផ្ទាំងគ្រប់គ្រង Admin Dashboard", "ផតថលអតិថិជន (Client Portal)", "សេវាកម្មដំឡើង និងដាក់ឱ្យដំណើរការ"],
+      highlighted: true
+    },
+    {
+      name: "កញ្ចប់សហគ្រាស",
+      price: "តាមការពិភាក្សា",
+      description: "សម្រាប់ប្រព័ន្ធ ERP, POS, គ្រប់គ្រងស្តុក, CRM, HR និងប្រព័ន្ធធំៗតាមតម្រូវការជាក់លាក់។",
+      features: ["ម៉ូឌុលរចនាតាមតម្រូវការអាជីវកម្ម", "បែងចែកសិទ្ធិបុគ្គលិកច្បាស់លាស់", "របាយការណ៍កម្រិតខ្ពស់ និងវិភាគទិន្នន័យ", "ការបណ្តុះបណ្តាល និងកិច្ចសន្យា SLA"]
+    }
+  ];
+
+  const currentPlans = isKhmer ? khmerPricingPlans : pricingPlans;
+
   return (
     <section id="pricing" className="bg-[#F8FAFC] py-20 text-[#0F172A] dark:bg-[#0F172A] dark:text-white lg:py-28">
       <div className="section-shell">
@@ -674,9 +735,9 @@ function PricingSection() {
           description={isKhmer ? "ចាប់ផ្តើមជាមួយទំហំសមស្រប រួចពង្រីកបន្ថែមនៅពេលដែលវេទិការបស់អ្នករីកចម្រើន។" : "Start with the right level of scope, then expand as your platform grows."}
         />
         <div className="grid gap-5 lg:grid-cols-3">
-          {pricingPlans.map((plan, index) => (
+          {currentPlans.map((plan, index) => (
             <motion.div key={plan.name} initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.46, delay: index * 0.06 }} whileHover={{ y: -8 }} className={cn("relative overflow-hidden rounded-lg border bg-white p-6 shadow-soft dark:bg-white/8", plan.highlighted ? "border-transparent bg-gradient-to-br from-white via-white to-blue-50 ring-1 ring-[#2563EB]/30 dark:from-white/12 dark:via-white/8 dark:to-cyan-300/8" : "border-slate-200 dark:border-white/10")}>
-              {plan.highlighted ? <span className="absolute right-5 top-5 rounded-lg bg-gradient-to-r from-[#2563EB] to-[#8B5CF6] px-3 py-1 text-xs font-bold text-white">{isKhmer ? "ពេញនិយម" : "Popular"}</span> : null}
+              {plan.highlighted ? <span className="absolute right-5 top-5 rounded-lg bg-gradient-to-r from-[#2563EB] to-[#8B5CF6] px-3 py-1 text-xs font-bold text-white">{isKhmer ? "ពេញនិយមបំផុត" : "Popular"}</span> : null}
               <h3 className="font-display text-xl font-bold tracking-normal">{plan.name}</h3>
               <p className="mt-3 min-h-14 text-sm leading-7 text-slate-600 dark:text-slate-300">{plan.description}</p>
               <div className="mt-7 font-display text-4xl font-black tracking-normal">{plan.price}</div>
@@ -928,6 +989,7 @@ function BackToTop() {
 }
 
 function NewsletterPopup() {
+  const { isKhmer } = useLanguage();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -953,10 +1015,12 @@ function NewsletterPopup() {
           <div className="mb-4 grid h-10 w-10 place-items-center rounded-lg bg-gradient-to-br from-[#2563EB] to-[#8B5CF6] text-white">
             <Mail className="h-4 w-4" />
           </div>
-          <h3 className="font-display text-lg font-bold tracking-normal">Get digital strategy notes</h3>
-          <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">Monthly ideas for websites, portals, POS, ERP, CRM, and automation.</p>
+          <h3 className="font-display text-lg font-bold tracking-normal">{isKhmer ? "ទទួលបានព្រឹត្តិបត្រយុទ្ធសាស្ត្រឌីជីថល" : "Get digital strategy notes"}</h3>
+          <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
+            {isKhmer ? "គំនិត និងបច្ចេកវិទ្យាសម្រាប់គេហទំព័រ ផតថល POS, ERP, CRM និងស្វ័យប្រវត្តិកម្ម។" : "Monthly ideas for websites, portals, POS, ERP, CRM, and automation."}
+          </p>
           <div className="mt-4 flex gap-2">
-            <input type="email" placeholder="Email" className="h-10 min-w-0 flex-1 rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm outline-none focus:border-[#2563EB] dark:border-white/10 dark:bg-white/8" />
+            <input type="email" placeholder={isKhmer ? "អាសយដ្ឋានអ៊ីមែល" : "Email"} className="h-10 min-w-0 flex-1 rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm outline-none focus:border-[#2563EB] dark:border-white/10 dark:bg-white/8" />
             <button type="button" onClick={close} className="grid h-10 w-10 place-items-center rounded-lg bg-[#2563EB] text-white" aria-label="Subscribe">
               <ArrowRight className="h-4 w-4" />
             </button>
@@ -984,15 +1048,23 @@ export function TechnologyLogoCloud() {
 }
 
 export function TechnologiesBand() {
+  const { isKhmer } = useLanguage();
+
   return (
     <section className="border-y border-slate-200 bg-white py-14 dark:border-white/10 dark:bg-slate-950">
       <div className="section-shell">
         <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#2563EB] dark:text-cyan-200">Technology</p>
-            <h2 className="mt-3 font-display text-2xl font-black tracking-normal text-[#0F172A] dark:text-white">Proven stack for scalable products</h2>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#2563EB] dark:text-cyan-200">
+              {isKhmer ? "បច្ចេកវិទ្យា" : "Technology"}
+            </p>
+            <h2 className="mt-3 font-display text-2xl font-black tracking-normal text-[#0F172A] dark:text-white">
+              {isKhmer ? "បច្ចេកវិទ្យាទំនើប និងមានស្ថិរភាពសម្រាប់ផលិតផលដែលអាចពង្រីកបាន" : "Proven stack for scalable products"}
+            </h2>
           </div>
-          <p className="max-w-xl text-sm leading-7 text-slate-600 dark:text-slate-300">{technologies.slice(0, 8).join(", ")} and more.</p>
+          <p className="max-w-xl text-sm leading-7 text-slate-600 dark:text-slate-300">
+            {isKhmer ? `រួមមាន ${technologies.slice(0, 8).join(", ")} និងបច្ចេកវិទ្យាឈានមុខជាច្រើនទៀត។` : `${technologies.slice(0, 8).join(", ")} and more.`}
+          </p>
         </div>
         <TechnologyLogoCloud />
       </div>

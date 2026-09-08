@@ -34,6 +34,42 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Professional Khmer Typography Optimizations */
+html[lang="km"] body {
+  font-family: "Kantumruy Pro", "Khmer OS Battambang", "Khmer OS Siemreap", ui-sans-serif, system-ui, sans-serif;
+  line-height: 1.8;
+  word-break: break-word;
+}
+
+html[lang="km"] h1,
+html[lang="km"] h2,
+html[lang="km"] h3,
+html[lang="km"] h4,
+html[lang="km"] h5,
+html[lang="km"] h6,
+html[lang="km"] .font-display {
+  font-family: "Kantumruy Pro", "Khmer OS Battambang", "Khmer OS Siemreap", ui-sans-serif, system-ui, sans-serif;
+  line-height: 1.42 !important;
+  letter-spacing: normal !important;
+  word-break: break-word;
+}
+
+html[lang="km"] p,
+html[lang="km"] span,
+html[lang="km"] a,
+html[lang="km"] button,
+html[lang="km"] input,
+html[lang="km"] textarea,
+html[lang="km"] label,
+html[lang="km"] div {
+  letter-spacing: normal !important;
+  word-break: break-word;
+}
+
+html[lang="km"] [class*="tracking-"] {
+  letter-spacing: normal !important;
+}
+
 html.dark body {
   background: #0f172a;
   color: #ffffff;

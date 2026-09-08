@@ -17,13 +17,31 @@ import { BrandLogo } from "@/components/ui/brand-logo";
 export function SiteHeader() {
   const pathname = usePathname();
   const { isAuthenticated, isAdmin } = useAuth();
-  const { language, setLanguage, toggleLanguage, t } = useLanguage();
+  const { language, setLanguage, toggleLanguage, t, isKhmer } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [active, setActive] = useState("#home");
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const isHome = pathname === "/";
+
+  const khmerServiceTitles: Record<string, string> = {
+    "Web Development": "ការអភិវឌ្ឍគេហទំព័រ",
+    "Mobile App Development": "ការអភិវឌ្ឍកម្មវិធីទូរស័ព្ទ",
+    "POS System": "ប្រព័ន្ធគ្រប់គ្រងការលក់ (POS)",
+    "Inventory System": "ប្រព័ន្ធគ្រប់គ្រងស្តុកទំនិញ",
+    "ERP System": "ប្រព័ន្ធគ្រប់គ្រងសហគ្រាស (ERP)",
+    "CRM System": "ប្រព័ន្ធគ្រប់គ្រងទំនាក់ទំនងអតិថិជន (CRM)"
+  };
+
+  const khmerServiceDescriptions: Record<string, string> = {
+    "Web Development": "គេហទំព័រពាណិជ្ជកម្មល្បឿនលឿន ផតថល និងប្រព័ន្ធ Web App សម្រាប់អាជីវកម្ម។",
+    "Mobile App Development": "កម្មវិធីទូរស័ព្ទ iOS & Android ភ្ជាប់ដោយផ្ទាល់ជាមួយប្រព័ន្ធសុវត្ថិភាព API។",
+    "POS System": "ប្រព័ន្ធគិតប្រាក់ និងចេញវិក្កយបត្រ គ្រប់គ្រងអ្នកគិតប្រាក់ និងស្តុកទំនិញ។",
+    "Inventory System": "ការគ្រប់គ្រងស្តុកទំនិញ បញ្ជាទិញ ផ្ទេរទំនិញ និងឃ្លាំងទំនិញ។",
+    "ERP System": "ប្រព័ន្ធរួមបញ្ចូលគ្នារវាងហិរញ្ញវត្ថុ ការលក់ និងប្រតិបត្តិការទូទៅ។",
+    "CRM System": "ឧបករណ៍តាមដានអតិថិជនសក្តានុពល និងបណ្តាញលក់។"
+  };
 
   const sectionNav = useMemo(
     () => [
@@ -109,13 +127,15 @@ export function SiteHeader() {
                 <div className="grid grid-cols-2 gap-3 rounded-lg border border-slate-200 bg-white/94 p-4 shadow-[0_28px_90px_rgba(15,23,42,0.14)] backdrop-blur-2xl dark:border-white/10 dark:bg-slate-950/94">
                   {services.slice(0, 4).map((service) => {
                     const Icon = service.icon;
+                    const displayTitle = isKhmer && khmerServiceTitles[service.title] ? khmerServiceTitles[service.title] : service.title;
+                    const displayDesc = isKhmer && khmerServiceDescriptions[service.title] ? khmerServiceDescriptions[service.title] : service.description;
                     return (
                       <Link key={service.slug} href={isHome ? "#services" : "/#services"} className="rounded-lg p-3 transition hover:bg-slate-50 dark:hover:bg-white/8">
                         <div className="mb-3 grid h-9 w-9 place-items-center rounded-lg bg-blue-50 text-[#2563EB] dark:bg-white/10 dark:text-cyan-300">
                           <Icon className="h-4 w-4" />
                         </div>
-                        <p className="text-sm font-bold text-slate-950 dark:text-white">{service.title}</p>
-                        <p className="mt-1 line-clamp-2 text-xs leading-5 text-slate-500 dark:text-slate-400">{service.description}</p>
+                        <p className="text-sm font-bold text-slate-950 dark:text-white">{displayTitle}</p>
+                        <p className="mt-1 line-clamp-2 text-xs leading-5 text-slate-500 dark:text-slate-400">{displayDesc}</p>
                       </Link>
                     );
                   })}
