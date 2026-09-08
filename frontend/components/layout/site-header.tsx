@@ -9,6 +9,8 @@ import { ArrowRight, ChevronDown, Languages, LogIn, Menu, Moon, Search, Sparkles
 import { Button } from "@/components/ui/button";
 import { services, siteConfig } from "@/lib/data";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/components/auth/auth-provider";
+import { BrandLogo } from "@/components/ui/brand-logo";
 
 const sectionNav = [
   { label: "Home", href: "#home" },
@@ -86,14 +88,7 @@ export function SiteHeader() {
         )}
       >
         <div className="section-shell flex h-[76px] items-center justify-between gap-4">
-          <Link href="/" className="flex min-w-0 items-center gap-3" aria-label="RVS Trust Solutions Cambodia home">
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-[#2563EB] to-[#8B5CF6] text-[11px] font-black text-white shadow-[0_14px_34px_rgba(37,99,235,0.26)]">
-              RVS
-            </span>
-            <span className="truncate font-display text-base font-black tracking-normal text-slate-950 dark:text-white">
-              {siteConfig.name}
-            </span>
-          </Link>
+          <BrandLogo href="/" size="md" />
 
           <nav className="hidden items-center gap-1 lg:flex" aria-label="Main navigation">
             {resolvedNav.slice(0, 3).map((item) => (
@@ -256,10 +251,7 @@ function MobileMenu({
         <motion.div className="fixed inset-0 z-[90] bg-slate-950/60 backdrop-blur-md lg:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
           <motion.div className="ml-auto flex h-full w-[min(420px,calc(100%-28px))] flex-col bg-white p-5 shadow-[0_30px_120px_rgba(0,0,0,0.3)] dark:bg-slate-950" initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={{ type: "spring", stiffness: 260, damping: 30 }} onClick={(event) => event.stopPropagation()}>
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <span className="grid h-10 w-10 place-items-center rounded-lg bg-gradient-to-br from-[#2563EB] to-[#8B5CF6] text-[11px] font-black text-white">RVS</span>
-                <span className="font-display font-black text-slate-950 dark:text-white">{siteConfig.name}</span>
-              </div>
+              <BrandLogo href="/" size="md" onClick={onClose} />
               <button type="button" onClick={onClose} className="grid h-10 w-10 place-items-center rounded-lg border border-slate-200 text-slate-700 dark:border-white/10 dark:text-white" aria-label="Close navigation">
                 <X className="h-5 w-5" />
               </button>

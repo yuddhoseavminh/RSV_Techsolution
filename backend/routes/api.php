@@ -50,6 +50,7 @@ Route::prefix('v1')->group(function (): void {
     Route::apiResource('/portfolio', PortfolioController::class)->only(['index', 'show']);
     Route::apiResource('/blog', BlogController::class)->only(['index', 'show']);
     Route::post('/contact-requests', ContactController::class);
+    Route::get('/settings', [SettingController::class, 'index']);
 
     Route::prefix('auth')->group(function (): void {
         Route::post('/register', [AuthController::class, 'register']);

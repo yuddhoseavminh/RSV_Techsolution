@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, Mail, MapPin, Phone, Sparkles } from "lucide-react";
 import { FaFacebookF, FaGithub, FaLinkedinIn, FaTelegramPlane } from "react-icons/fa";
 import { services, siteConfig } from "@/lib/data";
+import { BrandLogo } from "@/components/ui/brand-logo";
 
 const footerLinks = [
   { label: "Home", href: "/#home" },
@@ -49,12 +50,7 @@ export function SiteFooter() {
 
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.15fr_0.8fr_0.9fr_1fr]">
           <div>
-            <Link href="/" className="mb-5 flex items-center gap-3">
-              <span className="grid h-11 w-11 place-items-center rounded-lg bg-gradient-to-br from-[#2563EB] to-[#8B5CF6] text-[11px] font-black text-white shadow-[0_16px_40px_rgba(37,99,235,0.24)]">
-                RVS
-              </span>
-              <span className="font-display text-lg font-black tracking-normal">{siteConfig.name}</span>
-            </Link>
+            <BrandLogo href="/" size="md" className="mb-5" />
             <p className="max-w-sm text-sm leading-7 text-slate-600 dark:text-slate-300">
               Trusted websites, web applications, mobile apps, POS, inventory, ERP, CRM, and enterprise systems for growth-focused Cambodian teams.
             </p>

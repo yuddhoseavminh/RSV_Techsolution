@@ -19,6 +19,7 @@ import type { ReactNode } from "react";
 import { useAuth } from "@/components/auth/auth-provider";
 import { adminModules } from "@/lib/data";
 import { Button } from "@/components/ui/button";
+import { BrandLogo } from "@/components/ui/brand-logo";
 
 export function AdminShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -77,17 +78,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
       {/* Desktop Sidebar */}
       <aside className="fixed inset-y-0 left-0 hidden w-72 flex-col border-r border-slate-200 bg-white lg:flex">
         <div className="flex h-[72px] shrink-0 items-center gap-3 border-b border-slate-200 px-6">
-          <Link href="/admin" className="flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-slate text-sm font-bold text-white shadow-sm">
-              KT
-            </span>
-            <div>
-              <p className="font-bold text-slate-950 leading-tight">KT Solution</p>
-              <p className="text-xs text-blue-600 font-medium leading-tight flex items-center gap-1">
-                <ShieldCheck className="h-3 w-3" /> Admin Console
-              </p>
-            </div>
-          </Link>
+          <BrandLogo href="/admin" subText="Admin Console" size="md" />
         </div>
         <nav className="flex-1 overflow-y-auto space-y-1 p-4 scrollbar-thin scrollbar-thumb-slate-200">
           {adminModules.map((module) => {
@@ -129,15 +120,12 @@ export function AdminShell({ children }: { children: ReactNode }) {
           />
           <div className="fixed inset-y-0 left-0 flex w-72 flex-col bg-white shadow-2xl">
             <div className="flex h-[72px] items-center justify-between border-b border-slate-200 px-6">
-              <Link href="/admin" className="flex items-center gap-3" onClick={() => setMobileMenuOpen(false)}>
-                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-slate text-sm font-bold text-white shadow-sm">
-                  KT
-                </span>
-                <div>
-                  <p className="font-bold text-slate-950 leading-tight">KT Solution</p>
-                  <p className="text-xs text-blue-600 font-medium leading-tight">Admin Console</p>
-                </div>
-              </Link>
+              <BrandLogo
+                href="/admin"
+                subText="Admin Console"
+                size="md"
+                onClick={() => setMobileMenuOpen(false)}
+              />
               <button
                 onClick={() => setMobileMenuOpen(false)}
                 className="rounded-md p-1.5 text-slate-500 hover:bg-slate-100"

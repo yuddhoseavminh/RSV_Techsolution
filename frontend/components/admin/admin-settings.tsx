@@ -18,6 +18,7 @@ import { apiClient, apiMessage } from "@/lib/api-client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { useSettings } from "@/lib/settings-context";
 
 type SettingsData = Record<string, Record<string, string>>;
 
@@ -47,6 +48,7 @@ function normalizeSettings(payload: unknown): SettingsData {
 }
 
 export function AdminSettings() {
+  const { updateCompanyLogo, refreshSettings: refreshGlobalSettings } = useSettings();
   const [settings, setSettings] = useState<SettingsData>({});
   const [newGroup, setNewGroup] = useState("company");
   const [newKey, setNewKey] = useState("");
@@ -112,6 +114,7 @@ export function AdminSettings() {
 
       if (response?.url) {
         updateValue("company", "logo", response.url);
+        updateCompanyLogo(response.url);
         setMessage("Company logo uploaded successfully!");
       }
     } catch (requestError) {
@@ -126,6 +129,7 @@ export function AdminSettings() {
 
   const handleRemoveLogo = () => {
     updateValue("company", "logo", "");
+    updateCompanyLogo("");
     setMessage("Logo removed. Click 'Save Settings' to apply changes.");
   };
 
@@ -152,6 +156,7 @@ export function AdminSettings() {
         method: "PUT",
         body: JSON.stringify({ settings })
       });
+      await refreshGlobalSettings();
       setMessage("Settings updated successfully.");
     } catch (requestError) {
       setError(apiMessage(requestError));

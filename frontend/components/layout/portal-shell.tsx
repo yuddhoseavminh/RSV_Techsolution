@@ -17,6 +17,7 @@ import {
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/components/auth/auth-provider";
+import { BrandLogo } from "@/components/ui/brand-logo";
 
 const portalNav = [
   { label: "Dashboard", href: "/portal/dashboard", icon: LayoutDashboard },
@@ -82,17 +83,11 @@ export function PortalShell({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-slate-50">
       <header className="border-b border-slate-200 bg-white">
         <div className="section-shell flex h-[72px] items-center justify-between">
-          <Link href="/" className="flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-slate text-sm font-bold text-white shadow-sm">
-              KT
-            </span>
-            <div>
-              <span className="font-bold text-slate-950 block leading-tight">Client Portal</span>
-              {user.company && (
-                <span className="text-[11px] text-slate-500 block leading-none">{user.company}</span>
-              )}
-            </div>
-          </Link>
+          <BrandLogo
+            href="/portal/dashboard"
+            subText={user.company || "Client Portal"}
+            size="md"
+          />
 
           <div className="flex items-center gap-3">
             <Button variant="outline" size="sm" className="hidden sm:inline-flex">
