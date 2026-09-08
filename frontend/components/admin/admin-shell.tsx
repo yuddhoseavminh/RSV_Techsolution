@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Bell,
+  ChevronDown,
+  ExternalLink,
   LogOut,
   Search,
   Settings,
@@ -26,6 +28,8 @@ export function AdminShell({ children }: { children: ReactNode }) {
   const router = useRouter();
   const { user, isLoading, isAuthenticated, isAdmin, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!isLoading && (!isAuthenticated || !isAdmin)) {
@@ -33,9 +37,33 @@ export function AdminShell({ children }: { children: ReactNode }) {
     }
   }, [isLoading, isAuthenticated, isAdmin, router]);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setUserMenuOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setUserMenuOpen(false);
+      }
+    };
+
+    if (userMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [userMenuOpen]);
+
   const handleLogout = async () => {
     await logout();
-    router.replace("/admin_page");
+    router.push("/login");
   };
 
   const isModuleActive = (href: string) => {
@@ -193,32 +221,89 @@ export function AdminShell({ children }: { children: ReactNode }) {
               </Link>
             </Button>
 
-            <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600 text-sm font-bold text-white shadow-sm">
-                {user.name
-                  .split(" ")
-                  .map((n) => n[0])
-                  .slice(0, 2)
-                  .join("")
-                  .toUpperCase()}
-              </div>
-              <div className="hidden md:block text-left">
-                <p className="text-xs font-semibold text-slate-900 leading-tight">{user.name}</p>
-                <p className="text-[11px] text-blue-600 font-medium leading-tight capitalize">
-                  {(user.roles ?? []).join(", ")}
-                </p>
-              </div>
-
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleLogout}
-                className="text-slate-500 hover:text-rose-600 hover:bg-rose-50"
-                title="Sign out"
+            {/* User Profile Dropdown */}
+            <div className="relative pl-2 border-l border-slate-200" ref={userMenuRef}>
+              <button
+                type="button"
+                onClick={() => setUserMenuOpen((prev) => !prev)}
+                className="flex items-center gap-2.5 rounded-lg p-1.5 transition hover:bg-slate-100 focus:outline-hidden"
+                aria-expanded={userMenuOpen}
+                aria-haspopup="true"
               >
-                <LogOut className="h-4 w-4" />
-                <span className="hidden sm:inline-block ml-1 text-xs">Sign out</span>
-              </Button>
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600 text-sm font-bold text-white shadow-sm ring-2 ring-blue-100">
+                  {user.name
+                    ? user.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .slice(0, 2)
+                        .join("")
+                        .toUpperCase()
+                    : "AD"}
+                </div>
+                <div className="hidden md:block text-left">
+                  <p className="text-xs font-semibold text-slate-900 leading-tight">{user.name}</p>
+                  <p className="text-[11px] text-blue-600 font-medium leading-tight capitalize">
+                    {(user.roles ?? []).join(", ") || "Admin"}
+                  </p>
+                </div>
+                <ChevronDown
+                  className={`h-4 w-4 text-slate-400 transition-transform duration-200 ${
+                    userMenuOpen ? "rotate-180 text-blue-600" : ""
+                  }`}
+                />
+              </button>
+
+              {/* Dropdown Menu below User Profile */}
+              {userMenuOpen && (
+                <div className="absolute right-0 top-full mt-2 w-64 rounded-xl border border-slate-200 bg-white p-2 shadow-xl z-50 animate-in fade-in zoom-in-95 duration-150">
+                  {/* User details header inside dropdown */}
+                  <div className="px-3 py-2.5 border-b border-slate-100 mb-1">
+                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Signed in as</p>
+                    <p className="text-sm font-bold text-slate-900 leading-snug mt-0.5">{user.name}</p>
+                    <p className="text-xs text-slate-500 truncate">{user.email}</p>
+                    <span className="mt-1.5 inline-block text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-blue-50 text-blue-700">
+                      {(user.roles ?? []).join(", ") || "Administrator"}
+                    </span>
+                  </div>
+
+                  {/* Navigation Links inside dropdown */}
+                  <div className="space-y-0.5">
+                    <Link
+                      href="/admin/settings"
+                      onClick={() => setUserMenuOpen(false)}
+                      className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-slate-700 transition hover:bg-slate-100 hover:text-blue-600"
+                    >
+                      <Settings className="h-4 w-4 text-slate-400" />
+                      <span>Company & System Settings</span>
+                    </Link>
+                    <Link
+                      href="/"
+                      target="_blank"
+                      onClick={() => setUserMenuOpen(false)}
+                      className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-slate-700 transition hover:bg-slate-100 hover:text-blue-600"
+                    >
+                      <ExternalLink className="h-4 w-4 text-slate-400" />
+                      <span>View Public Website</span>
+                    </Link>
+                  </div>
+
+                  {/* Divider */}
+                  <div className="my-1 border-t border-slate-100" />
+
+                  {/* Logout Button inside dropdown */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setUserMenuOpen(false);
+                      void handleLogout();
+                    }}
+                    className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-semibold text-rose-600 transition hover:bg-rose-50 hover:text-rose-700"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    <span>Sign out</span>
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </header>
