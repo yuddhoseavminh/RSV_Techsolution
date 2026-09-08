@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AuthProvider } from "@/components/auth/auth-provider";
 import "./globals.css";
+import { AuthProvider } from "@/lib/auth-context";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
@@ -20,7 +21,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
+<<<<<<< HEAD
     <html lang="en" suppressHydrationWarning>
+=======
+    <html lang="en">
+>>>>>>> 9ade3f7e0d9de2e386bfb746881c089e804ee93c
       <body>
         <AuthProvider>{children}</AuthProvider>
       </body>
