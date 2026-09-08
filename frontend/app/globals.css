@@ -38,7 +38,6 @@ body {
 html[lang="km"] body {
   font-family: "Kantumruy Pro", "Khmer OS Battambang", "Khmer OS Siemreap", ui-sans-serif, system-ui, sans-serif;
   line-height: 1.8;
-  word-break: break-word;
 }
 
 html[lang="km"] h1,
@@ -49,21 +48,24 @@ html[lang="km"] h5,
 html[lang="km"] h6,
 html[lang="km"] .font-display {
   font-family: "Kantumruy Pro", "Khmer OS Battambang", "Khmer OS Siemreap", ui-sans-serif, system-ui, sans-serif;
-  line-height: 1.42 !important;
+  line-height: 1.45 !important;
   letter-spacing: normal !important;
-  word-break: break-word;
 }
 
-html[lang="km"] p,
-html[lang="km"] span,
-html[lang="km"] a,
+html[lang="km"] p {
+  line-height: 1.8;
+}
+
+html[lang="km"] nav a,
+html[lang="km"] nav button,
+html[lang="km"] header a,
+html[lang="km"] header button,
+html[lang="km"] .btn,
 html[lang="km"] button,
-html[lang="km"] input,
-html[lang="km"] textarea,
-html[lang="km"] label,
-html[lang="km"] div {
+html[lang="km"] .whitespace-nowrap {
+  white-space: nowrap !important;
+  word-break: keep-all !important;
   letter-spacing: normal !important;
-  word-break: break-word;
 }
 
 html[lang="km"] [class*="tracking-"] {

@@ -181,25 +181,25 @@ export function LanguageSwitcher({
 
   // DEFAULT PROFESSIONAL DROPDOWN VARIANT
   return (
-    <div className={cn("relative inline-block text-left", className)} ref={dropdownRef}>
+    <div className={cn("relative inline-block text-left shrink-0", className)} ref={dropdownRef}>
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
         aria-expanded={isOpen}
         aria-haspopup="true"
         className={cn(
-          "group inline-flex items-center gap-2 rounded-xl border border-slate-200/90 bg-white/95 px-3 font-semibold text-slate-800 shadow-xs backdrop-blur transition-all duration-200 hover:border-blue-300 hover:bg-blue-50/60 hover:text-blue-600 focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 dark:border-white/10 dark:bg-white/8 dark:text-slate-100 dark:hover:bg-white/15",
+          "group inline-flex shrink-0 whitespace-nowrap items-center gap-2 rounded-xl border border-slate-200/90 bg-white/95 px-2.5 font-semibold text-slate-800 shadow-xs backdrop-blur transition-all duration-200 hover:border-blue-300 hover:bg-blue-50/60 hover:text-blue-600 focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 dark:border-white/10 dark:bg-white/8 dark:text-slate-100 dark:hover:bg-white/15",
           size === "sm" ? "h-9 py-1 text-xs" : "h-10 py-1.5 text-xs sm:text-sm"
         )}
       >
-        <CurrentFlag className="h-4 w-5" />
-        <span className="font-medium tracking-tight">
+        <CurrentFlag className="h-4 w-5 shrink-0" />
+        <span className="font-medium whitespace-nowrap">
           {currentOption.nativeLabel}
         </span>
         <ChevronDown
           className={cn(
-            "h-3.5 w-3.5 text-slate-400 transition-transform duration-200 group-hover:text-blue-600",
-            isOpen && "rotate-180 text-blue-600"
+            "h-3.5 w-3.5 shrink-0 text-slate-400 transition-transform duration-200 group-hover:text-slate-600 dark:text-slate-500 dark:group-hover:text-slate-300",
+            isOpen && "rotate-180 text-blue-600 dark:text-cyan-300"
           )}
         />
       </button>

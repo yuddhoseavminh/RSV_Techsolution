@@ -111,17 +111,17 @@ export function SiteHeader() {
             : "border-transparent bg-white/18 backdrop-blur-md dark:bg-slate-950/18"
         )}
       >
-        <div className="section-shell flex h-[76px] items-center justify-between gap-4">
-          <BrandLogo href="/" size="md" />
+        <div className="mx-auto flex h-[76px] w-full max-w-[1440px] items-center justify-between gap-2 px-3 sm:px-6 lg:px-8">
+          <BrandLogo href="/" size="md" textClassName="hidden 2xl:block text-xs font-bold leading-tight" />
 
-          <nav className="hidden items-center gap-1 lg:flex" aria-label="Main navigation">
+          <nav className="hidden items-center gap-0.5 xl:gap-1.5 lg:flex shrink-0" aria-label="Main navigation">
             {resolvedNav.slice(0, 3).map((item) => (
               <NavLink key={item.href} item={item} active={isHome && active === item.href} />
             ))}
-            <div className="group relative">
-              <button type="button" className="inline-flex h-10 items-center gap-1 rounded-lg px-3 text-sm font-bold text-slate-600 transition hover:bg-white/70 hover:text-[#2563EB] dark:text-slate-300 dark:hover:bg-white/10">
+            <div className="group relative shrink-0">
+              <button type="button" className="inline-flex shrink-0 whitespace-nowrap h-9 xl:h-10 items-center gap-1 rounded-lg px-2.5 text-xs xl:text-sm font-bold text-slate-600 transition hover:bg-white/70 hover:text-[#2563EB] dark:text-slate-300 dark:hover:bg-white/10">
                 {t("nav_solutions")}
-                <ChevronDown className="h-3.5 w-3.5 transition group-hover:rotate-180" />
+                <ChevronDown className="h-3.5 w-3.5 shrink-0 transition group-hover:rotate-180" />
               </button>
               <div className="invisible absolute left-1/2 top-full w-[560px] -translate-x-1/2 pt-4 opacity-0 transition group-hover:visible group-hover:opacity-100">
                 <div className="grid grid-cols-2 gap-3 rounded-lg border border-slate-200 bg-white/94 p-4 shadow-[0_28px_90px_rgba(15,23,42,0.14)] backdrop-blur-2xl dark:border-white/10 dark:bg-slate-950/94">
@@ -147,7 +147,7 @@ export function SiteHeader() {
             ))}
           </nav>
 
-          <div className="hidden items-center gap-2 md:flex">
+          <div className="hidden items-center gap-1.5 xl:gap-2 lg:flex shrink-0">
             <IconButton label={t("nav_search")} onClick={() => setSearchOpen(true)}>
               <Search className="h-4 w-4" />
             </IconButton>
@@ -156,24 +156,24 @@ export function SiteHeader() {
               {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </IconButton>
             {isAuthenticated && isAdmin ? (
-              <Button asChild size="sm" className="rounded-lg bg-blue-600 hover:bg-blue-700 text-white shadow-xs">
+              <Button asChild size="sm" className="shrink-0 whitespace-nowrap rounded-lg bg-blue-600 hover:bg-blue-700 text-white shadow-xs px-2.5 xl:px-3 text-xs xl:text-sm">
                 <Link href="/admin">
                   <LayoutDashboard className="h-4 w-4" />
                   {t("nav_admin")}
                 </Link>
               </Button>
             ) : (
-              <Button asChild variant="ghost" size="sm" className="rounded-lg">
+              <Button asChild variant="ghost" size="sm" className="shrink-0 whitespace-nowrap rounded-lg px-2.5 xl:px-3 text-xs xl:text-sm">
                 <Link href="/login">
                   <LogIn className="h-4 w-4" />
                   {t("nav_portal")}
                 </Link>
               </Button>
             )}
-            <Button asChild size="sm" className="rounded-lg">
+            <Button asChild size="sm" className="shrink-0 whitespace-nowrap rounded-lg px-2.5 xl:px-3.5 text-xs xl:text-sm">
               <Link href="/contact">
                 {t("nav_consultation")}
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-3.5 w-3.5 xl:h-4 xl:w-4" />
               </Link>
             </Button>
           </div>
@@ -210,7 +210,7 @@ function NavLink({ item, active }: { item: { label: string; href: string }; acti
     <Link
       href={item.href}
       className={cn(
-        "rounded-lg px-3 py-2 text-sm font-bold transition",
+        "whitespace-nowrap shrink-0 rounded-lg px-2 xl:px-3 py-1.5 text-xs xl:text-sm font-semibold transition",
         active
           ? "bg-[#2563EB] text-white shadow-[0_12px_30px_rgba(37,99,235,0.22)]"
           : "text-slate-600 hover:bg-white/70 hover:text-[#2563EB] dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-cyan-200"
@@ -226,7 +226,7 @@ function IconButton({ label, onClick, children }: { label: string; onClick: () =
     <button
       type="button"
       onClick={onClick}
-      className="inline-flex h-10 min-w-10 items-center justify-center gap-1 rounded-lg border border-slate-200 bg-white/70 px-3 text-slate-700 shadow-sm backdrop-blur transition hover:border-blue-200 hover:text-[#2563EB] dark:border-white/10 dark:bg-white/8 dark:text-slate-200 dark:hover:text-cyan-200"
+      className="inline-flex h-9 w-9 xl:h-10 xl:min-w-10 shrink-0 items-center justify-center gap-1 rounded-lg border border-slate-200 bg-white/70 text-slate-700 shadow-sm backdrop-blur transition hover:border-blue-200 hover:text-[#2563EB] dark:border-white/10 dark:bg-white/8 dark:text-slate-200 dark:hover:text-cyan-200"
       aria-label={label}
     >
       {children}
