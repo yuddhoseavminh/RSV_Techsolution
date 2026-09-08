@@ -63,7 +63,7 @@ abstract class CrudController extends Controller
     {
         $class = $this->modelClass;
         $model = $class::findOrFail($id);
-        $model->update($request->validate($this->updateRules ?: $this->storeRules));
+        $model->update($request->validate($this->rulesForUpdate($model)));
         $this->afterSave($model, $request);
 
         return $this->ok($model->fresh($this->with), 'Record updated');
@@ -80,5 +80,48 @@ abstract class CrudController extends Controller
     protected function afterSave(Model $model, Request $request): void
     {
         //
+    }
+
+    protected function rulesForUpdate(Model $model): array
+    {
+        $rules = $this->updateRules ?: $this->storeRules;
+
+        return collect($rules)
+            ->map(fn ($fieldRules) => $this->ignoreCurrentModelForUniqueRules($fieldRules, $model))
+            ->all();
+    }
+
+    private function ignoreCurrentModelForUniqueRules(mixed $fieldRules, Model $model): mixed
+    {
+        if (is_string($fieldRules)) {
+            return $this->ignoreCurrentModelForUniqueRule($fieldRules, $model);
+        }
+
+        if (! is_array($fieldRules)) {
+            return $fieldRules;
+        }
+
+        return array_map(
+            fn ($rule) => is_string($rule) ? $this->ignoreCurrentModelForUniqueRule($rule, $model) : $rule,
+            $fieldRules
+        );
+    }
+
+    private function ignoreCurrentModelForUniqueRule(string $rule, Model $model): string
+    {
+        if (! str_starts_with($rule, 'unique:')) {
+            return $rule;
+        }
+
+        $segments = explode(',', substr($rule, 7));
+
+        if (count($segments) >= 3) {
+            return $rule;
+        }
+
+        $table = $segments[0] ?: $model->getTable();
+        $column = $segments[1] ?? 'NULL';
+
+        return sprintf('unique:%s,%s,%s,%s', $table, $column, $model->getKey(), $model->getKeyName());
     }
 }

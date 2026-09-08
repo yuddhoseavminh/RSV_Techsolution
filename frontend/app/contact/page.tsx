@@ -1,11 +1,10 @@
 import { Facebook, Linkedin, Mail, MapPin, Phone } from "lucide-react";
 import { PublicLayout } from "@/components/layout/public-layout";
+import { ContactForm } from "@/components/sections/contact-form";
 import { SectionHeading } from "@/components/sections/section-heading";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { services, siteConfig } from "@/lib/data";
+import { siteConfig } from "@/lib/data";
 
 export const metadata = {
   title: "Contact Us"
@@ -19,36 +18,10 @@ export default function ContactPage() {
           <SectionHeading
             eyebrow="Contact"
             title="Tell us about the system your business needs"
-            description="Share your goals, workflow, and service area. KT Solution will respond with a practical consultation path."
+            description="Share your goals, workflow, and service area. RVS Trust Solutions Cambodia will respond with a practical consultation path."
           />
           <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-            <Card>
-              <CardHeader>
-                <CardTitle>Project Inquiry</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form className="grid gap-4">
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <Input name="name" placeholder="Name" />
-                    <Input name="email" type="email" placeholder="Email" />
-                    <Input name="phone" placeholder="Phone" />
-                    <Input name="company" placeholder="Company" />
-                  </div>
-                  <select className="h-11 rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none focus:border-brand-blue focus:ring-2 focus:ring-blue-100" name="service_needed" defaultValue="">
-                    <option value="" disabled>
-                      Service Needed
-                    </option>
-                    {services.map((service) => (
-                      <option key={service.slug} value={service.title}>
-                        {service.title}
-                      </option>
-                    ))}
-                  </select>
-                  <Textarea name="message" placeholder="Message" />
-                  <Button type="submit">Send Request</Button>
-                </form>
-              </CardContent>
-            </Card>
+            <ContactForm />
             <div className="grid gap-5">
               <Card>
                 <CardHeader>

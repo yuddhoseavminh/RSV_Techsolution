@@ -29,7 +29,27 @@ const config: Config = {
         soft: "0 18px 50px rgba(15, 23, 42, 0.08)"
       },
       fontFamily: {
-        sans: ["var(--font-geist-sans)", "Inter", "system-ui", "sans-serif"]
+        sans: ["var(--font-geist-sans)", "Inter", "system-ui", "sans-serif"],
+        display: ["Sora", "Poppins", "Inter", "system-ui", "sans-serif"]
+      },
+      opacity: {
+        "6": "0.06",
+        "8": "0.08",
+        "12": "0.12",
+        "14": "0.14",
+        "15": "0.15",
+        "16": "0.16",
+        "18": "0.18",
+        "24": "0.24",
+        "28": "0.28",
+        "35": "0.35",
+        "45": "0.45",
+        "55": "0.55",
+        "65": "0.65",
+        "72": "0.72",
+        "78": "0.78",
+        "82": "0.82",
+        "94": "0.94"
       }
     }
   },

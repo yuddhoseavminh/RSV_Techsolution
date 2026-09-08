@@ -1,4 +1,4 @@
-# KT Solution Website and Management System
+# RVS Trust Solutions Cambodia Website and Management System
 
 This workspace contains two project folders:
 
@@ -53,5 +53,5 @@ Default local URLs:
 
 Demo seeded users:
 
-- Admin: `admin@ktsolution.local` / `password`
+- Admin: `admin@gmail.com` / `12345678`
 - Client: `client@example.com` / `password`

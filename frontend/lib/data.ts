@@ -2,6 +2,7 @@ import {
   BadgeCheck,
   Boxes,
   BrainCircuit,
+  Building2,
   Cloud,
   Code2,
   Database,
@@ -17,17 +18,19 @@ import {
   ShieldCheck,
   ShoppingCart,
   Smartphone,
+  Tags,
+  Wrench,
   UsersRound,
   Workflow
 } from "lucide-react";
 import type { BlogPost, NavigationItem, Project, Service } from "@/types";
 
 export const siteConfig = {
-  name: "KT Solution",
-  headline: "Transform Your Business with Smart Digital Solutions",
+  name: "RVS Trust Solutions Cambodia",
+  headline: "Trusted Technology Solutions for Growing Cambodian Businesses",
   subheadline:
-    "Custom Software, Web Applications, Mobile Apps, and Enterprise Systems Built for Growth",
-  email: "hello@ktsolution.com",
+    "Custom Software, Web Applications, Mobile Apps, and Enterprise Systems Built with Integrity",
+  email: "hello@rvstrustsolutions.com",
   phone: "+855 12 345 678",
   address: "Phnom Penh, Cambodia"
 };
@@ -236,7 +239,7 @@ export const posts: BlogPost[] = [
 export const testimonials = [
   {
     quote:
-      "KT Solution helped us replace spreadsheets with a clean POS and inventory system that our team actually enjoys using.",
+      "RVS Trust Solutions Cambodia helped us replace spreadsheets with a clean POS and inventory system that our team actually enjoys using.",
     name: "Sokha Lim",
     role: "Operations Director, Acme Retail"
   },
@@ -255,37 +258,42 @@ export const testimonials = [
 ];
 
 export const companyValues = [
-  { title: "Clarity", description: "We make scope, timelines, workflows, and tradeoffs visible from the start." },
-  { title: "Reliability", description: "We build systems that teams can depend on every day." },
-  { title: "Craft", description: "We care about interface quality, code quality, and operational detail." },
-  { title: "Partnership", description: "We stay close after launch with support, iteration, and training." }
+  { title: "Trust", description: "We build every relationship around honesty, clear communication, and dependable delivery." },
+  { title: "Quality", description: "We care about reliable systems, clean interfaces, maintainable code, and practical results." },
+  { title: "Integrity", description: "We keep commitments visible and make technical decisions that protect the client long term." },
+  { title: "Partnership", description: "We stay close after launch with support, iteration, training, and long-term collaboration." }
 ];
 
 export const team = [
-  { name: "Rithy Sok", role: "Solution Architect", focus: "Enterprise systems and API design" },
-  { name: "Nita Vann", role: "Product Designer", focus: "Dashboards, portals, and workflows" },
-  { name: "Vicheka Hun", role: "Full-Stack Engineer", focus: "Laravel, Next.js, and integrations" }
+  { name: "Raj", role: "Co-Founder", focus: "Technology strategy and trusted client solutions" },
+  { name: "Vun", role: "Co-Founder", focus: "Software delivery and operational systems" },
+  { name: "Siev Meng", role: "Co-Founder", focus: "Product quality, support, and long-term partnerships" }
 ];
 
 export const timeline = [
-  { year: "2019", title: "Company Founded", description: "KT Solution began building websites and custom software for local businesses." },
-  { year: "2021", title: "Business Systems Practice", description: "Expanded into POS, inventory, school, HR, and management systems." },
-  { year: "2024", title: "Enterprise API Platform", description: "Standardized secure Laravel APIs and modern React dashboards." },
-  { year: "2026", title: "Client Portal Launch", description: "Introduced project tracking, invoices, support tickets, and notifications." }
+  { year: "Origin", title: "RVS Founded", description: "RVS Trust Solutions Cambodia was created through the close collaboration of Raj, Vun, and Siev Meng." },
+  { year: "Identity", title: "Trust Solutions", description: "The name reflects a commitment to reliable technology solutions clients can trust." },
+  { year: "Practice", title: "Business Systems Focus", description: "The team delivers websites, software platforms, POS, inventory, ERP, CRM, and mobile applications." },
+  { year: "Growth", title: "Long-Term Client Partner", description: "RVS focuses on quality, integrity, and lasting relationships with every client." }
 ];
 
 export const adminModules = [
-  { title: "Users", href: "/admin/users", icon: UsersRound, count: "1,248" },
-  { title: "Roles", href: "/admin/roles", icon: ShieldCheck, count: "3" },
-  { title: "Permissions", href: "/admin/permissions", icon: BadgeCheck, count: "12" },
-  { title: "Projects", href: "/admin/projects", icon: PanelTop, count: "86" },
-  { title: "Services", href: "/admin/services", icon: PackageCheck, count: "9" },
-  { title: "Portfolio", href: "/admin/portfolio", icon: MonitorSmartphone, count: "42" },
-  { title: "Blog", href: "/admin/blog", icon: ScrollText, count: "128" },
-  { title: "Contacts", href: "/admin/contacts", icon: BrainCircuit, count: "314" },
-  { title: "Tickets", href: "/admin/tickets", icon: ShieldCheck, count: "27" },
-  { title: "Invoices", href: "/admin/invoices", icon: Database, count: "$84k" },
-  { title: "Settings", href: "/admin/settings", icon: Cloud, count: "SEO" }
+  { title: "Users", href: "/admin/users", icon: UsersRound, count: "CRUD" },
+  { title: "Roles", href: "/admin/roles", icon: ShieldCheck, count: "CRUD" },
+  { title: "Permissions", href: "/admin/permissions", icon: BadgeCheck, count: "Read" },
+  { title: "Clients", href: "/admin/clients", icon: Building2, count: "CRUD" },
+  { title: "Projects", href: "/admin/projects", icon: PanelTop, count: "CRUD" },
+  { title: "Service Categories", href: "/admin/service-categories", icon: Boxes, count: "CRUD" },
+  { title: "Services", href: "/admin/services", icon: PackageCheck, count: "CRUD" },
+  { title: "Technologies", href: "/admin/technologies", icon: Wrench, count: "CRUD" },
+  { title: "Portfolio", href: "/admin/portfolio", icon: MonitorSmartphone, count: "CRUD" },
+  { title: "Blog Categories", href: "/admin/blog-categories", icon: Tags, count: "CRUD" },
+  { title: "Blog", href: "/admin/blog", icon: ScrollText, count: "CRUD" },
+  { title: "Tags", href: "/admin/tags", icon: Tags, count: "CRUD" },
+  { title: "Contacts", href: "/admin/contacts", icon: BrainCircuit, count: "Update" },
+  { title: "Tickets", href: "/admin/tickets", icon: ShieldCheck, count: "Update" },
+  { title: "Invoices", href: "/admin/invoices", icon: Database, count: "CRUD" },
+  { title: "Settings", href: "/admin/settings", icon: Cloud, count: "Update" }
 ];
 
 export const dashboardRows = [

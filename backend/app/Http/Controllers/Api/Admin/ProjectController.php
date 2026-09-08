@@ -17,7 +17,7 @@ class ProjectController extends CrudController
     protected array $storeRules = [
         'client_id' => ['nullable', 'exists:clients,id'],
         'name' => ['required', 'string', 'max:180'],
-        'code' => ['nullable', 'string', 'max:40'],
+        'code' => ['nullable', 'string', 'max:40', 'unique:projects,code'],
         'description' => ['nullable', 'string'],
         'type' => ['required', 'string', 'max:80'],
         'status' => ['required', 'in:planning,active,review,completed,on_hold,cancelled'],

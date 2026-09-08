@@ -21,9 +21,9 @@ class DemoContentSeeder extends Seeder
 {
     public function run(): void
     {
-        $admin = User::firstOrCreate(
-            ['email' => 'admin@ktsolution.local'],
-            ['name' => 'KT Admin', 'password' => 'password', 'status' => 'active']
+        $admin = User::updateOrCreate(
+            ['email' => 'admin@gmail.com'],
+            ['name' => 'RVS Admin', 'password' => '12345678', 'status' => 'active']
         );
         $admin->syncRoles(['admin']);
 
@@ -60,7 +60,7 @@ class DemoContentSeeder extends Seeder
                     'name' => $name,
                     'icon' => 'Code2',
                     'summary' => $summary,
-                    'description' => $summary.' KT Solution plans, designs, builds, deploys, and supports the full product lifecycle.',
+                    'description' => $summary.' RVS Trust Solutions Cambodia plans, designs, builds, deploys, and supports the full product lifecycle.',
                     'benefits' => ['Scalable architecture', 'Clean user experience', 'Actionable reporting', 'Long-term support'],
                     'technologies' => $technologies,
                     'is_featured' => true,
@@ -69,12 +69,12 @@ class DemoContentSeeder extends Seeder
             );
         }
 
-        foreach (['Laravel', 'Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'MySQL', 'Flutter', 'AWS'] as $technology) {
-            Technology::firstOrCreate(
-                ['slug' => str($technology)->slug()->toString()],
-                ['name' => $technology, 'category' => in_array($technology, ['Laravel', 'MySQL', 'AWS'], true) ? 'Backend' : 'Frontend']
-            );
-        }
+        // foreach (['Laravel', 'Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'MySQL', 'Flutter', 'AWS'] as $technology) {
+        //     Technology::firstOrCreate(
+        //         ['slug' => str($technology)->slug()->toString()],
+        //         ['name' => $technology, 'category' => in_array($technology, ['Laravel', 'MySQL', 'AWS'], true) ? 'Backend' : 'Frontend']
+        //     );
+        // }
 
         $portfolio = PortfolioProject::firstOrCreate(
             ['slug' => 'retail-pos-suite'],
@@ -83,7 +83,7 @@ class DemoContentSeeder extends Seeder
                 'title' => 'Retail POS Suite',
                 'category' => 'POS',
                 'summary' => 'A complete POS and inventory platform for multi-branch retail operations.',
-                'description' => 'KT Solution delivered sales, inventory, barcode, purchasing, and management reporting workflows.',
+                'description' => 'RVS Trust Solutions Cambodia delivered sales, inventory, barcode, purchasing, and management reporting workflows.',
                 'client_name' => 'Acme Retail',
                 'industry' => 'Retail',
                 'launch_date' => now()->subMonths(4),
@@ -155,18 +155,18 @@ class DemoContentSeeder extends Seeder
 
         $settings = [
             'company' => [
-                'name' => 'KT Solution',
-                'email' => 'hello@ktsolution.com',
+                'name' => 'RVS Trust Solutions Cambodia',
+                'email' => 'hello@rvstrustsolutions.com',
                 'phone' => '+855 12 345 678',
                 'address' => 'Phnom Penh, Cambodia',
             ],
             'seo' => [
-                'title' => 'KT Solution - Smart Digital Solutions',
-                'description' => 'Custom software, web applications, mobile apps, and enterprise systems built for growth.',
+                'title' => 'RVS Trust Solutions Cambodia - Trusted Technology Solutions',
+                'description' => 'Custom software, web applications, mobile apps, and enterprise systems built with integrity.',
             ],
             'social' => [
-                'facebook' => 'https://facebook.com/ktsolution',
-                'linkedin' => 'https://linkedin.com/company/ktsolution',
+                'facebook' => 'https://facebook.com/rvstrustsolutions',
+                'linkedin' => 'https://linkedin.com/company/rvstrustsolutions',
             ],
         ];
 
