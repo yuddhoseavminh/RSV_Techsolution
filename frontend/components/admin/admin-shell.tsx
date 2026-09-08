@@ -8,6 +8,7 @@ import {
   ChevronDown,
   ExternalLink,
   Globe,
+  Languages,
   LogOut,
   Search,
   Settings,
@@ -20,6 +21,7 @@ import {
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { useAuth } from "@/components/auth/auth-provider";
+import { useLanguage } from "@/lib/language-context";
 import { adminModules } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { BrandLogo } from "@/components/ui/brand-logo";
@@ -28,6 +30,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const { user, isLoading, isAuthenticated, isAdmin, logout } = useAuth();
+  const { language, toggleLanguage, isKhmer } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
@@ -209,17 +212,30 @@ export function AdminShell({ children }: { children: ReactNode }) {
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
               <input
                 className="h-10 w-full rounded-md border border-slate-200 bg-white pl-10 pr-3 text-sm outline-none focus:border-brand-blue focus:ring-2 focus:ring-blue-100"
-                placeholder="Search management system"
+                placeholder={isKhmer ? "ស្វែងរកក្នុងប្រព័ន្ធ..." : "Search management system"}
               />
             </label>
           </div>
 
           {/* Right Side Controls */}
           <div className="flex items-center gap-2 sm:gap-3">
+            {/* Language Switcher */}
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={toggleLanguage}
+              className="inline-flex gap-1.5 border-slate-200 text-slate-700 hover:text-blue-600 hover:bg-blue-50"
+              title={isKhmer ? "ប្តូរទៅជាភាសាអង់គ្លេស" : "Switch to Khmer"}
+            >
+              <Languages className="h-4 w-4 text-blue-600" />
+              <span className="text-xs font-bold">{language}</span>
+            </Button>
+
             <Button asChild variant="outline" size="sm" className="inline-flex gap-1.5 border-slate-200 text-slate-700 hover:text-blue-600 hover:bg-blue-50" title="View Live Website (CMS)">
               <Link href="/" target="_blank">
                 <Globe className="h-4 w-4 text-blue-600" />
-                <span className="text-xs font-semibold">Web</span>
+                <span className="text-xs font-semibold">{isKhmer ? "វេបសាយ" : "Web"}</span>
               </Link>
             </Button>
             <Button variant="outline" size="sm" className="hidden sm:inline-flex">
@@ -268,7 +284,9 @@ export function AdminShell({ children }: { children: ReactNode }) {
                 <div className="absolute right-0 top-full mt-2 w-64 rounded-xl border border-slate-200 bg-white p-2 shadow-xl z-50 animate-in fade-in zoom-in-95 duration-150">
                   {/* User details header inside dropdown */}
                   <div className="px-3 py-2.5 border-b border-slate-100 mb-1">
-                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Signed in as</p>
+                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                      {isKhmer ? "បានចូលគណនីជា" : "Signed in as"}
+                    </p>
                     <p className="text-sm font-bold text-slate-900 leading-snug mt-0.5">{user.name}</p>
                     <p className="text-xs text-slate-500 truncate">{user.email}</p>
                     <span className="mt-1.5 inline-block text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-blue-50 text-blue-700">
@@ -284,7 +302,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
                       className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-slate-700 transition hover:bg-slate-100 hover:text-blue-600"
                     >
                       <Settings className="h-4 w-4 text-slate-400" />
-                      <span>Company & System Settings</span>
+                      <span>{isKhmer ? "ការកំណត់ក្រុមហ៊ុន និងប្រព័ន្ធ" : "Company & System Settings"}</span>
                     </Link>
                     <Link
                       href="/"
@@ -293,7 +311,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
                       className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-slate-700 transition hover:bg-slate-100 hover:text-blue-600"
                     >
                       <Globe className="h-4 w-4 text-slate-400" />
-                      <span>View Live Website (CMS)</span>
+                      <span>{isKhmer ? "មើលគេហទំព័រផ្សាយផ្ទាល់ (CMS)" : "View Live Website (CMS)"}</span>
                     </Link>
                   </div>
 
@@ -310,7 +328,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
                     className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-semibold text-rose-600 transition hover:bg-rose-50 hover:text-rose-700"
                   >
                     <LogOut className="h-4 w-4" />
-                    <span>Sign out</span>
+                    <span>{isKhmer ? "ចាកចេញ" : "Sign out"}</span>
                   </button>
                 </div>
               )}

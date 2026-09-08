@@ -10,28 +10,32 @@ import { Button } from "@/components/ui/button";
 import { services, siteConfig } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/components/auth/auth-provider";
+import { useLanguage } from "@/lib/language-context";
 import { BrandLogo } from "@/components/ui/brand-logo";
-
-const sectionNav = [
-  { label: "Home", href: "#home" },
-  { label: "Features", href: "#features" },
-  { label: "Services", href: "#services" },
-  { label: "Portfolio", href: "#portfolio" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "FAQ", href: "#faq" },
-  { label: "Contact", href: "#contact" }
-];
 
 export function SiteHeader() {
   const pathname = usePathname();
   const { isAuthenticated, isAdmin } = useAuth();
+  const { language, setLanguage, toggleLanguage, t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [active, setActive] = useState("#home");
   const [theme, setTheme] = useState<"light" | "dark">("light");
-  const [language, setLanguage] = useState("EN");
   const isHome = pathname === "/";
+
+  const sectionNav = useMemo(
+    () => [
+      { label: t("nav_home"), href: "#home" },
+      { label: t("nav_features"), href: "#features" },
+      { label: t("nav_services"), href: "#services" },
+      { label: t("nav_portfolio"), href: "#portfolio" },
+      { label: t("nav_pricing"), href: "#pricing" },
+      { label: t("nav_faq"), href: "#faq" },
+      { label: t("nav_contact"), href: "#contact" }
+    ],
+    [t]
+  );
 
   useEffect(() => {
     const storedTheme = window.localStorage.getItem("rvs-theme") as "light" | "dark" | null;
@@ -71,11 +75,11 @@ export function SiteHeader() {
     );
     sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
-  }, [isHome]);
+  }, [isHome, sectionNav]);
 
   const resolvedNav = useMemo(
     () => sectionNav.map((item) => ({ ...item, href: isHome ? item.href : `/${item.href}` })),
-    [isHome]
+    [isHome, sectionNav]
   );
 
   return (
@@ -97,7 +101,7 @@ export function SiteHeader() {
             ))}
             <div className="group relative">
               <button type="button" className="inline-flex h-10 items-center gap-1 rounded-lg px-3 text-sm font-bold text-slate-600 transition hover:bg-white/70 hover:text-[#2563EB] dark:text-slate-300 dark:hover:bg-white/10">
-                Solutions
+                {t("nav_solutions")}
                 <ChevronDown className="h-3.5 w-3.5 transition group-hover:rotate-180" />
               </button>
               <div className="invisible absolute left-1/2 top-full w-[560px] -translate-x-1/2 pt-4 opacity-0 transition group-hover:visible group-hover:opacity-100">
@@ -123,34 +127,34 @@ export function SiteHeader() {
           </nav>
 
           <div className="hidden items-center gap-2 md:flex">
-            <IconButton label="Search" onClick={() => setSearchOpen(true)}>
+            <IconButton label={t("nav_search")} onClick={() => setSearchOpen(true)}>
               <Search className="h-4 w-4" />
             </IconButton>
-            <IconButton label="Toggle language" onClick={() => setLanguage((current) => (current === "EN" ? "KH" : "EN"))}>
-              <Languages className="h-4 w-4" />
+            <IconButton label={t("lang_toggle")} onClick={toggleLanguage}>
+              <Languages className="h-4 w-4 text-blue-600" />
               <span className="text-xs font-black">{language}</span>
             </IconButton>
-            <IconButton label="Toggle theme" onClick={() => setTheme((current) => (current === "dark" ? "light" : "dark"))}>
+            <IconButton label={t("theme_toggle")} onClick={() => setTheme((current) => (current === "dark" ? "light" : "dark"))}>
               {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </IconButton>
             {isAuthenticated && isAdmin ? (
               <Button asChild size="sm" className="rounded-lg bg-blue-600 hover:bg-blue-700 text-white shadow-xs">
                 <Link href="/admin">
                   <LayoutDashboard className="h-4 w-4" />
-                  Admin
+                  {t("nav_admin")}
                 </Link>
               </Button>
             ) : (
               <Button asChild variant="ghost" size="sm" className="rounded-lg">
                 <Link href="/login">
                   <LogIn className="h-4 w-4" />
-                  Portal
+                  {t("nav_portal")}
                 </Link>
               </Button>
             )}
             <Button asChild size="sm" className="rounded-lg">
               <Link href="/contact">
-                Consultation
+                {t("nav_consultation")}
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
@@ -175,7 +179,8 @@ export function SiteHeader() {
         theme={theme}
         setTheme={setTheme}
         language={language}
-        setLanguage={setLanguage}
+        toggleLanguage={toggleLanguage}
+        t={t}
         isAdmin={Boolean(isAuthenticated && isAdmin)}
       />
     </>
@@ -254,7 +259,8 @@ function MobileMenu({
   theme,
   setTheme,
   language,
-  setLanguage,
+  toggleLanguage,
+  t,
   isAdmin
 }: {
   open: boolean;
@@ -263,7 +269,8 @@ function MobileMenu({
   theme: "light" | "dark";
   setTheme: (value: "light" | "dark") => void;
   language: string;
-  setLanguage: (value: string) => void;
+  toggleLanguage: () => void;
+  t: (key: any) => string;
   isAdmin?: boolean;
 }) {
   return (
@@ -288,25 +295,25 @@ function MobileMenu({
               <div className="grid grid-cols-2 gap-2">
                 <button type="button" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} className="flex h-11 items-center justify-center gap-2 rounded-lg border border-slate-200 font-bold text-slate-700 dark:border-white/10 dark:text-white">
                   {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-                  Theme
+                  {t("theme_toggle")}
                 </button>
-                <button type="button" onClick={() => setLanguage(language === "EN" ? "KH" : "EN")} className="flex h-11 items-center justify-center gap-2 rounded-lg border border-slate-200 font-bold text-slate-700 dark:border-white/10 dark:text-white">
-                  <Languages className="h-4 w-4" />
-                  {language}
+                <button type="button" onClick={toggleLanguage} className="flex h-11 items-center justify-center gap-2 rounded-lg border border-slate-200 font-bold text-slate-700 dark:border-white/10 dark:text-white">
+                  <Languages className="h-4 w-4 text-blue-600" />
+                  {language === "EN" ? "ភាសាខ្មែរ" : "English"}
                 </button>
               </div>
               {isAdmin && (
                 <Button asChild className="rounded-lg bg-blue-600 hover:bg-blue-700 text-white">
                   <Link href="/admin" onClick={onClose}>
                     <LayoutDashboard className="h-4 w-4" />
-                    Admin Console
+                    {t("nav_admin")} Console
                   </Link>
                 </Button>
               )}
               <Button asChild className="rounded-lg">
                 <Link href="/contact" onClick={onClose}>
                   <Sparkles className="h-4 w-4" />
-                  Consultation
+                  {t("nav_consultation")}
                 </Link>
               </Button>
             </div>

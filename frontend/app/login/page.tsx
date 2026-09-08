@@ -21,6 +21,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/components/auth/auth-provider";
 import { useSettings } from "@/lib/settings-context";
+import { useLanguage } from "@/lib/language-context";
 import { apiMessage } from "@/lib/api-client";
 
 function LoginFormContent() {
@@ -30,6 +31,7 @@ function LoginFormContent() {
 
   const { login, user, isAuthenticated, isAdmin, logout } = useAuth();
   const { auth } = useSettings();
+  const { isKhmer } = useLanguage();
 
   const showAdminDemo = auth.demo_admin_login;
   const showClientDemo = auth.demo_client_login;
@@ -127,10 +129,12 @@ function LoginFormContent() {
                     )}
                   </div>
                   <CardTitle className="text-2xl font-bold tracking-tight text-slate-900">
-                    Sign in to your account
+                    {isKhmer ? "ចូលប្រើប្រាស់គណនីរបស់អ្នក" : "Sign in to your account"}
                   </CardTitle>
                   <CardDescription className="text-sm text-slate-500">
-                    Access project tracking, invoices, admin management, and support tickets.
+                    {isKhmer
+                      ? "ចូលមើលការតាមដានគម្រោង វិក្កយបត្រ ការគ្រប់គ្រងប្រព័ន្ធ និងសំបុត្រគាំទ្រ។"
+                      : "Access project tracking, invoices, admin management, and support tickets."}
                   </CardDescription>
                 </CardHeader>
 
@@ -141,7 +145,7 @@ function LoginFormContent() {
                       <div className="flex items-start justify-between">
                         <div>
                           <p className="text-sm font-semibold text-slate-900">
-                            Currently signed in as {user.name}
+                            {isKhmer ? `បច្ចុប្បន្នបានចូលជា ${user.name}` : `Currently signed in as ${user.name}`}
                           </p>
                           <p className="text-xs text-slate-600">
                             {user.email} &bull; <span className="capitalize font-medium">{(user.roles ?? []).join(", ")}</span>
@@ -153,17 +157,17 @@ function LoginFormContent() {
                           onClick={() => logout()}
                           className="h-8 text-xs border-slate-300"
                         >
-                          Sign out
+                          {isKhmer ? "ចាកចេញ" : "Sign out"}
                         </Button>
                       </div>
                       <div className="mt-3 flex gap-2">
                         {isAdmin ? (
                           <Button asChild size="sm" className="w-full">
-                            <Link href="/admin">Go to Admin Dashboard</Link>
+                            <Link href="/admin">{isKhmer ? "ទៅកាន់ផ្ទាំងគ្រប់គ្រង Admin" : "Go to Admin Dashboard"}</Link>
                           </Button>
                         ) : (
                           <Button asChild size="sm" className="w-full">
-                            <Link href="/portal/dashboard">Go to Client Portal</Link>
+                            <Link href="/portal/dashboard">{isKhmer ? "ទៅកាន់ផតថលអតិថិជន" : "Go to Client Portal"}</Link>
                           </Button>
                         )}
                       </div>
@@ -181,7 +185,7 @@ function LoginFormContent() {
                   <form onSubmit={handleSubmit} className="grid gap-4">
                     <div className="grid gap-2">
                       <label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider text-slate-700">
-                        Email Address
+                        {isKhmer ? "អាសយដ្ឋានអ៊ីមែល" : "Email Address"}
                       </label>
                       <Input
                         id="email"
@@ -198,13 +202,13 @@ function LoginFormContent() {
                     <div className="grid gap-2">
                       <div className="flex items-center justify-between">
                         <label htmlFor="password" className="text-xs font-semibold uppercase tracking-wider text-slate-700">
-                          Password
+                          {isKhmer ? "ពាក្យសម្ងាត់" : "Password"}
                         </label>
                         <Link
                           href="/forgot-password"
                           className="text-xs font-medium text-brand-blue hover:underline"
                         >
-                          Forgot password?
+                          {isKhmer ? "ភ្លេចពាក្យសម្ងាត់?" : "Forgot password?"}
                         </Link>
                       </div>
                       <div className="relative">
@@ -242,11 +246,11 @@ function LoginFormContent() {
                       {isSubmitting ? (
                         <>
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Signing in...
+                          {isKhmer ? "កំពុងចូល..." : "Signing in..."}
                         </>
                       ) : (
                         <>
-                          Sign in
+                          {isKhmer ? "ចូលប្រព័ន្ធ" : "Sign in"}
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </>
                       )}
@@ -254,9 +258,9 @@ function LoginFormContent() {
                   </form>
 
                   <div className="mt-6 border-t border-slate-100 pt-5 text-center text-sm text-slate-600">
-                    Don&apos;t have an account yet?{" "}
+                    {isKhmer ? "មិនទាន់មានគណនីមែនទេ? " : "Don't have an account yet? "}
                     <Link href="/register" className="font-semibold text-brand-blue hover:underline">
-                      Create an account
+                      {isKhmer ? "ចុះឈ្មោះបង្កើតគណនី" : "Create an account"}
                     </Link>
                   </div>
                 </CardContent>
@@ -269,10 +273,12 @@ function LoginFormContent() {
                 <div className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm">
                   <div className="flex items-center gap-2 text-slate-900 font-semibold mb-1">
                     <KeyRound className="h-5 w-5 text-brand-blue" />
-                    <h3>Quick Demo Credentials</h3>
+                    <h3>{isKhmer ? "គណនីសាកល្បងរហ័ស" : "Quick Demo Credentials"}</h3>
                   </div>
                   <p className="text-xs text-slate-500 mb-4">
-                    Click any demo account below to instantly fill credentials or test single-click login.
+                    {isKhmer
+                      ? "ចុចលើគណនីសាកល្បងណាមួយដើម្បីបំពេញដោយស្វ័យប្រវត្តិ ឬចុចចូលភ្លាមៗ។"
+                      : "Click any demo account below to instantly fill credentials or test single-click login."}
                   </p>
 
                   <div className="space-y-3">
@@ -291,7 +297,9 @@ function LoginFormContent() {
                               <ShieldCheck className="h-4 w-4" />
                             </div>
                             <div>
-                              <p className="text-xs font-bold uppercase tracking-wider text-blue-700">Administrator</p>
+                              <p className="text-xs font-bold uppercase tracking-wider text-blue-700">
+                                {isKhmer ? "អ្នកគ្រប់គ្រងប្រព័ន្ធ" : "Administrator"}
+                              </p>
                               <p className="text-sm font-semibold text-slate-900">admin@ktsolution.local</p>
                             </div>
                           </div>
@@ -301,7 +309,9 @@ function LoginFormContent() {
                         </div>
 
                         <p className="mt-2 text-xs text-slate-500">
-                          Full access to administrative console, users, CMS, services, projects &amp; settings.
+                          {isKhmer
+                            ? "សិទ្ធិពេញលេញលើផ្ទាំងគ្រប់គ្រង អ្នកប្រើប្រាស់ CMS សេវាកម្ម គម្រោង និងការកំណត់។"
+                            : "Full access to administrative console, users, CMS, services, projects & settings."}
                         </p>
 
                         <div className="mt-3 flex items-center gap-2">
@@ -313,7 +323,7 @@ function LoginFormContent() {
                             onClick={() => handleQuickFill("admin@ktsolution.local", "password", "admin", false)}
                             className="h-8 flex-1 text-xs bg-white"
                           >
-                            Auto-fill
+                            {isKhmer ? "បំពេញទិន្នន័យ" : "Auto-fill"}
                           </Button>
                           <Button
                             type="button"
@@ -322,7 +332,7 @@ function LoginFormContent() {
                             onClick={() => handleQuickFill("admin@ktsolution.local", "password", "admin", true)}
                             className="h-8 flex-1 text-xs bg-brand-slate hover:bg-slate-800 text-white"
                           >
-                            Login as Admin
+                            {isKhmer ? "ចូលជា Admin" : "Login as Admin"}
                           </Button>
                         </div>
                       </div>
@@ -343,7 +353,9 @@ function LoginFormContent() {
                               <UserCheck className="h-4 w-4" />
                             </div>
                             <div>
-                              <p className="text-xs font-bold uppercase tracking-wider text-emerald-700">Client Portal</p>
+                              <p className="text-xs font-bold uppercase tracking-wider text-emerald-700">
+                                {isKhmer ? "ផតថលអតិថិជន" : "Client Portal"}
+                              </p>
                               <p className="text-sm font-semibold text-slate-900">client@example.com</p>
                             </div>
                           </div>
@@ -353,7 +365,9 @@ function LoginFormContent() {
                         </div>
 
                         <p className="mt-2 text-xs text-slate-500">
-                          Client access for tracking active projects, reviewing invoices, and support tickets.
+                          {isKhmer
+                            ? "សិទ្ធិអតិថិជនសម្រាប់តាមដានគម្រោង ពិនិត្យវិក្កយបត្រ និងសំបុត្រគាំទ្រ។"
+                            : "Client access for tracking active projects, reviewing invoices, and support tickets."}
                         </p>
 
                         <div className="mt-3 flex items-center gap-2">
@@ -365,7 +379,7 @@ function LoginFormContent() {
                             onClick={() => handleQuickFill("client@example.com", "password", "client", false)}
                             className="h-8 flex-1 text-xs bg-white"
                           >
-                            Auto-fill
+                            {isKhmer ? "បំពេញទិន្នន័យ" : "Auto-fill"}
                           </Button>
                           <Button
                             type="button"
@@ -374,7 +388,7 @@ function LoginFormContent() {
                             onClick={() => handleQuickFill("client@example.com", "password", "client", true)}
                             className="h-8 flex-1 text-xs bg-emerald-700 hover:bg-emerald-800 text-white"
                           >
-                            Login as Client
+                            {isKhmer ? "ចូលជា Client" : "Login as Client"}
                           </Button>
                         </div>
                       </div>
@@ -384,9 +398,13 @@ function LoginFormContent() {
 
                 {/* Security info note */}
                 <div className="rounded-xl border border-slate-200/80 bg-slate-50/50 p-4 text-xs text-slate-600">
-                  <p className="font-semibold text-slate-800 mb-1">Secure Token Authentication</p>
+                  <p className="font-semibold text-slate-800 mb-1">
+                    {isKhmer ? "ប្រព័ន្ធផ្ទៀងផ្ទាត់សុវត្ថិភាពខ្ពស់" : "Secure Token Authentication"}
+                  </p>
                   <p>
-                    Sessions are authenticated via Laravel Sanctum API tokens with role-based authorization for the Client Portal and Admin Console.
+                    {isKhmer
+                      ? "សម័យប្រជុំត្រូវបានផ្ទៀងផ្ទាត់តាមរយៈ Laravel Sanctum API tokens ជាមួយនឹងការអនុញ្ញាតផ្អែកលើតួនាទីសម្រាប់ Client Portal និង Admin Console។"
+                      : "Sessions are authenticated via Laravel Sanctum API tokens with role-based authorization for the Client Portal and Admin Console."}
                   </p>
                 </div>
               </div>
