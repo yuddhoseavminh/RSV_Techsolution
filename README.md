@@ -17,19 +17,52 @@ This workspace contains two project folders:
 │   ├── docs
 │   ├── public
 │   └── routes
-└── frontend
-    ├── app
-    ├── components
-    ├── lib
-    ├── public
-    └── types
+├── frontend
+│   ├── app
+│   ├── components
+│   ├── lib
+│   ├── public
+│   └── types
+├── nginx
+│   ├── default.conf          # Production nginx config
+│   └── production.conf       # SSL nginx config (optional)
+├── docker-compose.yml        # Development
+├── docker-compose.prod.yml   # Production
+├── Makefile                  # Common commands
+└── .env.production           # Production environment
 ```
 
-## Local Setup
+---
+
+## Local Development Setup
+
+### Option 1: Using Docker (Recommended)
+
+```bash
+# From project root
+docker compose up -d
+
+# View logs
+docker compose logs -f
+
+# Stop services
+docker compose down
+```
+
+> **Note:** All Docker commands use service names like `backend`, `frontend`, `mysql` - these are Docker service names, not directories.
+
+Default local URLs:
+- Frontend: `http://localhost:3000`
+- Backend: `http://localhost:8000/api/v1`
+- Nginx: `http://localhost`
+- MySQL: `localhost:3306`
+
+### Option 2: Manual Setup (Without Docker)
 
 Backend:
 
 ```bash
+# From project root
 cd backend
 composer install
 cp .env.example .env
@@ -41,17 +74,466 @@ php artisan serve
 Frontend:
 
 ```bash
+# From project root (in a new terminal)
 cd frontend
 npm install
 npm run dev
 ```
 
-Default local URLs:
+### Demo Users
 
-- Frontend: `http://localhost:3000`
-- Backend: `http://localhost:8000/api/v1`
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | `admin@ktsolution.local` | `password` |
+| Client | `client@example.com` | `password` |
 
-Demo seeded users:
+---
 
-- Admin: `admin@gmail.com` / `12345678`
-- Client: `client@example.com` / `password`
+## Production Deployment Guide
+
+> **Important:** All production Docker Compose commands require the `--env-file .env.production` flag to resolve environment variables (e.g., `DB_ROOT_PASSWORD`, `CLOUDFLARE_TUNNEL_TOKEN`). Alternatively, use `make prod`, `make prod-build`, etc., which include this flag automatically.
+
+### Prerequisites
+
+- Ubuntu 20.04/22.04/24.04 LTS server
+- Docker and Docker Compose installed
+- Domain name pointing to your server
+- SSH access to server
+
+### Step 1: Server Setup
+
+```bash
+# Update system
+sudo apt update && sudo apt upgrade -y
+
+# Install Docker
+curl -fsSL https://get.docker.com | sh
+sudo usermod -aG docker $USER
+
+# Install Docker Compose plugin
+sudo apt install docker-compose-plugin -y
+
+# Logout and login again for group changes
+logout
+```
+
+### Step 2: Clone Repository
+
+```bash
+# Clone the project
+git clone <your-repo-url> /var/www/rsv-techsolution
+
+# Enter project directory (ALL commands must run from here)
+cd /var/www/rsv-techsolution
+
+# Set permissions
+chmod -R 755 storage bootstrap/cache
+```
+
+> **Important:** Always run commands from the project root directory `/var/www/rsv-techsolution`
+
+### Step 3: Configure Environment
+
+```bash
+# Make sure you're in project root
+cd /var/www/rsv-techsolution
+
+# Copy and edit production environment
+cp .env.production.example .env.production
+nano .env.production
+```
+
+**Update these values:**
+
+```bash
+# App
+APP_URL=https://yourdomain.com
+FRONTEND_URL=https://yourdomain.com
+
+# Database (use strong passwords!)
+DB_PASSWORD=your_secure_password_here
+DB_ROOT_PASSWORD=your_secure_root_password_here
+
+# Sanctum
+SANCTUM_STATEFUL_DOMAINS=yourdomain.com,www.yourdomain.com
+SESSION_DOMAIN=yourdomain.com
+
+# Cloudflare Tunnel (REQUIRED)
+CLOUDFLARE_TUNNEL_TOKEN=your_tunnel_token_here
+```
+
+### Step 4: Update Nginx Configuration
+
+```bash
+# Make sure you're in project root
+cd /var/www/rsv-techsolution
+
+# Edit nginx config for your domain
+nano nginx/default.conf
+```
+
+Change `server_name`:
+
+```nginx
+server {
+    listen 80;
+    server_name yourdomain.com www.yourdomain.com;
+    # ... rest of config
+}
+```
+
+### Step 5: Build and Deploy
+
+```bash
+# Make sure you're in project root
+cd /var/www/rsv-techsolution
+
+# Build production images
+docker compose --env-file .env.production -f docker-compose.prod.yml build
+
+# Start all services
+docker compose --env-file .env.production -f docker-compose.prod.yml up -d
+
+# Check status
+docker compose --env-file .env.production -f docker-compose.prod.yml ps
+```
+
+> **Important:** The `--env-file .env.production` flag is **required** for all production Docker Compose commands. Without it, environment variables like `DB_ROOT_PASSWORD` and `CLOUDFLARE_TUNNEL_TOKEN` will not be resolved, causing build/startup failures.
+
+### Step 6: Database Setup
+
+```bash
+# Make sure you're in project root
+cd /var/www/rsv-techsolution
+
+# Run migrations
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend php artisan migrate --force
+
+# Seed database (optional)
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend php artisan db:seed --force
+
+# Generate application key (if not set in .env)
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend php artisan key:generate
+```
+
+### Step 7: Optimize for Production
+
+```bash
+# Make sure you're in project root
+cd /var/www/rsv-techsolution
+
+# Cache configurations
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend php artisan config:cache
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend php artisan route:cache
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend php artisan view:cache
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend php artisan event:cache
+
+# Fix permissions
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend chown -R www:www storage bootstrap/cache
+```
+
+### Step 8: Setup SSL (Recommended)
+
+```bash
+# Make sure you're in project root
+cd /var/www/rsv-techsolution
+
+# Install Certbot
+sudo apt install certbot -y
+
+# Stop nginx temporarily
+docker compose --env-file .env.production -f docker-compose.prod.yml stop nginx
+
+# Get SSL certificate
+sudo certbot certonly --standalone -d yourdomain.com -d www.yourdomain.com
+
+# Update nginx config with SSL
+nano nginx/default.conf
+```
+
+Uncomment the SSL server block and update certificate paths:
+
+```nginx
+server {
+    listen 443 ssl http2;
+    server_name yourdomain.com www.yourdomain.com;
+
+    ssl_certificate /etc/letsencrypt/live/yourdomain.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/yourdomain.com/privkey.pem;
+    # ... rest of config
+}
+```
+
+Update docker-compose.prod.yml to mount certificates:
+
+```yaml
+nginx:
+  volumes:
+    - /etc/letsencrypt:/etc/letsencrypt:ro
+```
+
+Restart nginx:
+
+```bash
+docker compose --env-file .env.production -f docker-compose.prod.yml up -d nginx
+```
+
+### Alternative: Using Cloudflare Tunnel (Recommended)
+
+Cloudflare Tunnel is a better option than traditional SSL setup. It provides:
+- No open ports on your server
+- Automatic SSL without certbot
+- DDoS protection
+- Global CDN
+
+**Setup (Docker-based - Recommended):**
+
+1. **Create Tunnel in Cloudflare Dashboard:**
+   - Go to [Cloudflare Zero Trust](https://one.dash.cloudflare.com/)
+   - Go to **Networks** → **Tunnels**
+   - Click **Create a tunnel**
+   - Name: `rsv-techsolution`
+   - Copy the **tunnel token**
+
+2. **Add Token to .env.production:**
+   ```bash
+   # Make sure you're in project root
+   cd /var/www/rsv-techsolution
+   
+   echo "CLOUDFLARE_TUNNEL_TOKEN=your_tunnel_token_here" >> .env.production
+   ```
+
+3. **Configure Tunnel Routes in Cloudflare Dashboard:**
+
+   | Domain | Service |
+   |--------|---------|
+   | `yourdomain.com` | `http://rsv_nginx:80` |
+   | `api.yourdomain.com` | `http://rsv_nginx:80` |
+
+4. **Deploy:**
+   ```bash
+   # Make sure you're in project root
+   cd /var/www/rsv-techsolution
+   
+   docker compose --env-file .env.production -f docker-compose.prod.yml up -d --build
+   ```
+
+5. **Check Tunnel Logs:**
+   ```bash
+   # Make sure you're in project root
+   cd /var/www/rsv-techsolution
+   
+   docker compose --env-file .env.production -f docker-compose.prod.yml logs cloudflared
+   ```
+
+**Architecture with Cloudflare Tunnel:**
+
+```
+Internet → Cloudflare (SSL + CDN) → Cloudflare Tunnel → Nginx → Your App
+                                              ↓
+                                    No open ports on server!
+```
+
+**Note:** The `docker-compose.prod.yml` already includes the cloudflared service and has removed all exposed ports for security.
+
+---
+
+## Useful Commands
+
+> **Important:** Always run these commands from the project root directory `/var/www/rsv-techsolution`
+
+### Development
+
+```bash
+# Make sure you're in project root
+cd /var/www/rsv-techsolution
+
+make dev                    # Start development
+make dev-build             # Rebuild and start
+make stop                  # Stop all services
+make logs                  # View logs
+make shell                 # Access app shell
+```
+
+### Production
+
+```bash
+# Make sure you're in project root
+cd /var/www/rsv-techsolution
+
+make prod                  # Start production (builds + starts)
+make prod-build            # Rebuild production images
+make prod-up               # Start production services
+make prod-down             # Stop production services
+make prod-logs             # View production logs
+```
+
+> **Tip:** The Makefile automatically passes `--env-file .env.production` to all production commands, so you don't need to type it manually.
+
+### Database
+
+```bash
+# Make sure you're in project root
+cd /var/www/rsv-techsolution
+
+make migrate               # Run migrations
+make seed                  # Seed database
+make fresh                 # Fresh migrate + seed
+make db-shell              # Access database shell
+```
+
+### Troubleshooting
+
+```bash
+# Make sure you're in project root
+cd /var/www/rsv-techsolution
+
+# View container logs
+docker compose --env-file .env.production -f docker-compose.prod.yml logs -f
+
+# Check specific service
+docker compose --env-file .env.production -f docker-compose.prod.yml logs -f backend
+
+# Access container shell
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend sh
+
+# Restart a service
+docker compose --env-file .env.production -f docker-compose.prod.yml restart backend
+
+# Full rebuild (if images are corrupted)
+docker compose --env-file .env.production -f docker-compose.prod.yml down
+docker compose --env-file .env.production -f docker-compose.prod.yml build --no-cache
+docker compose --env-file .env.production -f docker-compose.prod.yml up -d
+```
+
+---
+
+## Health Check
+
+Test if the application is running:
+
+```bash
+# Test API health
+curl https://yourdomain.com/api/v1/health
+
+# Expected response:
+# {
+#   "status": "ok",
+#   "timestamp": "2026-09-04T12:00:00.000000Z",
+#   "services": {
+#     "database": "connected",
+#     "cache": "connected"
+#   }
+# }
+```
+
+---
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                      INTERNET                           │
+└─────────────────────────┬───────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────┐
+│                     NGINX (80/443)                      │
+│                   Reverse Proxy                         │
+└───────────┬─────────────────────────────┬───────────────┘
+            │                             │
+            ▼                             ▼
+┌───────────────────────┐   ┌─────────────────────────────┐
+│   Frontend (Next.js)  │   │    Backend (Laravel API)     │
+│      Port: 3000       │   │       Port: 9000            │
+└───────────────────────┘   └──────────────┬──────────────┘
+                                           │
+                          ┌────────────────┼────────────────┐
+                          ▼                ▼                ▼
+                   ┌─────────────┐  ┌─────────────┐  ┌─────────────┐
+                   │    MySQL    │  │    Redis    │  │   Storage   │
+                   │   Port:3306 │  │   Port:6379 │  │             │
+                   └─────────────┘  └─────────────┘  └─────────────┘
+```
+
+---
+
+## Troubleshooting
+
+### Port Already in Use
+
+```bash
+# Check what's using the port
+sudo lsof -i :80
+sudo lsof -i :443
+
+# Kill the process or change port in docker-compose.prod.yml
+```
+
+### Permission Denied
+
+```bash
+# Fix storage permissions
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend chown -R www:www storage bootstrap/cache
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend chmod -R 775 storage bootstrap/cache
+```
+
+### Database Connection Failed
+
+```bash
+# Check if MySQL is running
+docker compose --env-file .env.production -f docker-compose.prod.yml ps mysql
+
+# Check logs
+docker compose --env-file .env.production -f docker-compose.prod.yml logs mysql
+
+# Verify credentials in .env.production match docker-compose.prod.yml
+```
+
+### Application Key Not Set
+
+```bash
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend php artisan key:generate
+```
+
+### Cache Issues
+
+```bash
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend php artisan cache:clear
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend php artisan config:clear
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend php artisan route:clear
+docker compose --env-file .env.production -f docker-compose.prod.yml exec backend php artisan view:clear
+```
+
+---
+
+## Backup
+
+### Database Backup
+
+```bash
+# Create backup
+docker compose --env-file .env.production -f docker-compose.prod.yml exec mysql mysqldump -u root -p rsv_techsolution > backup_$(date +%Y%m%d).sql
+
+# Restore backup
+docker compose --env-file .env.production -f docker-compose.prod.yml exec -T mysql mysql -u root -p rsv_techsolution < backup_20260904.sql
+```
+
+### Full Backup
+
+```bash
+# Backup database
+docker compose --env-file .env.production -f docker-compose.prod.yml exec mysql mysqldump -u root -p rsv_techsolution > db_backup.sql
+
+# Backup storage
+tar -czf storage_backup.tar.gz storage/
+
+# Backup environment
+cp .env.production .env.production.backup
+```
+
+---
+
+## License
+
+Proprietary - KT Solution

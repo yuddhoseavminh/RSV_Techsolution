@@ -10,8 +10,13 @@ frontend/tsconfig.tsbuildinfo
 # Environment
 .env
 .env.local
+.env.production
 backend/.env
 frontend/.env.local
+
+# Docker
+mysql_data/
+redis_data/
 
 # Logs and caches
 *.log
