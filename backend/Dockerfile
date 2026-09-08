@@ -11,7 +11,7 @@ RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
 COPY . .
 
 # Generate optimized autoloader
-RUN composer dump-autoload --optimize
+RUN composer dump-autoload --optimize --no-scripts
 
 # Stage 2: Production image
 FROM php:8.4-fpm-alpine AS production
