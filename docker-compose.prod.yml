@@ -185,7 +185,7 @@ configs:
               fastcgi_send_timeout 60s;
           }
 
-          location /storage/ {
+          location ^~ /storage/ {
               alias /var/www/html/storage/app/public/;
               expires 30d;
               add_header Cache-Control "public, immutable";
