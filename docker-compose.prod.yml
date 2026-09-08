@@ -3,7 +3,7 @@ services:
   # Nginx Reverse Proxy
   nginx:
     image: nginx:alpine
-    container_name: rsv_nginx
+    container_name: rvs_nginx
     restart: unless-stopped
     # No ports exposed - Cloudflare Tunnel handles external access
     configs:
@@ -32,7 +32,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
       target: production
-    container_name: rsv_backend
+    container_name: rvs_backend
     restart: unless-stopped
     environment:
       - APP_ENV=production
@@ -75,7 +75,7 @@ services:
       args:
         - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-https://rvstechsolution.com/api/v1}
         - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL:-https://rvstechsolution.com}
-    container_name: rsv_frontend
+    container_name: rvs_frontend
     restart: unless-stopped
     networks:
       - app_network
@@ -89,7 +89,7 @@ services:
   # MySQL Database
   mysql:
     image: mysql:8.0
-    container_name: rsv_mysql
+    container_name: rvs_mysql
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
@@ -116,7 +116,7 @@ services:
   # Redis Cache & Session
   redis:
     image: redis:7-alpine
-    container_name: rsv_redis
+    container_name: rvs_redis
     restart: unless-stopped
     command: redis-server --appendonly yes --maxmemory 128mb --maxmemory-policy allkeys-lru
     volumes:
