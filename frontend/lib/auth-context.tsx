@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
-import { apiClient, ApiError, getStoredToken, setStoredToken } from "./api-client";
+import { apiClient, ApiError, getStoredToken, setStoredToken, clearStoredToken } from "./api-client";
 
 export interface AuthUser {
   id: number;
@@ -73,13 +73,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } else {
         setUser(null);
         setToken(null);
-        setStoredToken(null);
+        clearStoredToken();
       }
     } catch {
       // If token expired or invalid, clear it
       setUser(null);
       setToken(null);
-      setStoredToken(null);
+      clearStoredToken();
     } finally {
       setIsLoading(false);
     }
@@ -159,7 +159,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch {
       // ignore network errors on logout
     } finally {
-      setStoredToken(null);
+      clearStoredToken();
       setToken(null);
       setUser(null);
     }
