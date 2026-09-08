@@ -24,6 +24,9 @@ backend/storage/logs/*
 !backend/storage/logs/.gitignore
 backend/bootstrap/cache/*.php
 !backend/bootstrap/cache/.gitignore
+backend/public/storage
+backend/storage/app/public/*
+!backend/storage/app/public/.gitignore
 
 # OS/editor
 .DS_Store

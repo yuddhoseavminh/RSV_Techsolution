@@ -92,6 +92,7 @@ Route::prefix('v1')->group(function (): void {
             Route::apiResource('/invoices', AdminInvoiceController::class)->names('admin.invoices');
             Route::get('/settings', [SettingController::class, 'index']);
             Route::put('/settings', [SettingController::class, 'update']);
+            Route::post('/settings/logo', [SettingController::class, 'uploadLogo']);
         });
     });
 });
