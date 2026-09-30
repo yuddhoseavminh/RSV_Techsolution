@@ -186,7 +186,7 @@ export function AdminSettings() {
       {/* Header */}
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-950">Settings</h1>
+          <h1 className="text-3xl font-bold text-slate-800">Settings</h1>
           <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-600">
             Manage company profile, brand logo, SEO defaults, and social links.
           </p>
@@ -199,14 +199,14 @@ export function AdminSettings() {
 
       {/* Alerts */}
       {error ? (
-        <div className="flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-          <AlertCircle className="h-4 w-4 shrink-0 text-red-600" />
+        <div className="border flex items-center gap-2 rounded-lg border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          <AlertCircle className="h-4 w-4 shrink-0 bg-red-600" />
           <span>{error}</span>
         </div>
       ) : null}
       {message ? (
-        <div className="flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
-          <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600" />
+        <div className="border flex items-center gap-2 rounded-lg border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+          <CheckCircle2 className="h-4 w-4 shrink-0 bg-red-600" />
           <span>{message}</span>
         </div>
       ) : null}
@@ -214,33 +214,33 @@ export function AdminSettings() {
       <form className="grid gap-6" onSubmit={(event) => void saveSettings(event)}>
         {isLoading ? (
           <Card className="flex items-center justify-center p-12 text-sm text-slate-500">
-            <Loader2 className="mr-2 h-5 w-5 animate-spin text-blue-600" />
+            <Loader2 className="mr-2 h-5 w-5 animate-spin text-navy-600" />
             Loading settings...
           </Card>
         ) : (
           <>
             {/* Company Settings Card (with Logo Upload) */}
-            <Card className="p-6 border-slate-200 shadow-xs">
+            <Card className="p-6 border-slate-200 text-xs">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-navy-500 text-navy-600">
                   <Building2 className="h-5 w-5" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-slate-950">Company Profile & Brand Logo</h2>
+                  <h2 className="text-3xl font-bold text-slate-800">Company Profile & Brand Logo</h2>
                   <p className="text-xs text-slate-500">Update company identity, logo branding, and contact details.</p>
                 </div>
               </div>
 
               {/* Logo Upload Section */}
-              <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50/50 p-5">
-                <h3 className="text-sm font-semibold text-slate-900">Company Logo</h3>
+              <div className="border mt-6 rounded-xl border-slate-200 bg-slate-50/50 p-5">
+                <h3 className="text-sm font-bold text-slate-800">Company Logo</h3>
                 <p className="mt-1 text-xs text-slate-500">
                   Upload your official company logo. Recommended format: SVG, PNG, WebP, or JPG (max 5MB).
                 </p>
 
                 <div className="mt-4 flex flex-col gap-5 sm:flex-row sm:items-center">
                   {/* Logo Preview */}
-                  <div className="relative flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-slate-300 bg-white p-2 shadow-xs transition hover:border-slate-400">
+                  <div className="relative flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-slate-300 bg-white p-2 text-xs transition hover:border-slate-400">
                     {companyLogo ? (
                       <img
                         src={companyLogo}
@@ -252,15 +252,15 @@ export function AdminSettings() {
                         }}
                       />
                     ) : (
-                      <div className="flex flex-col items-center justify-center gap-1 text-slate-400">
+                      <div className="flex flex-col items-center justify-center gap-1 text-slate-500">
                         <ImageIcon className="h-8 w-8 stroke-[1.5]" />
-                        <span className="text-[10px] font-medium text-slate-400">No Logo</span>
+                        <span className="text-[10px] font-medium text-slate-800">No Logo</span>
                       </div>
                     )}
 
                     {isUploadingLogo && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-white/80 backdrop-blur-xs">
-                        <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
+                      <div className="absolute inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm">
+                        <Loader2 className="h-6 w-6 animate-spin text-navy-600" />
                       </div>
                     )}
                   </div>
@@ -282,7 +282,7 @@ export function AdminSettings() {
                         size="sm"
                         disabled={isUploadingLogo}
                         onClick={() => fileInputRef.current?.click()}
-                        className="gap-2 bg-blue-600 hover:bg-blue-700 text-white"
+                        className="gap-2 bg-navy-600 hover:bg-navy-700 text-white dark:bg-navy-500 dark:hover:bg-navy-400"
                       >
                         {isUploadingLogo ? (
                           <Loader2 className="h-4 w-4 animate-spin" />
@@ -305,7 +305,7 @@ export function AdminSettings() {
                             <span>Remove</span>
                           </Button>
 
-                          <Button asChild variant="ghost" size="sm" className="gap-1.5 text-slate-500 text-xs">
+                          <Button asChild variant="ghost" size="sm" className="grid gap-1.5 text-slate-500 text-xs">
                             <a href={companyLogo} target="_blank" rel="noopener noreferrer">
                               <ExternalLink className="h-3.5 w-3.5" />
                               <span>View Full</span>
@@ -317,7 +317,7 @@ export function AdminSettings() {
 
                     {/* Logo URL Input (optional manual entry) */}
                     <div className="grid gap-1">
-                      <span className="text-xs font-medium text-slate-600">Or enter Logo Image URL:</span>
+                      <span className="text-xs font-medium text-slate-800">Or enter Logo Image URL:</span>
                       <Input
                         value={companyLogo}
                         onChange={(e) => updateValue("company", "logo", e.target.value)}
@@ -332,7 +332,7 @@ export function AdminSettings() {
               {/* Company Information Inputs */}
               <div className="mt-6 grid gap-4 md:grid-cols-2">
                 <label className="grid gap-1.5">
-                  <span className="text-sm font-medium text-slate-700">Company Name</span>
+                  <span className="text-sm font-medium text-slate-800">Company Name</span>
                   <Input
                     value={settings.company?.name ?? ""}
                     onChange={(e) => updateValue("company", "name", e.target.value)}
@@ -341,7 +341,7 @@ export function AdminSettings() {
                 </label>
 
                 <label className="grid gap-1.5">
-                  <span className="text-sm font-medium text-slate-700">Official Email</span>
+                  <span className="text-sm font-medium text-slate-800">Official Email</span>
                   <Input
                     type="email"
                     value={settings.company?.email ?? ""}
@@ -351,7 +351,7 @@ export function AdminSettings() {
                 </label>
 
                 <label className="grid gap-1.5">
-                  <span className="text-sm font-medium text-slate-700">Phone Number</span>
+                  <span className="text-sm font-medium text-slate-800">Phone Number</span>
                   <Input
                     value={settings.company?.phone ?? ""}
                     onChange={(e) => updateValue("company", "phone", e.target.value)}
@@ -360,7 +360,7 @@ export function AdminSettings() {
                 </label>
 
                 <label className="grid gap-1.5">
-                  <span className="text-sm font-medium text-slate-700">Address / Location</span>
+                  <span className="text-sm font-medium text-slate-800">Address / Location</span>
                   <Input
                     value={settings.company?.address ?? ""}
                     onChange={(e) => updateValue("company", "address", e.target.value)}
@@ -381,13 +381,13 @@ export function AdminSettings() {
             </Card>
 
             {/* Demo Login Access Controls Card */}
-            <Card className="p-6 border-slate-200 shadow-xs">
+            <Card className="p-6 border-slate-200 text-xs">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600">
                   <KeyRound className="h-5 w-5" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-slate-950">Demo Login Access Controls</h2>
+                  <h2 className="text-3xl font-bold text-slate-800">Demo Login Access Controls</h2>
                   <p className="text-xs text-slate-500">
                     Enable or disable 1-click demo login buttons and sample credentials on the login screen.
                   </p>
@@ -396,16 +396,16 @@ export function AdminSettings() {
 
               <div className="mt-6 grid gap-4 md:grid-cols-2">
                 {/* Admin Demo Login Toggle */}
-                <div className="flex flex-col justify-between rounded-xl border border-slate-200 bg-slate-50/60 p-4 transition hover:border-slate-300">
+                <div className="border flex flex-col justify-between rounded-xl border-slate-200 bg-slate-50/60 p-4 transition hover:border-slate-300">
                   <div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2.5">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white shadow-xs">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-navy-600 text-white shadow-xs dark:bg-navy-500">
                           <ShieldCheck className="h-4 w-4" />
                         </div>
                         <div>
-                          <p className="text-xs font-bold uppercase tracking-wider text-blue-700">Administrator</p>
-                          <p className="text-sm font-semibold text-slate-900">Admin Demo Login</p>
+                          <p className="text-xs font-medium uppercase tracking-wider text-navy-700">Administrator</p>
+                          <p className="text-sm font-medium text-slate-800">Admin Demo Login</p>
                         </div>
                       </div>
                       <span
@@ -424,14 +424,14 @@ export function AdminSettings() {
                   </div>
 
                   <div className="mt-4 pt-3 border-t border-slate-200/80 flex items-center justify-between">
-                    <span className="text-xs font-medium text-slate-500">
+                    <span className="text-xs font-medium text-slate-800">
                       Status: <span className="font-semibold text-slate-800">{isDemoAdminEnabled ? "Active on Login Page" : "Hidden from Login Page"}</span>
                     </span>
                     <button
                       type="button"
                       onClick={toggleDemoAdmin}
                       className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden ${
-                        isDemoAdminEnabled ? "bg-blue-600" : "bg-slate-300"
+                        isDemoAdminEnabled ? "bg-navy-600" : "bg-slate-300"
                       }`}
                       role="switch"
                       aria-checked={isDemoAdminEnabled}
@@ -446,7 +446,7 @@ export function AdminSettings() {
                 </div>
 
                 {/* Client Demo Login Toggle */}
-                <div className="flex flex-col justify-between rounded-xl border border-slate-200 bg-slate-50/60 p-4 transition hover:border-slate-300">
+                <div className="border flex flex-col justify-between rounded-xl border-slate-200 bg-slate-50/60 p-4 transition hover:border-slate-300">
                   <div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2.5">
@@ -454,8 +454,8 @@ export function AdminSettings() {
                           <UserCheck className="h-4 w-4" />
                         </div>
                         <div>
-                          <p className="text-xs font-bold uppercase tracking-wider text-emerald-700">Client Portal</p>
-                          <p className="text-sm font-semibold text-slate-900">Client Demo Login</p>
+                          <p className="text-xs font-medium uppercase tracking-wider text-navy-700">Client Portal</p>
+                          <p className="text-sm font-medium text-slate-800">Client Demo Login</p>
                         </div>
                       </div>
                       <span
@@ -474,7 +474,7 @@ export function AdminSettings() {
                   </div>
 
                   <div className="mt-4 pt-3 border-t border-slate-200/80 flex items-center justify-between">
-                    <span className="text-xs font-medium text-slate-500">
+                    <span className="text-xs font-medium text-slate-800">
                       Status: <span className="font-semibold text-slate-800">{isDemoClientEnabled ? "Active on Login Page" : "Hidden from Login Page"}</span>
                     </span>
                     <button
@@ -501,7 +501,7 @@ export function AdminSettings() {
             {Object.entries(settings)
               .filter(([group]) => group !== "company" && group !== "auth")
               .map(([group, items]) => (
-                <Card key={group} className="p-6 border-slate-200 shadow-xs">
+                <Card key={group} className="p-6 border-slate-200 text-xs">
                   <div className="border-b border-slate-100 pb-3">
                     <h2 className="text-lg font-bold capitalize text-slate-950">{group} Settings</h2>
                     <p className="text-xs text-slate-500">Configure parameters for the {group} group.</p>
@@ -521,8 +521,8 @@ export function AdminSettings() {
 
             {/* Add Custom Setting Card */}
             <Card className="p-5 border-dashed border-slate-200 bg-slate-50/50">
-              <h3 className="text-sm font-semibold text-slate-900">Add Custom Setting Field</h3>
-              <div className="mt-3 grid gap-3 md:grid-cols-[180px_1fr_1fr_auto]">
+              <h3 className="text-sm font-bold text-slate-800">Add Custom Setting Field</h3>
+              <div className="mt-3 grid gap-3 md:grid-cols-[180px_1fr_1fr__auto]">
                 <Input value={newGroup} onChange={(event) => setNewGroup(event.target.value)} placeholder="Group (e.g. company)" />
                 <Input value={newKey} onChange={(event) => setNewKey(event.target.value)} placeholder="Key (e.g. tax_id)" />
                 <Input value={newValue} onChange={(event) => setNewValue(event.target.value)} placeholder="Value" />
@@ -538,7 +538,7 @@ export function AdminSettings() {
               <Button
                 type="submit"
                 disabled={isSaving || isLoading}
-                className="gap-2 bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
+                className="gap-2 bg-navy-600 hover:bg-navy-700 text-white dark:bg-navy-500 dark:hover:bg-navy-400"
               >
                 {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
                 <span>{isSaving ? "Saving Settings..." : "Save All Settings"}</span>

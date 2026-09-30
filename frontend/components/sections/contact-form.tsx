@@ -3,23 +3,13 @@
 import { FormEvent, useState } from "react";
 import { apiClient, apiMessage } from "@/lib/api-client";
 import { services } from "@/lib/data";
+import { localizeApiServiceTitle } from "@/lib/i18n/service-copy";
 import { useLanguage } from "@/lib/language-context";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-
-const khmerServicesMap: Record<string, string> = {
-  "Custom Web Applications": "កម្មវិធីគេហទំព័រតាមតម្រូវការ",
-  "Enterprise Admin Dashboards": "ផ្ទាំងគ្រប់គ្រងសហគ្រាស",
-  "API & Backend Architecture": "ស្ថាបត្យកម្ម API និង Backend",
-  "Mobile Application Delivery": "ការបង្កើតកម្មវិធីទូរស័ព្ទ",
-  "POS & Retail Workflows": "ប្រព័ន្ធលក់ POS & ស្តុកទំនិញ",
-  "Business Process Automation": "ស្វ័យប្រវត្តិកម្មអាជីវកម្ម",
-  "HR & Payroll Platform": "ប្រព័ន្ធគ្រប់គ្រងបុគ្គលិក និងប្រាក់ខែ",
-  "School Management System": "ប្រព័ន្ធគ្រប់គ្រងសាលារៀន",
-  "Custom Software Development": "ការអភិវឌ្ឍសូហ្វវែរតាមតម្រូវការ"
-};
+import { Callout } from "@/components/ui/callout";
 
 export function ContactForm() {
   const { isKhmer } = useLanguage();
@@ -63,15 +53,15 @@ export function ContactForm() {
   };
 
   return (
-    <Card className="border-slate-200 dark:border-white/10 dark:bg-white/5">
+    <Card className="border border-slate-200 dark:border-white/10 dark:bg-white/5">
       <CardHeader>
-        <CardTitle className="text-xl font-bold text-slate-950 dark:text-white">
+        <CardTitle className="font-bold text-slate-950 dark:text-white">
           {isKhmer ? "សំណើសុំការប្រឹក្សាគម្រោង" : "Project Inquiry"}
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {error ? <div className="mb-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</div> : null}
-        {message ? <div className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">{message}</div> : null}
+        <Callout>{error}</Callout>
+        <Callout tone="success">{message}</Callout>
         <form className="grid gap-4" onSubmit={(event) => void submit(event)}>
           <div className="grid gap-4 md:grid-cols-2">
             <Input name="name" placeholder={isKhmer ? "ឈ្មោះពេញ *" : "Full Name *"} required />
@@ -80,7 +70,7 @@ export function ContactForm() {
             <Input name="company" placeholder={isKhmer ? "ឈ្មោះក្រុមហ៊ុន / ស្ថាប័ន" : "Company Name"} />
           </div>
           <select
-            className="h-11 rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none focus:border-brand-blue focus:ring-2 focus:ring-blue-100 dark:border-white/10 dark:bg-slate-900 dark:text-slate-200"
+            className="h-11 rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none focus:border-navy-600 focus:ring-2 focus:ring-navy-100 dark:border-white/10 dark:bg-slate-900 dark:text-slate-200"
             name="service_needed"
             defaultValue=""
             required
@@ -89,7 +79,7 @@ export function ContactForm() {
               {isKhmer ? "ជ្រើសរើសសេវាកម្មដែលត្រូវការ *" : "Select Service Needed *"}
             </option>
             {services.map((service) => {
-              const label = isKhmer && khmerServicesMap[service.title] ? khmerServicesMap[service.title] : service.title;
+              const label = localizeApiServiceTitle(service.title, isKhmer);
               return (
                 <option key={service.slug} value={service.title}>
                   {label}

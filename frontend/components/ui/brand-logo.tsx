@@ -79,11 +79,11 @@ export function BrandLogo({
 
       {showText && (
         <div className="flex flex-col text-left">
-          <span className={`font-bold leading-tight text-slate-950 dark:text-white ${sizeStyles.name} ${textClassName}`}>
+          <span className={`font-semibold leading-tight text-slate-950 dark:text-white ${sizeStyles.name} ${textClassName}`}>
             {companyName}
           </span>
           {subText && (
-            <span className={`font-medium leading-tight text-blue-600 ${sizeStyles.sub}`}>{subText}</span>
+            <span className={`font-medium leading-tight text-navy-600 ${sizeStyles.sub}`}>{subText}</span>
           )}
         </div>
       )}

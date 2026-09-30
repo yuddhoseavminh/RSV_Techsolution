@@ -1,18 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,300..700;1,300..700&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&family=Kantumruy+Pro:ital,wght@0,300..700;1,300..700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: 0 0% 100%;
+  --background: 0 0% 98%;
   --foreground: 222 47% 11%;
   --muted: 210 40% 96%;
   --muted-foreground: 215 16% 47%;
-  --border: 214 32% 91%;
-  --input: 214 32% 91%;
-  --ring: 221 83% 53%;
-  --font-geist-sans: "Kantumruy Pro", "Plus Jakarta Sans", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --border: 220 14% 91%;
+  --input: 220 14% 91%;
+  --ring: 237 100% 9%;
+  /* Latin first, Khmer second: Inter carries no Khmer glyphs, so Khmer
+     characters fall through to Kantumruy Pro while Latin stays in the brand face.
+     Reversing the order would set embedded English in Kantumruy's Latin. */
+  --font-sans: "Inter", "Kantumruy Pro", "Khmer OS Battambang", "Khmer OS Siemreap", "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* Display and body share one family — kept as separate tokens so headings
+     can be re-differentiated with a single edit. */
+  --font-display: "Inter", "Kantumruy Pro", "Khmer OS Battambang", "Khmer OS Siemreap", "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
 }
 
 * {
@@ -21,22 +27,38 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 86px;
+  scroll-padding-top: 96px;
 }
 
 body {
   margin: 0;
   background: hsl(var(--background));
-  color: hsl(var(--foreground));
-  font-family: var(--font-geist-sans);
+  color: #565f6a;
+  font-family: var(--font-sans);
+  line-height: 1.6666;
+  font-weight: 400;
   letter-spacing: 0;
   text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
+  font-synthesis: none;
 }
 
-/* Professional Khmer Typography Optimizations */
+/* Headings use the display face, matching the reference pairing.
+   line-height is !important because Tailwind's text-* utilities set their own
+   leading at specificity (0,1,0) and would otherwise beat this (0,0,1) rule
+   on every heading. html[lang="km"] below still wins on specificity. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  line-height: 1.35 !important;
+}
+
+/* Khmer needs looser leading and no letter-spacing; the stacks themselves are
+   shared with the tokens above so mixed Khmer/Latin strings resolve per glyph. */
 html[lang="km"] body {
-  font-family: "Kantumruy Pro", "Khmer OS Battambang", "Khmer OS Siemreap", ui-sans-serif, system-ui, sans-serif;
   line-height: 1.8;
 }
 
@@ -47,7 +69,6 @@ html[lang="km"] h4,
 html[lang="km"] h5,
 html[lang="km"] h6,
 html[lang="km"] .font-display {
-  font-family: "Kantumruy Pro", "Khmer OS Battambang", "Khmer OS Siemreap", ui-sans-serif, system-ui, sans-serif;
   line-height: 1.45 !important;
   letter-spacing: normal !important;
 }
@@ -72,110 +93,118 @@ html[lang="km"] [class*="tracking-"] {
   letter-spacing: normal !important;
 }
 
+html[lang="km"] .eyebrow {
+  letter-spacing: normal;
+  text-transform: none;
+  font-size: 0.8125rem;
+}
+
+html.dark {
+  /* Focus rings must stay visible on #0a0a0a — brand navy-600 does not. */
+  --ring: 217 88% 51%;
+}
+
 html.dark body {
-  background: #0f172a;
-  color: #ffffff;
+  background: #0a0a0a;
+  color: #f8fafc;
 }
 
 ::selection {
-  background: rgba(37, 99, 235, 0.16);
+  background: rgba(0, 2, 46, 0.16);
 }
 
-.glass-panel {
-  border: 1px solid rgba(148, 163, 184, 0.24);
-  background: rgba(255, 255, 255, 0.78);
-  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
-  backdrop-filter: blur(18px);
+html.dark ::selection {
+  background: rgba(20,104,240, 0.28);
 }
 
-.section-shell {
-  width: min(1180px, calc(100% - 32px));
-  margin-inline: auto;
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
 }
 
-.premium-grid {
-  background-image:
-    linear-gradient(rgba(15, 23, 42, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(15, 23, 42, 0.06) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: linear-gradient(to bottom, black, transparent 88%);
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-.dark .premium-grid {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
-}
-
-.premium-noise::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.08;
-  mix-blend-mode: multiply;
-  background-image:
-    radial-gradient(circle at 20% 20%, rgba(37, 99, 235, 0.18), transparent 24%),
-    radial-gradient(circle at 78% 28%, rgba(6, 182, 212, 0.14), transparent 22%),
-    radial-gradient(circle at 50% 80%, rgba(139, 92, 246, 0.14), transparent 26%);
-}
-
-.dark .premium-noise::after {
-  opacity: 0.16;
-  mix-blend-mode: screen;
-}
-
-.marquee-mask {
-  mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
-}
-
-.animate-marquee {
-  animation: marquee 26s linear infinite;
-}
-
-.map-grid {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
-  background-size: 42px 42px;
-}
-
-.button-ripple {
-  position: relative;
-}
-
-.button-ripple::after {
-  content: "";
-  position: absolute;
-  inset: auto auto 0 50%;
-  width: 0;
-  height: 0;
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border: 3px solid transparent;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.24);
-  transform: translate(-50%, 50%);
-  transition: width 0.4s ease, height 0.4s ease;
+  background-clip: content-box;
 }
 
-.button-ripple:hover::after {
-  width: 220px;
-  height: 220px;
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+  background-clip: content-box;
 }
 
-.button-ripple > * {
-  position: relative;
-  z-index: 1;
+html.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+  background-clip: content-box;
 }
 
-.perspective-1000 {
-  perspective: 1000px;
-}
-
-@keyframes marquee {
-  from {
-    transform: translateX(0);
+@layer components {
+  .section-shell {
+    width: min(1180px, calc(100% - 32px));
+    margin-inline: auto;
   }
-  to {
-    transform: translateX(-50%);
+
+  .eyebrow {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .premium-grid {
+    background-image:
+      linear-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: linear-gradient(to bottom, black, transparent 90%);
+  }
+
+  .dark .premium-grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  }
+
+  .focus-ring {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+
+  .focus-ring:focus-visible {
+    outline-color: #00022e;
+  }
+
+  html.dark .focus-ring:focus-visible {
+    outline-color: #1468f0;
+  }
+
+}
+
+/* Dropdown / toast entrances. Hand-rolled rather than pulling in a plugin. */
+@layer utilities {
+  .animate-in {
+    animation-name: enter;
+  }
+
+  .fade-in {
+    --tw-enter-opacity: 0;
+  }
+
+  .zoom-in-95 {
+    --tw-enter-scale: 0.95;
+  }
+}
+
+@keyframes enter {
+  from {
+    opacity: var(--tw-enter-opacity, 1);
+    transform: translate3d(var(--tw-enter-translate-x, 0), var(--tw-enter-translate-y, 0), 0)
+      scale(var(--tw-enter-scale, 1));
   }
 }
 
@@ -188,13 +217,4 @@ html.dark body {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
   }
-}
-
-.focus-ring {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-}
-
-.focus-ring:focus-visible {
-  outline-color: #2563eb;
 }

@@ -15,7 +15,7 @@ export default function VerifyEmailPage() {
         <div className="section-shell flex justify-center">
           <Card className="w-full max-w-md">
             <CardHeader>
-              <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-blue-50 text-brand-blue">
+              <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-navy-50 text-navy-600 dark:bg-navy-500/10">
                 <MailCheck className="h-5 w-5" />
               </div>
               <CardTitle>Verify Your Email</CardTitle>

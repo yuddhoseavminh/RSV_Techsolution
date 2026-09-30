@@ -105,8 +105,8 @@ export function AdminShell({ children }: { children: ReactNode }) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-slate-100">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="h-8 w-8 animate-spin text-brand-blue" />
-          <p className="text-sm font-medium text-slate-600">Loading Admin Console...</p>
+          <Loader2 className="h-8 w-8 animate-spin text-navy-600" />
+          <p className="text-sm text-slate-600">Loading Admin Console...</p>
         </div>
       </div>
     );
@@ -115,8 +115,8 @@ export function AdminShell({ children }: { children: ReactNode }) {
   if (!isAuthenticated || !isAdmin || !user) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-slate-100 p-4">
-        <div className="max-w-md rounded-xl border border-slate-200 bg-white p-6 text-center shadow-lg">
-          <ShieldAlert className="mx-auto h-12 w-12 text-rose-500" />
+        <div className="border max-w-md rounded-xl border-slate-200 bg-white p-6 text-center text-lg">
+          <ShieldAlert className="mx-auto h-12 w-12 bg-rose-500" />
           <h2 className="mt-3 text-lg font-bold text-slate-900">Administrator Access Required</h2>
           <p className="mt-2 text-sm text-slate-600">
             You must be signed in with an administrator account to view and manage this console.
@@ -136,7 +136,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
         <div className="flex h-[72px] shrink-0 items-center gap-3 border-b border-slate-200 px-6">
           <BrandLogo href="/admin" subText="Admin Console" size="md" />
         </div>
-        <nav className="flex-1 overflow-y-auto space-y-1 p-4 scrollbar-thin scrollbar-thumb-slate-200">
+        <nav className="flex-1 overflow-y-auto space-y-1 p-4">
           {adminModules.map((module) => {
             const Icon = module.icon;
             const active = isModuleActive(module.href);
@@ -147,11 +147,11 @@ export function AdminShell({ children }: { children: ReactNode }) {
                 href={module.href}
                 className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition ${
                   active
-                    ? "bg-blue-50 text-blue-700 font-semibold shadow-xs"
-                    : "font-medium text-slate-700 hover:bg-slate-100 hover:text-blue-600"
+                    ? "bg-navy-50 text-navy-700 font-semibold shadow-xs"
+                    : "font-medium text-slate-700 hover:bg-slate-100 hover:text-navy-600"
                 }`}
               >
-                <Icon className={`h-4 w-4 shrink-0 ${active ? "text-blue-600" : "text-slate-400"}`} />
+                <Icon className={`h-4 w-4 shrink-0 ${active ? "text-navy-600" : "text-slate-400"}`} />
                 <span>{title}</span>
               </Link>
             );
@@ -166,7 +166,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
             className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity"
             onClick={() => setMobileMenuOpen(false)}
           />
-          <div className="fixed inset-y-0 left-0 flex w-72 flex-col bg-white shadow-2xl">
+          <div className="fixed inset-y-0 left-0 flex w-72 flex-col bg-white text-2xl">
             <div className="flex h-[72px] items-center justify-between border-b border-slate-200 px-6">
               <BrandLogo
                 href="/admin"
@@ -193,11 +193,11 @@ export function AdminShell({ children }: { children: ReactNode }) {
                     onClick={() => setMobileMenuOpen(false)}
                     className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition ${
                       active
-                        ? "bg-blue-50 text-blue-700 font-semibold"
-                        : "font-medium text-slate-700 hover:bg-slate-100 hover:text-blue-600"
+                        ? "bg-navy-50 text-navy-700 font-semibold"
+                        : "font-medium text-slate-700 hover:bg-slate-100 hover:text-navy-600"
                     }`}
                   >
-                    <Icon className={`h-4 w-4 shrink-0 ${active ? "text-blue-600" : "text-slate-400"}`} />
+                    <Icon className={`h-4 w-4 shrink-0 ${active ? "text-navy-600" : "text-slate-400"}`} />
                     <span>{title}</span>
                   </Link>
                 );
@@ -220,9 +220,9 @@ export function AdminShell({ children }: { children: ReactNode }) {
               <Menu className="h-5 w-5" />
             </button>
             <label className="relative hidden w-full max-w-sm md:block">
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
               <input
-                className="h-10 w-full rounded-md border border-slate-200 bg-white pl-10 pr-3 text-sm outline-none focus:border-brand-blue focus:ring-2 focus:ring-blue-100"
+                className="border h-10 w-full rounded-md border-slate-200 bg-white pl-10 pr-3 text-sm outline-none focus:border-navy-600 focus:ring-2 focus:ring-navy-100"
                 placeholder={isKhmer ? "ស្វែងរកក្នុងប្រព័ន្ធ..." : "Search management system"}
               />
             </label>
@@ -233,10 +233,10 @@ export function AdminShell({ children }: { children: ReactNode }) {
             {/* Professional Language Switcher */}
             <LanguageSwitcher variant="dropdown" size="sm" />
 
-            <Button asChild variant="outline" size="sm" className="inline-flex gap-1.5 border-slate-200 text-slate-700 hover:text-blue-600 hover:bg-blue-50" title="View Live Website (CMS)">
+            <Button asChild variant="outline" size="sm" className="inline-flex gap-1.5 border-slate-200 text-slate-700 hover:text-navy-600 hover:bg-navy-50" title="View Live Website (CMS)">
               <Link href="/" target="_blank">
-                <Globe className="h-4 w-4 text-blue-600" />
-                <span className="text-xs font-semibold">{isKhmer ? "វេបសាយ" : "Web"}</span>
+                <Globe className="h-4 w-4" />
+                <span className="text-xs font-medium">{isKhmer ? "វេបសាយ" : "Web"}</span>
               </Link>
             </Button>
             <Button variant="outline" size="sm" className="hidden sm:inline-flex">
@@ -257,7 +257,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
                 aria-expanded={userMenuOpen}
                 aria-haspopup="true"
               >
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600 text-sm font-bold text-white shadow-sm ring-2 ring-blue-100">
+                <div className="flex min-h-screen items-center justify-center bg-slate-100">
                   {user.name
                     ? user.name
                         .split(" ")
@@ -268,29 +268,29 @@ export function AdminShell({ children }: { children: ReactNode }) {
                     : "AD"}
                 </div>
                 <div className="hidden md:block text-left">
-                  <p className="text-xs font-semibold text-slate-900 leading-tight">{user.name}</p>
-                  <p className="text-[11px] text-blue-600 font-medium leading-tight capitalize">
+                  <p className="text-xs font-medium text-slate-900 leading-tight">{user.name}</p>
+                  <p className="text-[11px] text-navy-600 font-medium leading-tight capitalize">
                     {(user.roles ?? []).join(", ") || "Admin"}
                   </p>
                 </div>
                 <ChevronDown
                   className={`h-4 w-4 text-slate-400 transition-transform duration-200 ${
-                    userMenuOpen ? "rotate-180 text-blue-600" : ""
+                    userMenuOpen ? "rotate-180 text-navy-600" : ""
                   }`}
                 />
               </button>
 
               {/* Dropdown Menu below User Profile */}
               {userMenuOpen && (
-                <div className="absolute right-0 top-full mt-2 w-64 rounded-xl border border-slate-200 bg-white p-2 shadow-xl z-50 animate-in fade-in zoom-in-95 duration-150">
+                <div className="border absolute right-0 top-full mt-2 w-64 rounded-xl border-slate-200 bg-white p-2 text-xl z-50 animate-in fade-in zoom-in-95 duration-150">
                   {/* User details header inside dropdown */}
                   <div className="px-3 py-2.5 border-b border-slate-100 mb-1">
-                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                    <p className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">
                       {isKhmer ? "បានចូលគណនីជា" : "Signed in as"}
                     </p>
-                    <p className="text-sm font-bold text-slate-900 leading-snug mt-0.5">{user.name}</p>
+                    <p className="text-sm font-medium text-slate-900 leading-snug mt-0.5">{user.name}</p>
                     <p className="text-xs text-slate-500 truncate">{user.email}</p>
-                    <span className="mt-1.5 inline-block text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-blue-50 text-blue-700">
+                    <span className="mt-1.5 inline-block text-[10px] uppercase font-medium tracking-wider px-2 py-0.5 rounded-full bg-navy-500 text-navy-700">
                       {(user.roles ?? []).join(", ") || "Administrator"}
                     </span>
                   </div>
@@ -300,18 +300,18 @@ export function AdminShell({ children }: { children: ReactNode }) {
                     <Link
                       href="/admin/settings"
                       onClick={() => setUserMenuOpen(false)}
-                      className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-slate-700 transition hover:bg-slate-100 hover:text-blue-600"
+                      className="flex items-center gap-2.5 rounded-lg p-1.5 transition hover:bg-slate-100 focus:outline-hidden"
                     >
-                      <Settings className="h-4 w-4 text-slate-400" />
+                      <Settings className="h-4 w-4 text-slate-500" />
                       <span>{isKhmer ? "ការកំណត់ក្រុមហ៊ុន និងប្រព័ន្ធ" : "Company & System Settings"}</span>
                     </Link>
                     <Link
                       href="/"
                       target="_blank"
                       onClick={() => setUserMenuOpen(false)}
-                      className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-slate-700 transition hover:bg-slate-100 hover:text-blue-600"
+                      className="flex items-center gap-2.5 rounded-lg p-1.5 transition hover:bg-slate-100 focus:outline-hidden"
                     >
-                      <Globe className="h-4 w-4 text-slate-400" />
+                      <Globe className="h-4 w-4 text-slate-500" />
                       <span>{isKhmer ? "មើលគេហទំព័រផ្សាយផ្ទាល់ (CMS)" : "View Live Website (CMS)"}</span>
                     </Link>
                   </div>

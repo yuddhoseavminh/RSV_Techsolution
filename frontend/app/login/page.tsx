@@ -116,23 +116,23 @@ function LoginFormContent() {
           <div className={showDemoSection ? "grid gap-8 lg:grid-cols-12 lg:items-center" : ""}>
             {/* Left Column: Form */}
             <div className={showDemoSection ? "lg:col-span-7" : "w-full"}>
-              <Card className="border-slate-200/80 bg-white/95 shadow-xl backdrop-blur-md">
+              <Card className="border-slate-200/80 bg-white/95 text-xl backdrop-blur-md">
                 <CardHeader className="space-y-2 pb-6">
                   <div className="flex items-center justify-between">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/10 text-brand-blue ring-1 ring-blue-500/20">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-navy-500/10 text-navy-600 ring-1 ring-navy-500/20">
                       <LockKeyhole className="h-6 w-6" />
                     </div>
                     <div className="flex items-center gap-2">
                       <LanguageSwitcher variant="dropdown" size="sm" />
                       {isAuthenticated && (
-                        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-600/20">
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 ring-1 ring-emerald-600/20">
                           <CheckCircle2 className="h-3.5 w-3.5" />
                           {isKhmer ? "បានចូល" : "Signed in"}
                         </span>
                       )}
                     </div>
                   </div>
-                  <CardTitle className="text-2xl font-bold tracking-tight text-slate-900">
+                  <CardTitle as="h1" className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
                     {isKhmer ? "ចូលប្រើប្រាស់គណនីរបស់អ្នក" : "Sign in to your account"}
                   </CardTitle>
                   <CardDescription className="text-sm text-slate-500">
@@ -145,10 +145,10 @@ function LoginFormContent() {
                 <CardContent>
                   {/* If authenticated notice */}
                   {isAuthenticated && user && (
-                    <div className="mb-6 rounded-lg border border-blue-100 bg-blue-50/60 p-4">
+                    <div className="mb-6 rounded-lg border border-navy-100 bg-navy-50/60 p-4">
                       <div className="flex items-start justify-between">
                         <div>
-                          <p className="text-sm font-semibold text-slate-900">
+                          <p className="capitalize font-medium text-slate-900">
                             {isKhmer ? `បច្ចុប្បន្នបានចូលជា ${user.name}` : `Currently signed in as ${user.name}`}
                           </p>
                           <p className="text-xs text-slate-600">
@@ -180,7 +180,7 @@ function LoginFormContent() {
 
                   {/* Error Alert */}
                   {error && (
-                    <div className="mb-5 flex items-start gap-3 rounded-lg border border-rose-200 bg-rose-50/90 p-3.5 text-sm text-rose-800 animate-in fade-in duration-200">
+                    <div className="border mb-5 flex items-start gap-3 rounded-lg border-rose-200 bg-rose-50/90 p-3.5 text-sm text-rose-800 animate-in fade-in duration-200">
                       <AlertCircle className="h-5 w-5 shrink-0 text-rose-600 mt-0.5" />
                       <div className="leading-snug">{error}</div>
                     </div>
@@ -188,7 +188,7 @@ function LoginFormContent() {
 
                   <form onSubmit={handleSubmit} className="grid gap-4">
                     <div className="grid gap-2">
-                      <label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider text-slate-700">
+                      <label htmlFor="email" className="text-xs font-medium uppercase tracking-wider text-slate-700">
                         {isKhmer ? "អាសយដ្ឋានអ៊ីមែល" : "Email Address"}
                       </label>
                       <Input
@@ -205,12 +205,12 @@ function LoginFormContent() {
 
                     <div className="grid gap-2">
                       <div className="flex items-center justify-between">
-                        <label htmlFor="password" className="text-xs font-semibold uppercase tracking-wider text-slate-700">
+                        <label htmlFor="password" className="text-xs font-medium uppercase tracking-wider text-slate-700">
                           {isKhmer ? "ពាក្យសម្ងាត់" : "Password"}
                         </label>
                         <Link
                           href="/forgot-password"
-                          className="text-xs font-medium text-brand-blue hover:underline"
+                          className="text-xs font-medium text-navy-600 hover:underline"
                         >
                           {isKhmer ? "ភ្លេចពាក្យសម្ងាត់?" : "Forgot password?"}
                         </Link>
@@ -229,7 +229,7 @@ function LoginFormContent() {
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-600 focus:outline-none"
                           tabIndex={-1}
                           aria-label={showPassword ? "Hide password" : "Show password"}
                         >
@@ -245,7 +245,7 @@ function LoginFormContent() {
                     <Button
                       type="submit"
                       disabled={isSubmitting}
-                      className="mt-2 h-11 w-full font-medium transition-all shadow-md hover:shadow"
+                      className="mt-2 h-11 w-full font-medium transition-all shadow-md"
                     >
                       {isSubmitting ? (
                         <>
@@ -263,7 +263,7 @@ function LoginFormContent() {
 
                   <div className="mt-6 border-t border-slate-100 pt-5 text-center text-sm text-slate-600">
                     {isKhmer ? "មិនទាន់មានគណនីមែនទេ? " : "Don't have an account yet? "}
-                    <Link href="/register" className="font-semibold text-brand-blue hover:underline">
+                    <Link href="/register" className="font-semibold text-navy-600 hover:underline">
                       {isKhmer ? "ចុះឈ្មោះបង្កើតគណនី" : "Create an account"}
                     </Link>
                   </div>
@@ -274,10 +274,10 @@ function LoginFormContent() {
             {/* Right Column: Quick Demo Credentials */}
             {showDemoSection && (
               <div className="lg:col-span-5 space-y-4">
-                <div className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm">
+                <div className="border rounded-2xl border-slate-200/90 bg-white p-6 text-sm">
                   <div className="flex items-center gap-2 text-slate-900 font-semibold mb-1">
-                    <KeyRound className="h-5 w-5 text-brand-blue" />
-                    <h3>{isKhmer ? "គណនីសាកល្បងរហ័ស" : "Quick Demo Credentials"}</h3>
+                    <KeyRound className="h-5 w-5 text-navy-600" />
+                    <h3 className="capitalize font-bold">{isKhmer ? "គណនីសាកល្បងរហ័ស" : "Quick Demo Credentials"}</h3>
                   </div>
                   <p className="text-xs text-slate-500 mb-4">
                     {isKhmer
@@ -289,22 +289,22 @@ function LoginFormContent() {
                     {/* Admin Card */}
                     {showAdminDemo && (
                       <div
-                        className={`group relative rounded-xl border p-4 transition-all hover:border-brand-blue hover:shadow-md ${
+                        className={`group relative rounded-xl border p-4 transition-all hover:border-navy-600 hover:shadow-md ${
                           activeDemo === "admin"
-                            ? "border-brand-blue bg-blue-50/50 ring-1 ring-brand-blue"
+                            ? "border-navy-600 bg-navy-50/50 ring-1 ring-navy-600"
                             : "border-slate-200 bg-slate-50/70"
                         }`}
                       >
                         <div className="flex items-start justify-between">
                           <div className="flex items-center gap-2.5">
-                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white shadow-sm">
+                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-navy-600 text-white shadow-sm dark:bg-navy-500">
                               <ShieldCheck className="h-4 w-4" />
                             </div>
                             <div>
-                              <p className="text-xs font-bold uppercase tracking-wider text-blue-700">
+                              <p className="text-xs font-medium uppercase tracking-wider text-slate-700">
                                 {isKhmer ? "អ្នកគ្រប់គ្រងប្រព័ន្ធ" : "Administrator"}
                               </p>
-                              <p className="text-sm font-semibold text-slate-900">admin@ktsolution.local</p>
+                              <p className="capitalize font-medium text-slate-900">admin@ktsolution.local</p>
                             </div>
                           </div>
                           <span className="rounded bg-slate-200 px-1.5 py-0.5 font-mono text-[11px] text-slate-700">
@@ -357,10 +357,10 @@ function LoginFormContent() {
                               <UserCheck className="h-4 w-4" />
                             </div>
                             <div>
-                              <p className="text-xs font-bold uppercase tracking-wider text-emerald-700">
+                              <p className="text-xs font-medium uppercase tracking-wider text-slate-700">
                                 {isKhmer ? "ផតថលអតិថិជន" : "Client Portal"}
                               </p>
-                              <p className="text-sm font-semibold text-slate-900">client@example.com</p>
+                              <p className="capitalize font-medium text-slate-900">client@example.com</p>
                             </div>
                           </div>
                           <span className="rounded bg-slate-200 px-1.5 py-0.5 font-mono text-[11px] text-slate-700">
@@ -401,7 +401,7 @@ function LoginFormContent() {
                 </div>
 
                 {/* Security info note */}
-                <div className="rounded-xl border border-slate-200/80 bg-slate-50/50 p-4 text-xs text-slate-600">
+                <div className="border rounded-xl border-slate-200/80 bg-slate-50/50 p-4 text-xs text-slate-600">
                   <p className="font-semibold text-slate-800 mb-1">
                     {isKhmer ? "ប្រព័ន្ធផ្ទៀងផ្ទាត់សុវត្ថិភាពខ្ពស់" : "Secure Token Authentication"}
                   </p>
@@ -426,8 +426,8 @@ export default function LoginPage() {
       fallback={
         <div className="flex min-h-[85vh] items-center justify-center bg-slate-50">
           <div className="flex flex-col items-center gap-3">
-            <Loader2 className="h-8 w-8 animate-spin text-brand-blue" />
-            <p className="text-sm font-medium text-slate-600">Loading sign in...</p>
+            <Loader2 className="h-8 w-8 animate-spin text-navy-600" />
+            <p className="text-sm text-slate-600">Loading sign in...</p>
           </div>
         </div>
       }

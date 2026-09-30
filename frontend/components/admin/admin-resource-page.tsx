@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { PageHeader } from "@/components/ui/page-header";
 
 type RelationOptions = Record<string, AdminOption[]>;
 
@@ -292,24 +293,24 @@ export function AdminResourcePage({ resourceKey }: { resourceKey: string }) {
 
   return (
     <div className="grid gap-6">
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-950">{config.title}</h1>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">{config.description}</p>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <Button variant="outline" onClick={() => void loadRows()}>
-            <RefreshCw className="h-4 w-4" />
-            Refresh
-          </Button>
-          {allowCreate ? (
-            <Button onClick={openCreateForm}>
-              <Plus className="h-4 w-4" />
-              New
+      <PageHeader
+        title={config.title}
+        description={config.description}
+        actions={
+          <>
+            <Button variant="outline" onClick={() => void loadRows()}>
+              <RefreshCw className="h-4 w-4" />
+              Refresh
             </Button>
-          ) : null}
-        </div>
-      </div>
+            {allowCreate ? (
+              <Button onClick={openCreateForm}>
+                <Plus className="h-4 w-4" />
+                New
+              </Button>
+            ) : null}
+          </>
+        }
+      />
 
       <Card className="p-4">
         <form
@@ -320,7 +321,7 @@ export function AdminResourcePage({ resourceKey }: { resourceKey: string }) {
           }}
         >
           <label className="relative flex-1">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
             <Input
               value={search}
               onChange={(event) => setSearch(event.target.value)}
@@ -334,14 +335,14 @@ export function AdminResourcePage({ resourceKey }: { resourceKey: string }) {
         </form>
       </Card>
 
-      {error ? <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div> : null}
-      {success ? <div className="rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{success}</div> : null}
+      {error ? <div className="border rounded-md border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div> : null}
+      {success ? <div className="border rounded-md border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{success}</div> : null}
 
       {formOpen ? (
         <Card className="p-5">
           <div className="mb-5 flex items-center justify-between gap-3">
             <div>
-              <h2 className="text-lg font-semibold text-slate-950">{editing ? "Edit Record" : "New Record"}</h2>
+              <h2 className="text-3xl font-bold text-slate-950">{editing ? "Edit Record" : "New Record"}</h2>
               <p className="mt-1 text-sm text-slate-600">Fields are saved directly to the Laravel API.</p>
             </div>
             <Button type="button" variant="ghost" size="sm" onClick={closeForm}>
@@ -358,7 +359,7 @@ export function AdminResourcePage({ resourceKey }: { resourceKey: string }) {
                 if (field.type === "textarea" || field.type === "array") {
                   return (
                     <label key={field.name} className="grid gap-2 md:col-span-2">
-                      <span className="text-sm font-medium text-slate-700">{field.label}</span>
+                      <span className="text-3xl font-medium text-slate-950">{field.label}</span>
                       <Textarea
                         name={field.name}
                         rows={field.rows ?? (field.type === "array" ? 4 : undefined)}
@@ -373,12 +374,12 @@ export function AdminResourcePage({ resourceKey }: { resourceKey: string }) {
                 if (field.type === "select") {
                   return (
                     <label key={field.name} className="grid gap-2">
-                      <span className="text-sm font-medium text-slate-700">{field.label}</span>
+                      <span className="text-3xl font-medium text-slate-950">{field.label}</span>
                       <select
                         name={field.name}
                         defaultValue={optionValue(value as string | number | null)}
                         required={isRequired}
-                        className="h-11 rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none focus:border-brand-blue focus:ring-2 focus:ring-blue-100"
+                        className="border h-11 rounded-md border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none focus:border-navy-600 focus:ring-2 focus:ring-navy-100"
                       >
                         {field.nullable ? <option value="">None</option> : null}
                         {options.map((option) => (
@@ -396,12 +397,12 @@ export function AdminResourcePage({ resourceKey }: { resourceKey: string }) {
 
                   return (
                     <label key={field.name} className="grid gap-2 md:col-span-2">
-                      <span className="text-sm font-medium text-slate-700">{field.label}</span>
+                      <span className="text-3xl font-medium text-slate-950">{field.label}</span>
                       <select
                         name={field.name}
                         multiple
                         defaultValue={Array.from(selected)}
-                        className="min-h-32 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:border-brand-blue focus:ring-2 focus:ring-blue-100"
+                        className="border min-h-32 rounded-md border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:border-navy-600 focus:ring-2 focus:ring-navy-100"
                       >
                         {options.map((option) => (
                           <option key={`${field.name}-${option.value}`} value={option.value}>
@@ -415,7 +416,7 @@ export function AdminResourcePage({ resourceKey }: { resourceKey: string }) {
 
                 if (field.type === "checkbox") {
                   return (
-                    <label key={field.name} className="flex h-11 items-center gap-3 rounded-md border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700">
+                    <label key={field.name} className="border flex h-11 items-center gap-3 rounded-md border-slate-200 bg-white px-3 text-sm font-medium text-slate-700">
                       <input name={field.name} type="checkbox" defaultChecked={Boolean(value)} className="h-4 w-4 rounded border-slate-300" />
                       {field.label}
                     </label>
@@ -424,7 +425,7 @@ export function AdminResourcePage({ resourceKey }: { resourceKey: string }) {
 
                 return (
                   <label key={field.name} className="grid gap-2">
-                    <span className="text-sm font-medium text-slate-700">{field.label}</span>
+                    <span className="text-3xl font-medium text-slate-950">{field.label}</span>
                     <Input
                       name={field.name}
                       type={field.type ?? "text"}
@@ -465,7 +466,7 @@ export function AdminResourcePage({ resourceKey }: { resourceKey: string }) {
                 {(allowEdit || allowDelete) && <th className="w-36 px-5 py-4 text-right font-semibold">Actions</th>}
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200">
+            <tbody className="border-y border-slate-200">
               {isLoading ? (
                 <tr>
                   <td className="px-5 py-8 text-center text-slate-500" colSpan={config.columns.length + 1}>
@@ -486,7 +487,7 @@ export function AdminResourcePage({ resourceKey }: { resourceKey: string }) {
 
                       return (
                         <td key={`${row.id}-${column.label}`} className="max-w-[320px] truncate px-5 py-4 text-slate-700">
-                          {column.badge ? <Badge className="bg-slate-50 text-slate-700">{value}</Badge> : value}
+                          {column.badge ? <Badge className="bg-slate-50 text-slate-500">{value}</Badge> : value}
                         </td>
                       );
                     })}

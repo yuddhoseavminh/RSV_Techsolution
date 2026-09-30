@@ -1,5 +1,24 @@
 import type { Config } from "tailwindcss";
 
+/**
+ * Brand accent scale. `navy-600` (#00022E) is the company Dark Navy Blue.
+ * 50–200 washes · 300 dark-theme text · 400 accent that survives both themes ·
+ * 500 solid that survives both themes · 600 brand · 700+ hover/active.
+ */
+const navy = {
+  50: "#F3F6FC",
+  100: "#E6EDFA",
+  200: "#C7D6F5",
+  300: "#93B4EC",
+  400: "#1468F0",
+  500: "#115CD4",
+  600: "#00022E",
+  700: "#000225",
+  800: "#00011D",
+  900: "#000116",
+  950: "#00010C"
+};
+
 const config: Config = {
   darkMode: ["class"],
   content: [
@@ -11,10 +30,10 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          blue: "#2563EB",
           slate: "#0F172A",
           cyan: "#06B6D4"
         },
+        navy,
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -26,11 +45,15 @@ const config: Config = {
         }
       },
       boxShadow: {
+        xs: "0 1px 2px 0 rgb(15 23 42 / 0.06)",
         soft: "0 18px 50px rgba(15, 23, 42, 0.08)"
       },
+      spacing: {
+        "4.5": "1.125rem"
+      },
       fontFamily: {
-        sans: ["var(--font-geist-sans)", "Inter", "system-ui", "sans-serif"],
-        display: ["Sora", "Poppins", "Inter", "system-ui", "sans-serif"]
+        sans: ["var(--font-sans)", "Helvetica Neue", "Helvetica", "Arial", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "Inter", "Helvetica Neue", "Helvetica", "Arial", "system-ui", "sans-serif"]
       },
       opacity: {
         "6": "0.06",

@@ -7,10 +7,10 @@ type DataTableProps = {
 
 export function DataTable({ columns, rows }: DataTableProps) {
   return (
-    <div className="overflow-hidden rounded-xl border border-slate-200/60 bg-white/70 shadow-sm backdrop-blur-md">
-      <div className="overflow-x-auto">
+    <div className="border overflow-hidden rounded-xl border-slate-200/60 bg-white/70 text-sm backdrop-blur-md">
+      <div className="border overflow-hidden rounded-xl border-slate-200/60 bg-white/70 text-sm backdrop-blur-md">
         <table className="w-full min-w-[720px] text-left text-sm">
-          <thead className="bg-slate-50/75 border-b border-slate-100 text-xs font-semibold uppercase tracking-wider text-slate-500">
+          <thead className="bg-slate-50/75 border-b border-slate-100 text-xs font-medium uppercase tracking-wider text-slate-500">
             <tr>
               {columns.map((column) => (
                 <th key={column} className="px-6 py-4">
@@ -19,10 +19,10 @@ export function DataTable({ columns, rows }: DataTableProps) {
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100 bg-white/50">
+          <tbody className="border-y border-slate-100 bg-white/50">
             {rows.length === 0 ? (
               <tr>
-                <td colSpan={columns.length} className="px-6 py-10 text-center text-slate-400">
+                <td colSpan={columns.length} className="px-6 py-10 text-center text-slate-500">
                   No records found.
                 </td>
               </tr>
@@ -45,7 +45,7 @@ export function DataTable({ columns, rows }: DataTableProps) {
                       } else if (["planning", "pending", "sent", "draft", "warning"].includes(statusVal)) {
                         statusClasses = "bg-amber-50/80 text-amber-700 border-amber-200/50";
                       } else if (["completed", "closed", "info"].includes(statusVal)) {
-                        statusClasses = "bg-blue-50/80 text-blue-700 border-blue-200/50";
+                        statusClasses = "bg-navy-50/80 text-navy-700 border border-navy-200/50";
                       } else if (["on-hold", "on hold", "overdue", "unpaid", "failed", "danger"].includes(statusVal)) {
                         statusClasses = "bg-cyan-50/80 text-cyan-700 border-cyan-250/50 shadow-sm shadow-cyan-500/5";
                       } else if (["process", "processing"].includes(statusVal)) {
@@ -56,7 +56,7 @@ export function DataTable({ columns, rows }: DataTableProps) {
 
                       content = (
                         <span className={cn(
-                          "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold capitalize",
+                          "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium capitalize",
                           statusClasses
                         )}>
                           {cell}
@@ -68,7 +68,7 @@ export function DataTable({ columns, rows }: DataTableProps) {
                         <div className="flex items-center gap-3">
                           <div className="h-2 w-24 overflow-hidden rounded-full bg-slate-100 shadow-inner">
                             <div 
-                              className="h-full rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 transition-all duration-500 shadow-sm"
+                              className="h-full rounded-full bg-gradient-to-r from-navy-600 to-cyan-500 text-white shadow-sm transition-all duration-500"
                               style={{ width: `${percent}%` }}
                             />
                           </div>
@@ -89,16 +89,16 @@ export function DataTable({ columns, rows }: DataTableProps) {
 
                       content = (
                         <span className={cn(
-                          "inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-semibold capitalize",
+                          "inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium capitalize",
                           priorityClasses
                         )}>
                           {cell}
                         </span>
                       );
                     } else if (["amount", "total", "subtotal"].includes(colName)) {
-                      content = <span className="font-semibold text-slate-900">{cell}</span>;
+                      content = <span className="font-semibold text-slate-700">{cell}</span>;
                     } else if (["project", "invoice #", "subject", "name"].includes(colName)) {
-                      content = <span className="font-medium text-slate-900">{cell}</span>;
+                      content = <span className="font-medium text-slate-700">{cell}</span>;
                     }
 
                     return (

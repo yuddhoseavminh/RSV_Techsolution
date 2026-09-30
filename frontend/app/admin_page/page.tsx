@@ -45,8 +45,8 @@ export default function AdminPage() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-[#070b13] text-white">
         <div className="relative flex items-center justify-center">
-          <div className="h-16 w-16 animate-spin rounded-full border-2 border-blue-500 border-t-transparent"></div>
-          <div className="absolute h-8 w-8 animate-ping rounded-full bg-blue-500/20"></div>
+          <div className="h-16 w-16 animate-spin rounded-full border-2 border-navy-500 border-t-transparent"></div>
+          <div className="absolute h-8 w-8 animate-ping rounded-full bg-navy-500/20"></div>
         </div>
         <p className="mt-5 text-sm font-medium text-slate-400">Loading Secure Portal...</p>
       </div>
@@ -89,10 +89,10 @@ export default function AdminPage() {
 
   // Otherwise, render the premium admin login gateway
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#070b13] px-4 font-sans antialiased text-white">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#070b13] px-4 font-sans text-white">
       {/* Dynamic Background Mesh / Orbs */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-[-10%] left-[-10%] h-[50%] w-[50%] rounded-full bg-blue-900/15 blur-[120px]" />
+        <div className="absolute top-[-10%] left-[-10%] h-[50%] w-[50%] rounded-full bg-navy-900/15 blur-[120px]" />
         <div className="absolute bottom-[-10%] right-[-10%] h-[50%] w-[50%] rounded-full bg-cyan-900/15 blur-[120px]" />
         <div className="absolute top-[40%] right-[20%] h-[30%] w-[30%] rounded-full bg-indigo-900/10 blur-[100px]" />
         <div className="premium-grid absolute inset-0 opacity-15" />
@@ -101,10 +101,10 @@ export default function AdminPage() {
       <div className="relative z-10 w-full max-w-md">
         {/* Logo / Header */}
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-400 shadow-[0_0_20px_rgba(37,99,235,0.4)]">
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-tr from-navy-600 to-cyan-400 shadow-[0_0_20px_rgba(20,104,240,0.4)]">
             <LockKeyhole className="h-7 w-7 text-white" />
           </div>
-          <h1 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
             RVS Control Terminal
           </h1>
           <p className="mt-2 text-sm text-slate-400">
@@ -137,7 +137,7 @@ export default function AdminPage() {
                   placeholder="admin@gmail.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="h-11 w-full rounded-lg border border-white/10 bg-white/[0.02] pl-11 pr-4 text-sm text-white placeholder-slate-500 outline-none transition focus:border-blue-500/80 focus:bg-white/[0.04] focus:ring-2 focus:ring-blue-500/20"
+                  className="h-11 w-full rounded-lg border border-white/10 bg-white/[0.02] pl-11 pr-4 text-sm text-white placeholder-slate-500 outline-none transition focus:border-navy-500/80 focus:bg-white/[0.04] focus:ring-2 focus:ring-navy-500/20"
                 />
               </div>
             </div>
@@ -154,7 +154,7 @@ export default function AdminPage() {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="h-11 w-full rounded-lg border border-white/10 bg-white/[0.02] pl-11 pr-4 text-sm text-white placeholder-slate-500 outline-none transition focus:border-blue-500/80 focus:bg-white/[0.04] focus:ring-2 focus:ring-blue-500/20"
+                  className="h-11 w-full rounded-lg border border-white/10 bg-white/[0.02] pl-11 pr-4 text-sm text-white placeholder-slate-500 outline-none transition focus:border-navy-500/80 focus:bg-white/[0.04] focus:ring-2 focus:ring-navy-500/20"
                 />
               </div>
             </div>
@@ -162,7 +162,7 @@ export default function AdminPage() {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="relative flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-500 font-semibold text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:from-blue-500 hover:to-cyan-400 hover:shadow-blue-500/30 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50"
+              className="relative flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-navy-400 to-cyan-500 font-semibold text-white shadow-lg shadow-navy-500/20 transition-all duration-300 hover:from-navy-500 hover:to-cyan-400 hover:shadow-navy-500/30 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50"
             >
               {isSubmitting ? (
                 <>
@@ -184,9 +184,9 @@ export default function AdminPage() {
               <button
                 type="button"
                 onClick={handleQuickLogin}
-                className="group inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/5 px-4 py-1.5 text-xs text-blue-400 transition hover:bg-blue-500/10 hover:border-blue-500/50"
+                className="group inline-flex items-center gap-2 rounded-full border border-navy-500/30 bg-navy-500/5 px-4 py-1.5 text-xs text-navy-300 transition hover:bg-navy-500/10 hover:border-navy-500/50"
               >
-                <Sparkles className="h-3.5 w-3.5 animate-pulse text-blue-400" />
+                <Sparkles className="h-3.5 w-3.5 animate-pulse text-navy-300" />
                 <span>Quick Login as Admin (Demo)</span>
               </button>
             </div>

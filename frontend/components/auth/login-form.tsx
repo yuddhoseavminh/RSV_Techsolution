@@ -40,14 +40,14 @@ export function LoginForm() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-blue-50 text-brand-blue">
+        <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-navy-500 text-navy-600">
           <LockKeyhole className="h-5 w-5" />
         </div>
         <CardTitle>Client Portal Login</CardTitle>
         <CardDescription>Access project tracking, invoices, support tickets, and notifications.</CardDescription>
       </CardHeader>
       <CardContent>
-        {error ? <div className="mb-4 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div> : null}
+        {error ? <div className="border mb-4 rounded-md border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div> : null}
         <form className="grid gap-4" onSubmit={(event) => void submit(event)}>
           <Input name="email" type="email" placeholder="Email" required />
           <Input name="password" type="password" placeholder="Password" required />
@@ -57,10 +57,10 @@ export function LoginForm() {
           </Button>
         </form>
         <div className="mt-5 flex items-center justify-between text-sm">
-          <Link href="/forgot-password" className="font-medium text-brand-blue">
+          <Link href="/forgot-password" className="font-medium text-navy-600">
             Forgot password?
           </Link>
-          <Link href="/register" className="font-medium text-slate-700">
+          <Link href="/register" className="font-medium text-navy-600">
             Create account
           </Link>
         </div>

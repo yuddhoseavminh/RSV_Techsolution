@@ -9,10 +9,10 @@ type ApiEnvelope<T> = {
 
 export class ApiError extends Error {
   status: number;
-  data: any;
+  data: unknown;
   errors?: Record<string, string[]>;
 
-  constructor(message: string, status: number, data?: any, errors?: Record<string, string[]>) {
+  constructor(message: string, status: number, data?: unknown, errors?: Record<string, string[]>) {
     super(message);
     this.name = "ApiError";
     this.status = status;
@@ -73,7 +73,7 @@ export async function apiClient<T>(path: string, init?: RequestInit): Promise<T>
   const responseData = (await response.json().catch(() => null)) as ApiEnvelope<T> | null;
 
   if (!response.ok) {
-    let errorMessage = responseData?.message ?? `Request failed with status ${response.status}`;
+    const errorMessage = responseData?.message ?? `Request failed with status ${response.status}`;
     const errors = responseData?.errors;
     throw new ApiError(errorMessage, response.status, responseData, errors);
   }

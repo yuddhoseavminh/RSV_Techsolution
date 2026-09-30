@@ -10,6 +10,7 @@ import { apiMessage } from "@/lib/api-client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Callout } from "@/components/ui/callout";
 
 export function RegisterForm() {
   const router = useRouter();
@@ -43,12 +44,12 @@ export function RegisterForm() {
   };
 
   return (
-    <Card className="w-full max-w-xl border-slate-200 shadow-xl dark:border-white/10 dark:bg-white/5">
+    <Card className="w-full max-w-xl border-slate-200 text-xl dark:bg-white/5">
       <CardHeader>
-        <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-brand-blue dark:bg-blue-950 dark:text-cyan-300">
+        <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-navy-500 text-navy-600 dark:text-cyan-300">
           <UserPlus className="h-5 w-5" />
         </div>
-        <CardTitle className="text-2xl font-bold text-slate-900 dark:text-white">
+        <CardTitle as="h1" className="text-2xl font-bold text-slate-900 dark:text-white">
           {isKhmer ? "បង្កើតគណនីអតិថិជនថ្មី" : "Create Client Account"}
         </CardTitle>
         <CardDescription className="text-sm text-slate-500 dark:text-slate-400">
@@ -58,7 +59,7 @@ export function RegisterForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {error ? <div className="mb-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</div> : null}
+        <Callout>{error}</Callout>
         <form className="grid gap-4" onSubmit={(event) => void submit(event)}>
           <div className="grid gap-4 md:grid-cols-2">
             <Input name="name" placeholder={isKhmer ? "ឈ្មោះពេញ *" : "Full Name *"} required />
@@ -76,7 +77,7 @@ export function RegisterForm() {
         </form>
         <p className="mt-5 text-sm text-slate-600 dark:text-slate-400">
           {isKhmer ? "មានគណនីរួចហើយមែនទេ? " : "Already have an account? "}
-          <Link href="/login" className="font-semibold text-brand-blue hover:underline">
+          <Link href="/login" className="font-semibold text-navy-600 hover:underline">
             {isKhmer ? "ចូលប្រើប្រាស់" : "Login"}
           </Link>
         </p>

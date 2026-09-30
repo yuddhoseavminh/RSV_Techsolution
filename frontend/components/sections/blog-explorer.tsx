@@ -77,9 +77,9 @@ export function BlogExplorer() {
 
   return (
     <>
-      <div className="mb-8 grid gap-4 md:grid-cols-[1fr_auto]">
+      <div className="mb-8 grid gap-4 md:grid-cols-[1fr__auto]">
         <label className="relative block">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
           <Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search articles" className="pl-10" />
         </label>
         <div className="flex flex-wrap gap-2">
@@ -88,7 +88,7 @@ export function BlogExplorer() {
               key={item}
               className={`rounded-md border px-3 py-2 text-sm font-semibold transition ${
                 tag === item
-                  ? "border-brand-blue bg-brand-blue text-white"
+                  ? "border-navy-600 bg-navy-600 text-white"
                   : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
               }`}
               onClick={() => setTag(item)}

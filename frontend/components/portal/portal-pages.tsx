@@ -103,7 +103,7 @@ export function PortalDashboard() {
   return (
     <div className="grid gap-6">
       <div>
-        <h1 className="text-3xl font-bold text-slate-950">Dashboard</h1>
+        <h1 className="text-3xl font-bold text-slate-600">Dashboard</h1>
         <p className="mt-2 text-sm text-slate-600">Track active work, invoices, support, and project progress.</p>
       </div>
       <Alert type="error" message={error} />
@@ -145,7 +145,7 @@ export function PortalProjects() {
   return (
     <div className="grid gap-6">
       <div>
-        <h1 className="text-3xl font-bold text-slate-950">Projects</h1>
+        <h1 className="text-3xl font-bold text-slate-600">Projects</h1>
         <p className="mt-2 text-sm text-slate-600">Review status, progress, scope, and technology stack.</p>
       </div>
       <Alert type="error" message={error} />
@@ -154,7 +154,7 @@ export function PortalProjects() {
           <Card key={project.id}>
             <CardHeader>
               <div className="mb-4 flex items-center justify-between">
-                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 text-brand-blue">
+                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-navy-500 text-navy-600">
                   <FolderKanban className="h-5 w-5" />
                 </span>
                 <Badge>{project.status}</Badge>
@@ -165,10 +165,10 @@ export function PortalProjects() {
             <CardContent>
               <div className="mb-3 flex items-center justify-between text-sm">
                 <span className="font-medium text-slate-600">Progress</span>
-                <span className="font-semibold text-slate-950">{project.progress ?? 0}%</span>
+                <span className="font-semibold text-slate-600">{project.progress ?? 0}%</span>
               </div>
               <div className="h-2 rounded-md bg-slate-100">
-                <div className="h-2 rounded-md bg-brand-blue" style={{ width: `${project.progress ?? 0}%` }} />
+                <div className="h-2 rounded-md bg-navy-600 dark:bg-navy-500" style={{ width: `${project.progress ?? 0}%` }} />
               </div>
             </CardContent>
           </Card>
@@ -197,7 +197,7 @@ export function PortalInvoices() {
   return (
     <div className="grid gap-6">
       <div>
-        <h1 className="text-3xl font-bold text-slate-950">Invoice History</h1>
+        <h1 className="text-3xl font-bold text-slate-600">Invoice History</h1>
         <p className="mt-2 text-sm text-slate-600">View issued, paid, overdue, and upcoming invoices.</p>
       </div>
       <Alert type="error" message={error} />
@@ -276,7 +276,7 @@ export function PortalTickets() {
     <div className="grid gap-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-950">Support Tickets</h1>
+          <h1 className="text-3xl font-bold text-slate-600">Support Tickets</h1>
           <p className="mt-2 text-sm text-slate-600">Open requests, follow replies, and track ticket status.</p>
         </div>
         <Button type="button" onClick={() => document.getElementById("ticket-subject")?.focus()}>
@@ -300,7 +300,7 @@ export function PortalTickets() {
               <Input id="ticket-subject" name="subject" placeholder="Subject" required />
               <select
                 name="project_id"
-                className="h-11 rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none focus:border-brand-blue focus:ring-2 focus:ring-blue-100"
+                className="border h-11 rounded-md border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none focus:border-navy-600 focus:ring-2 focus:ring-navy-100"
                 defaultValue=""
               >
                 <option value="">No project</option>
@@ -312,7 +312,7 @@ export function PortalTickets() {
               </select>
               <select
                 name="priority"
-                className="h-11 rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none focus:border-brand-blue focus:ring-2 focus:ring-blue-100"
+                className="border h-11 rounded-md border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none focus:border-navy-600 focus:ring-2 focus:ring-navy-100"
                 defaultValue="medium"
               >
                 <option value="low">Low</option>
@@ -382,7 +382,7 @@ export function PortalProfile() {
   return (
     <div className="grid gap-6">
       <div>
-        <h1 className="text-3xl font-bold text-slate-950">Profile</h1>
+        <h1 className="text-3xl font-bold text-slate-600">Profile</h1>
         <p className="mt-2 text-sm text-slate-600">Manage account and company contact information.</p>
       </div>
       <Alert type="error" message={error} />

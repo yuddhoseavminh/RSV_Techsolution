@@ -20,23 +20,23 @@ export function MetricCard({ label, value, trend, icon: Icon }: MetricCardProps)
   } else if (label.toLowerCase().includes("tickets")) {
     badgeClasses = "bg-amber-50 text-amber-700 border-amber-200/50";
   } else if (label.toLowerCase().includes("users") || label.toLowerCase().includes("projects")) {
-    badgeClasses = "bg-blue-50 text-blue-700 border-blue-200/50";
+    badgeClasses = "bg-navy-50 text-navy-700 border border-navy-200/50";
   }
 
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-slate-200/50 bg-white/70 p-5 shadow-sm backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/20 hover:shadow-md">
+    <div className="border group relative overflow-hidden rounded-xl border-slate-200/50 bg-white/70 p-5 text-sm backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:ring-navy-500/20 hover:shadow-md">
       {/* Decorative Glow Orb */}
-      <div className="absolute -right-6 -top-6 h-12 w-12 rounded-full bg-gradient-to-tr from-blue-500/5 to-cyan-500/5 blur-lg transition-all duration-300 group-hover:scale-150" />
+      <div className="absolute -right-6 -top-6 h-12 w-12 rounded-full bg-gradient-to-tr from-navy-500/5 to-cyan-500/5 blur-lg transition-all duration-300 group-hover:scale-150 dark:from-navy-400" />
       
       <div className="flex items-center justify-between">
-        <span className="text-sm font-semibold tracking-wide text-slate-500">{label}</span>
-        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 text-slate-600 shadow-inner transition-all duration-300 group-hover:bg-gradient-to-tr group-hover:from-blue-600 group-hover:to-cyan-400 group-hover:text-white group-hover:shadow-md">
+        <span className="text-sm font-medium tracking-wide text-slate-500">{label}</span>
+        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 text-slate-600 shadow-inner transition-all duration-300 group-hover:bg-gradient--tr group-hover:from-navy-600 group-hover:to-cyan-400 group-hover:text-white group-hover:shadow-md">
           <Icon className="h-5 w-5" />
         </span>
       </div>
       
       <div className="mt-4">
-        <p className="text-3xl font-extrabold tracking-tight text-slate-900 transition-colors group-hover:text-black">
+        <p className="text-3xl font-bold tracking-tight text-slate-900 transition-colors group-hover:text-black">
           {value}
         </p>
         <div className="mt-3 flex">

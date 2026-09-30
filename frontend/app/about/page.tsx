@@ -3,7 +3,7 @@
 import { CheckCircle2 } from "lucide-react";
 import { PublicLayout } from "@/components/layout/public-layout";
 import { FadeIn } from "@/components/motion/fade-in";
-import { SectionHeading } from "@/components/sections/section-heading";
+import { SectionHeading } from "@/components/ui/section";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/lib/language-context";
@@ -107,7 +107,7 @@ export default function AboutPage() {
       <section className="bg-slate-50 py-20 dark:bg-slate-900/60">
         <div className="section-shell">
           <FadeIn className="max-w-3xl">
-            <Badge className="mb-5 border-blue-200 bg-white text-blue-700 shadow-xs dark:border-white/10 dark:bg-white/10 dark:text-cyan-300">
+            <Badge className="mb-5 border-navy-200 bg-white text-navy-700 text-xs dark:text-cyan-300">
               {isKhmer ? "អំពីក្រុមហ៊ុន RVS Trust Solutions Cambodia" : "About RVS Trust Solutions Cambodia"}
             </Badge>
             <h1 className="text-4xl font-bold leading-tight text-slate-950 md:text-5xl dark:text-white">
@@ -138,8 +138,8 @@ export default function AboutPage() {
           <div className="grid gap-5 md:grid-cols-2">
             {identityHighlights.map((item, index) => (
               <FadeIn key={item.title} delay={index * 0.04}>
-                <div className="h-full rounded-2xl border border-slate-200 bg-slate-50/70 p-6 shadow-xs dark:border-white/10 dark:bg-white/5">
-                  <h2 className="text-lg font-bold leading-7 text-slate-950 dark:text-white">{item.title}</h2>
+                <div className="border h-full rounded-2xl border-slate-200 bg-slate-50/70 p-6 text-xs dark:bg-white/5">
+                  <h3 className="text-lg font-bold leading-7 text-slate-950 dark:text-white">{item.title}</h3>
                   <p className="mt-4 text-sm leading-8 text-slate-600 dark:text-slate-300">{item.description}</p>
                 </div>
               </FadeIn>
@@ -163,9 +163,9 @@ export default function AboutPage() {
               ]
           ).map(([title, description], index) => (
             <FadeIn key={title} delay={index * 0.04}>
-              <Card className="h-full border-slate-200 bg-white dark:border-white/10 dark:bg-white/5">
+              <Card className="h-full border-slate-200 bg-white dark:bg-white/5">
                 <CardHeader>
-                  <CardTitle className="text-xl font-bold text-slate-950 dark:text-white">{title}</CardTitle>
+                  <CardTitle className="text-xl font-bold bg-slate-950">{title}</CardTitle>
                   <CardDescription className="text-sm leading-7 text-slate-600 dark:text-slate-300">{description}</CardDescription>
                 </CardHeader>
               </Card>
@@ -189,10 +189,10 @@ export default function AboutPage() {
           <div className="grid gap-5 md:grid-cols-4">
             {companyValues.map((value, index) => (
               <FadeIn key={value.title} delay={index * 0.04}>
-                <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-6 shadow-xs backdrop-blur-md">
+                <div className="border rounded-2xl border-white/10 bg-white/[0.06] p-6 text-xs backdrop-blur-md">
                   <CheckCircle2 className="mb-5 h-6 w-6 text-cyan-400" />
-                  <h3 className="font-semibold text-lg text-white">{value.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-300">{value.description}</p>
+                  <h3 className="text-xl font-bold bg-white">{value.title}</h3>
+                  <p className="mt-3 text-sm leading-6 border-slate-300">{value.description}</p>
                 </div>
               </FadeIn>
             ))}
@@ -209,13 +209,13 @@ export default function AboutPage() {
           <div className="grid gap-5 md:grid-cols-3">
             {team.map((member, index) => (
               <FadeIn key={member.name} delay={index * 0.04}>
-                <Card className="border-slate-200 dark:border-white/10 dark:bg-white/5">
+                <Card className="bg-slate-50 py-20 dark:bg-slate-900/60">
                   <CardHeader>
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-base font-bold text-blue-600 dark:bg-blue-950 dark:text-cyan-300">
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-navy-50 text-base font-bold text-navy-600 dark:bg-navy-950 dark:text-cyan-300">
                       {member.name.slice(0, 2).toUpperCase()}
                     </div>
                     <CardTitle className="text-xl font-bold">{member.name}</CardTitle>
-                    <CardDescription className="text-xs font-semibold uppercase tracking-wider text-blue-600 dark:text-cyan-300">
+                    <CardDescription className="text-xs font-medium uppercase tracking-wider text-navy-600 dark:text-cyan-300">
                       {member.role}
                     </CardDescription>
                   </CardHeader>
@@ -238,8 +238,8 @@ export default function AboutPage() {
           <div className="grid gap-4 max-w-4xl mx-auto">
             {timeline.map((item, index) => (
               <FadeIn key={item.year} delay={index * 0.04}>
-                <div className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-xs md:grid-cols-[140px_1fr] dark:border-white/10 dark:bg-white/5">
-                  <div className="text-xl font-bold text-blue-600 dark:text-cyan-300">{item.year}</div>
+                <div className="border grid gap-4 rounded-2xl border-slate-200 bg-white p-6 text-xs md:grid-cols-[140px_1fr] dark:bg-white/5">
+                  <div className="text-xl font-bold text-navy-400 dark:text-cyan-300">{item.year}</div>
                   <div>
                     <h3 className="font-bold text-lg text-slate-950 dark:text-white">{item.title}</h3>
                     <p className="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{item.description}</p>

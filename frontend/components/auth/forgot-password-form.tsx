@@ -8,6 +8,7 @@ import { useLanguage } from "@/lib/language-context";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Callout } from "@/components/ui/callout";
 
 export function ForgotPasswordForm() {
   const { isKhmer } = useLanguage();
@@ -41,12 +42,12 @@ export function ForgotPasswordForm() {
   };
 
   return (
-    <Card className="w-full max-w-md border-slate-200 shadow-xl dark:border-white/10 dark:bg-white/5">
+    <Card className="w-full max-w-md border-slate-200 text-xl dark:bg-white/5">
       <CardHeader>
-        <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-brand-blue dark:bg-blue-950 dark:text-cyan-300">
+        <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-navy-500 text-navy-600 dark:text-cyan-300">
           <MailCheck className="h-5 w-5" />
         </div>
-        <CardTitle className="text-2xl font-bold text-slate-900 dark:text-white">
+        <CardTitle as="h1" className="text-2xl font-bold text-slate-900 dark:text-white">
           {isKhmer ? "កំណត់ពាក្យសម្ងាត់ឡើងវិញ" : "Reset Password"}
         </CardTitle>
         <CardDescription className="text-sm text-slate-500 dark:text-slate-400">
@@ -56,8 +57,8 @@ export function ForgotPasswordForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {error ? <div className="mb-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</div> : null}
-        {message ? <div className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">{message}</div> : null}
+        <Callout>{error}</Callout>
+        <Callout tone="success">{message}</Callout>
         <form className="grid gap-4" onSubmit={(event) => void submit(event)}>
           <Input
             name="email"
@@ -72,7 +73,7 @@ export function ForgotPasswordForm() {
               : (isKhmer ? "ផ្ញើតំណភ្ជាប់កំណត់ឡើងវិញ" : "Send Reset Link")}
           </Button>
         </form>
-        <Link href="/login" className="mt-5 block text-sm font-semibold text-brand-blue hover:underline">
+        <Link href="/login" className="mt-5 block text-sm font-medium text-navy-600 hover:underline dark:text-navy-300">
           {isKhmer ? "ត្រឡប់ទៅទំព័រចូលប្រព័ន្ធ" : "Back to login"}
         </Link>
       </CardContent>

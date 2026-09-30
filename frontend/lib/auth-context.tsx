@@ -44,10 +44,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const normalizeRoles = (rawRoles: any): string[] => {
+  const normalizeRoles = (rawRoles: unknown): string[] => {
     if (!rawRoles) return [];
     if (Array.isArray(rawRoles)) {
-      return rawRoles.map((r) => (typeof r === "string" ? r : r.name));
+      return rawRoles.map((r: unknown) => (typeof r === "string" ? r : String((r as { name?: string }).name ?? "")));
     }
     return [];
   };
@@ -62,7 +62,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     try {
-      const res = await apiClient<{ data: any }>("/auth/me");
+      const res = await apiClient<{ data: AuthUser }>("/auth/me");
       const userData = res.data;
       if (userData) {
         setUser({
@@ -95,7 +95,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         message: string;
         data: {
           token: string;
-          user: any;
+          user: AuthUser;
         };
       }>("/auth/login", {
         method: "POST",
@@ -126,7 +126,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         message: string;
         data: {
           token: string;
-          user: any;
+          user: AuthUser;
         };
       }>("/auth/register", {
         method: "POST",

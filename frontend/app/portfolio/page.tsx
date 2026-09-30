@@ -2,7 +2,7 @@
 
 import { PublicLayout } from "@/components/layout/public-layout";
 import { PortfolioFilter } from "@/components/sections/portfolio-filter";
-import { SectionHeading } from "@/components/sections/section-heading";
+import { SectionHeading } from "@/components/ui/section";
 import { useLanguage } from "@/lib/language-context";
 
 export default function PortfolioPage() {
@@ -12,7 +12,7 @@ export default function PortfolioPage() {
     <PublicLayout>
       <section className="bg-slate-50 py-20 dark:bg-slate-900/60">
         <div className="section-shell">
-          <SectionHeading
+          <SectionHeading as="h1"
             eyebrow={isKhmer ? "ស្នាដៃការងារ" : "Portfolio"}
             title={
               isKhmer

@@ -49,8 +49,8 @@ export function PortalShell({ children }: { children: ReactNode }) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-slate-50">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="h-8 w-8 animate-spin text-brand-blue" />
-          <p className="text-sm font-medium text-slate-600">
+          <Loader2 className="h-8 w-8 animate-spin text-navy-600" />
+          <p className="text-sm text-slate-600">
             {isKhmer ? "កំពុងផ្ទុកផតថលអតិថិជន..." : "Loading Client Portal..."}
           </p>
         </div>
@@ -61,8 +61,8 @@ export function PortalShell({ children }: { children: ReactNode }) {
   if (!isAuthenticated || !user) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
-        <div className="max-w-md rounded-xl border border-slate-200 bg-white p-6 text-center shadow-lg">
-          <ShieldAlert className="mx-auto h-12 w-12 text-amber-500" />
+        <div className="border max-w-md rounded-xl border-slate-200 bg-white p-6 text-center text-lg">
+          <ShieldAlert className="mx-auto h-12 w-12 bg-amber-500" />
           <h2 className="mt-3 text-lg font-bold text-slate-900">
             {isKhmer ? "តម្រូវឱ្យផ្ទៀងផ្ទាត់គណនី" : "Authentication Required"}
           </h2>
@@ -110,11 +110,11 @@ export function PortalShell({ children }: { children: ReactNode }) {
             </Button>
 
             <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-100 text-xs font-bold text-emerald-800">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-100 text-xs font-medium text-emerald-800">
                 {initials}
               </div>
               <div className="hidden md:block text-left">
-                <p className="text-xs font-semibold text-slate-900 leading-tight">{user.name}</p>
+                <p className="text-xs font-medium text-slate-900 leading-tight">{user.name}</p>
                 <p className="text-[11px] text-slate-500 leading-tight">{user.email}</p>
               </div>
               <Button
@@ -135,7 +135,7 @@ export function PortalShell({ children }: { children: ReactNode }) {
       </header>
 
       <div className="section-shell grid gap-6 py-8 lg:grid-cols-[240px_1fr]">
-        <aside className="h-fit rounded-lg border border-slate-200 bg-white p-3 shadow-soft">
+        <aside className="border h-fit rounded-lg border-slate-200 bg-white p-3 shadow-soft">
           <nav className="grid gap-1">
             {portalNavKeys.map((item) => {
               const Icon = item.icon;
@@ -144,7 +144,7 @@ export function PortalShell({ children }: { children: ReactNode }) {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-brand-blue"
+                  className="flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-navy-600"
                 >
                   <Icon className="h-4 w-4" />
                   {label}

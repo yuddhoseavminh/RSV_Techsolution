@@ -1,7 +1,7 @@
 "use client";
 
 import { PublicLayout } from "@/components/layout/public-layout";
-import { SectionHeading } from "@/components/sections/section-heading";
+import { SectionHeading } from "@/components/ui/section";
 import { ServicesGrid } from "@/components/sections/services-grid";
 import { useLanguage } from "@/lib/language-context";
 
@@ -12,7 +12,7 @@ export default function ServicesPage() {
     <PublicLayout>
       <section className="bg-slate-50 py-20 dark:bg-slate-900/60">
         <div className="section-shell">
-          <SectionHeading
+          <SectionHeading as="h1"
             eyebrow={isKhmer ? "សេវាកម្មរបស់យើង" : "Services"}
             title={
               isKhmer

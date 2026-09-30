@@ -93,15 +93,15 @@ export function PortfolioFilter() {
       <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {filteredProjects.map((project) => (
           <Card key={project.id ?? project.title} className="h-full overflow-hidden">
-            <div className="border-b border-slate-200 bg-gradient-to-br from-blue-50 via-white to-cyan-50 p-6">
+            <div className="border-b border-slate-200 bg-gradient-to-br from-navy-50 to-cyan-50 p-6 text-navy-500">
               <div className="mb-5 flex items-center justify-between">
                 <Badge>{project.category}</Badge>
-                <Layers3 className="h-5 w-5 text-brand-blue" />
+                <Layers3 className="h-5 w-5 text-navy-600" />
               </div>
               <div className="grid gap-3">
-                <div className="h-3 w-5/6 rounded-md bg-white shadow-sm" />
-                <div className="h-3 w-2/3 rounded-md bg-white shadow-sm" />
-                <div className="mt-3 h-28 rounded-lg border border-blue-100 bg-white/80 shadow-sm" />
+                <div className="h-3 w-5/6 rounded-md bg-white text-sm" />
+                <div className="h-3 w-2/3 rounded-md bg-white text-sm" />
+                <div className="mt-3 h-28 rounded-lg border-navy-100 bg-white/80 text-sm" />
               </div>
             </div>
             <CardHeader>
