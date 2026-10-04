@@ -1,10 +1,5 @@
 import type { LucideIcon } from "lucide-react";
 
-export type NavigationItem = {
-  label: string;
-  href: string;
-};
-
 export type Service = {
   title: string;
   slug: string;

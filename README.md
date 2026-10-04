@@ -1,4 +1,4 @@
-# RVS Trust Solutions Cambodia Website and Management System
+# RVS Techsolution Website and Management System
 
 This workspace contains two project folders:
 
@@ -84,7 +84,7 @@ npm run dev
 
 | Role | Email | Password |
 |------|-------|----------|
-| Admin | `admin@ktsolution.local` | `password` |
+| Admin | `admin@rvstechsolution.local` | `password` |
 | Client | `client@example.com` | `password` |
 
 ---
@@ -536,4 +536,4 @@ cp .env.production .env.production.backup
 
 ## License
 
-Proprietary - KT Solution
+Proprietary - RVS Techsolution

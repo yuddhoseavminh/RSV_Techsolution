@@ -25,5 +25,5 @@ return [
             'lock_connection' => env('REDIS_CACHE_LOCK_CONNECTION', 'default'),
         ],
     ],
-    'prefix' => env('CACHE_PREFIX', 'kt_solution_cache'),
+    'prefix' => env('CACHE_PREFIX', 'rvs_techsolution_cache'),
 ];

@@ -1,8 +1,8 @@
 "use client";
 
 import { PublicLayout } from "@/components/layout/public-layout";
-import { SectionHeading } from "@/components/ui/section";
-import { ServicesGrid } from "@/components/sections/services-grid";
+import { PageCta, PageHero } from "@/components/site/page-hero";
+import { ServiceCatalog } from "@/components/site/service-catalog";
 import { useLanguage } from "@/lib/language-context";
 
 export default function ServicesPage() {
@@ -10,24 +10,17 @@ export default function ServicesPage() {
 
   return (
     <PublicLayout>
-      <section className="bg-slate-50 py-20 dark:bg-slate-900/60">
-        <div className="section-shell">
-          <SectionHeading as="h1"
-            eyebrow={isKhmer ? "សេវាកម្មរបស់យើង" : "Services"}
-            title={
-              isKhmer
-                ? "សេវាកម្មសូហ្វវែរតាមតម្រូវការសម្រាប់ការពង្រីកអាជីវកម្ម"
-                : "Custom software services for business growth"
-            }
-            description={
-              isKhmer
-                ? "គ្រប់សេវាកម្មរួមបញ្ចូលនូវយុទ្ធសាស្ត្រ ការរៀបចំ UX ស្ថាបត្យកម្ម API ការអភិវឌ្ឍ ការដាក់ឱ្យដំណើរការ និងការគាំទ្រយូរអង្វែង។"
-                : "Each service includes strategy, UX planning, API architecture, development, deployment, and long-term support."
-            }
-          />
-          <ServicesGrid />
-        </div>
-      </section>
+      <PageHero
+        eyebrow={isKhmer ? "សេវាកម្ម" : "Services"}
+        title={isKhmer ? "ប្រព័ន្ធដែលយើងសាងសង់។" : "Systems we build."}
+        description={
+          isKhmer
+            ? "ពីគេហទំព័រ និងកម្មវិធីទូរស័ព្ទ រហូតដល់ POS ស្តុក ERP CRM និងកម្មវិធីតាមតម្រូវការ។"
+            : "From websites and mobile apps to POS, inventory, ERP, CRM and custom software."
+        }
+      />
+      <ServiceCatalog />
+      <PageCta />
     </PublicLayout>
   );
 }

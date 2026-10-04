@@ -1,7 +1,7 @@
 {
-    "name": "kt-solution/backend",
+    "name": "rvs-techsolution/backend",
     "type": "project",
-    "description": "KT Solution Laravel API for public website, client portal, and admin management system.",
+    "description": "RVS Techsolution Laravel API for public website, client portal, and admin management system.",
     "license": "proprietary",
     "require": {
         "php": "^8.3",

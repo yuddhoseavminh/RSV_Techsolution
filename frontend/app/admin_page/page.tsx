@@ -195,7 +195,7 @@ export default function AdminPage() {
 
         {/* Footer */}
         <p className="mt-8 text-center text-xs text-slate-500">
-          RVS Trust Solutions Cambodia Admin Terminal &copy; {new Date().getFullYear()}. All Rights Reserved.
+          RVS Techsolution Admin Terminal &copy; {new Date().getFullYear()}. All Rights Reserved.
         </p>
       </div>
     </div>

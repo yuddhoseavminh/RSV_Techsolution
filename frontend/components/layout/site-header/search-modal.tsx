@@ -34,7 +34,7 @@ export function SearchModal({ open, onClose }: { open: boolean; onClose: () => v
               <Search className="h-5 w-5 text-navy-600" />
               <input
                 autoFocus
-                placeholder="Search RVS Trust Solutions"
+                placeholder="Search RVS Techsolution"
                 className="h-10 min-w-0 flex-1 bg-transparent text-sm font-medium text-slate-950 outline-none placeholder:text-slate-400 dark:text-white"
               />
               <button

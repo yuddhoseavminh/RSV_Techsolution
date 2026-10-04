@@ -2,12 +2,13 @@
 
 import type { HTMLAttributes, ReactNode } from "react";
 import { motion } from "framer-motion";
+import { Reveal, revealItem } from "@/components/motion/fade-in";
 import { cn } from "@/lib/utils";
 
 export type SectionTone = "base" | "dark";
 
 const sectionTone: Record<SectionTone, string> = {
-  base: "bg-transparent text-slate-950 dark:bg-brand-slate dark:text-white",
+  base: "bg-transparent text-slate-950 dark:bg-transparent dark:text-white",
   dark: "bg-slate-950 text-white dark:bg-brand-slate"
 };
 
@@ -15,22 +16,25 @@ type SectionProps = HTMLAttributes<HTMLElement> & {
   id?: string;
   tone?: SectionTone;
   contained?: boolean;
-  divider?: boolean;
+  /** Painted inside <section> but outside the reveal wrapper, so absolute
+   *  decorations keep <section> as their containing block. */
+  decor?: ReactNode;
   children: ReactNode;
 };
 
-export function Section({ id, tone = "base", contained = true, divider = true, className, children, ...props }: SectionProps) {
+export function Section({ id, tone = "base", contained = true, decor, className, children, ...props }: SectionProps) {
   return (
     <section
       id={id}
-      className={cn(
-        sectionTone[tone],
-        divider && tone === "base" && "border-t border-slate-200 dark:border-white/10",
-        className
-      )}
+      className={cn(sectionTone[tone], className)}
       {...props}
     >
-      {contained ? <div className="section-shell">{children}</div> : children}
+      {decor}
+      {contained ? (
+        <Reveal className="section-shell">{children}</Reveal>
+      ) : (
+        children
+      )}
     </section>
   );
 }
@@ -68,10 +72,7 @@ type SectionHeadingProps = {
 export function SectionHeading({ eyebrow, title, description, align = "center", tone = "base", as: Heading = "h2", className }: SectionHeadingProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      variants={revealItem}
       className={cn("mb-12 max-w-3xl", align === "center" ? "mx-auto text-center" : "text-left", className)}
     >
       {eyebrow ? (
@@ -79,7 +80,7 @@ export function SectionHeading({ eyebrow, title, description, align = "center", 
       ) : null}
       <Heading
         className={cn(
-          "mt-4 font-display text-3xl font-bold leading-tight tracking-tight md:text-4xl lg:text-[2.6rem] lg:leading-[1.15]",
+          "mt-4 font-display text-3xl font-[450] leading-tight tracking-[-0.02em] md:text-4xl lg:text-[2.6rem] lg:leading-[1.15]",
           tone === "dark" ? "text-white" : "text-slate-950 dark:text-white"
         )}
       >

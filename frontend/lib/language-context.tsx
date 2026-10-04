@@ -4,7 +4,6 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import type { ReactNode } from "react";
 import { translations, type Language, type Translations } from "@/lib/i18n/translations";
 
-export { translations };
 export type { Language, Translations };
 
 interface LanguageContextValue {

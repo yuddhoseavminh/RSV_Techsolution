@@ -2,6 +2,6 @@
 
 use Illuminate\Support\Facades\Artisan;
 
-Artisan::command('about:kt-solution', function (): void {
-    $this->info('KT Solution API is ready.');
+Artisan::command('about:rvs-techsolution', function (): void {
+    $this->info('RVS Techsolution API is ready.');
 });

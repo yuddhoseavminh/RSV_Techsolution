@@ -10,7 +10,7 @@ import { BrandLogo } from "@/components/ui/brand-logo";
 import { useAuth } from "@/components/auth/auth-provider";
 import { useLanguage } from "@/lib/language-context";
 import { cn } from "@/lib/utils";
-import { IconButton, NavLink } from "./nav-link";
+import { IconLink, IconButton, NavLink } from "./nav-link";
 import { MobileMenu } from "./mobile-menu";
 import { SearchModal } from "./search-modal";
 import { SolutionsMenu } from "./solutions-menu";
@@ -20,21 +20,27 @@ export function SiteHeader() {
   const { isAuthenticated, isAdmin } = useAuth();
   const { t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
+  /** Tucked = bar slid off-screen on a downward scroll, Antigravity-style. */
+  const [tucked, setTucked] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [active, setActive] = useState("#home");
   const [theme, setTheme] = useState<"light" | "dark">("light");
-  const isHome = pathname === "/";
+  /** Blocks the write-back until the stored value has been read (see below). */
+  const [hydrated, setHydrated] = useState(false);
 
-  const sectionNav = useMemo(
+  /**
+   * Route-based primary navigation. Landing-page anchors (#features, #pricing,
+   * #faq…) stay reachable from the footer and search; the bar itself is site
+   * information architecture, so active state works on every route, not only
+   * on the home page.
+   */
+  const mainNav = useMemo(
     () => [
-      { label: t("nav_home"), href: "#home" },
-      { label: t("nav_features"), href: "#features" },
-      { label: t("nav_services"), href: "#services" },
-      { label: t("nav_portfolio"), href: "#portfolio" },
-      { label: t("nav_pricing"), href: "#pricing" },
-      { label: t("nav_faq"), href: "#faq" },
-      { label: t("nav_contact"), href: "#contact" }
+      { label: t("nav_services"), href: "/services" },
+      { label: t("nav_portfolio"), href: "/portfolio" },
+      { label: t("nav_about"), href: "/about" },
+      { label: t("nav_blog"), href: "/blog" },
+      { label: t("nav_contact"), href: "/contact" }
     ],
     [t]
   );
@@ -42,73 +48,71 @@ export function SiteHeader() {
   useEffect(() => {
     const storedTheme = window.localStorage.getItem("rvs-theme") as "light" | "dark" | null;
     const preferredTheme =
-      storedTheme ?? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      storedTheme === "dark" || storedTheme === "light"
+        ? storedTheme
+        : window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
     setTheme(preferredTheme);
     document.documentElement.classList.toggle("dark", preferredTheme === "dark");
+    setHydrated(true);
   }, []);
 
+  // This effect also runs on mount with the initial "light" state, so writing
+  // before the stored value has been read would overwrite it with "light".
   useEffect(() => {
+    if (!hydrated) return;
     document.documentElement.classList.toggle("dark", theme === "dark");
     window.localStorage.setItem("rvs-theme", theme);
-  }, [theme]);
+  }, [theme, hydrated]);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 12);
+      if (window.scrollY < 80) setTucked(false);
+    };
+    const onWheel = (event: WheelEvent) => {
+      const delta = event.deltaMode === 1 ? event.deltaY * 16 : event.deltaY;
+      if (Math.abs(delta) < 4) return;
+      // Driven by wheel intent rather than scroll position, so an anchor jump
+      // or a programmatic scroll never hides the bar out from under the user.
+      setTucked(window.scrollY > 120 && delta > 0);
+    };
+
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("wheel", onWheel, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("wheel", onWheel);
+    };
   }, []);
 
-  useEffect(() => {
-    if (!isHome) {
-      return;
-    }
-
-    const sections = sectionNav
-      .map((item) => document.querySelector(item.href))
-      .filter((section): section is Element => Boolean(section));
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.find((entry) => entry.isIntersecting);
-        if (visible?.target.id) {
-          setActive(`#${visible.target.id}`);
-        }
-      },
-      { rootMargin: "-35% 0px -55% 0px", threshold: 0.01 }
-    );
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, [isHome, sectionNav]);
-
-  const resolvedNav = useMemo(
-    () => sectionNav.map((item) => ({ ...item, href: isHome ? item.href : `/${item.href}` })),
-    [isHome, sectionNav]
-  );
+  const isActive = (href: string) => pathname === href;
 
   return (
     <>
       <header
+        onFocus={() => setTucked(false)}
         className={cn(
-          "font-display fixed inset-x-0 top-0 z-50 border-b backdrop-blur-xl transition-all duration-300",
+          "font-display fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,box-shadow,transform,backdrop-filter] duration-300 ease-in-out",
           scrolled
-            ? "border-slate-200 bg-white/85 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-white/10 dark:bg-[#0A0A0A]/85"
-            : "border-transparent bg-white/85 dark:bg-[#0A0A0A]/60"
+            ? "backdrop-blur-md border-slate-200/80 bg-white/85 shadow-[0_1px_3px_rgba(15,23,42,0.06)] dark:border-white/10 dark:bg-[#0A0A0A]/85"
+            : "border-transparent bg-transparent",
+          tucked && "-translate-y-full"
         )}
       >
-        <div className="section-shell flex h-[76px] items-center justify-between gap-3">
-          <BrandLogo href="/" size="md" textClassName="hidden 2xl:block text-sm" />
+        <div className="section-shell flex h-16 items-center justify-between gap-3">
+          <BrandLogo href="/" size="md" textClassName="hidden max-w-[210px] truncate xl:block text-sm" />
 
-          <nav className="hidden items-center gap-0.5 xl:gap-1.5 lg:flex shrink-0" aria-label="Main navigation">
-            {resolvedNav.slice(0, 3).map((item) => (
-              <NavLink key={item.href} item={item} active={isHome && active === item.href} />
-            ))}
-            <SolutionsMenu isHome={isHome} />
-            {resolvedNav.slice(3).map((item) => (
-              <NavLink key={item.href} item={item} active={isHome && active === item.href} />
+          <nav className="hidden h-full shrink-0 items-center lg:flex" aria-label="Main navigation">
+            <SolutionsMenu active={isActive("/services")} />
+            {mainNav.slice(1).map((item) => (
+              <NavLink key={item.href} item={item} active={isActive(item.href)} />
             ))}
           </nav>
 
-          <div className="hidden items-center gap-1.5 xl:gap-2 lg:flex shrink-0">
+          <div className="hidden shrink-0 items-center gap-0.5 lg:flex xl:gap-1.5">
             <IconButton label={t("nav_search")} onClick={() => setSearchOpen(true)}>
               <Search className="h-4 w-4" />
             </IconButton>
@@ -119,50 +123,36 @@ export function SiteHeader() {
             >
               {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </IconButton>
+
             {isAuthenticated && isAdmin ? (
-              <Button
-                asChild
-                size="sm"
-                className="shrink-0 whitespace-nowrap rounded-lg bg-navy-600 hover:bg-navy-700 text-white shadow-xs px-2.5 xl:px-3 text-xs xl:text-sm dark:bg-navy-500 dark:hover:bg-navy-400"
-              >
-                <Link href="/admin">
-                  <LayoutDashboard className="h-4 w-4" />
-                  {t("nav_admin")}
-                </Link>
-              </Button>
+              <IconLink label={t("nav_admin")} href="/admin">
+                <LayoutDashboard className="h-4 w-4" />
+              </IconLink>
             ) : (
-              <Button
-                asChild
-                variant="ghost"
-                size="sm"
-                className="shrink-0 whitespace-nowrap rounded-lg px-2.5 xl:px-3.5 text-xs xl:text-sm"
-              >
-                <Link href="/login">
-                  <LogIn className="h-4 w-4" />
-                  {t("nav_portal")}
-                </Link>
-              </Button>
+              <IconLink label={t("nav_portal")} href="/login">
+                <LogIn className="h-4 w-4" />
+              </IconLink>
             )}
+
             <Button
               asChild
               size="sm"
-              className="shrink-0 whitespace-nowrap rounded-lg px-2.5 xl:px-3 text-xs xl:text-sm"
+              className="ml-1 h-10 shrink-0 rounded bg-navy-600 px-3.5 text-sm text-white shadow-[0_12px_30px_-12px_rgba(20,104,240,0.7)] hover:bg-navy-700 xl:px-4 dark:bg-navy-500 dark:hover:bg-navy-400"
             >
               <Link href="/contact">
                 {t("nav_consultation")}
-                <ArrowRight className="h-3.5 w-3.5 xl:h-4 xl:w-4" />
+                <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
           </div>
 
-          <button
-            type="button"
-            className="grid h-10 w-10 place-items-center rounded-lg border border-slate-200 bg-white/70 text-slate-900 text-sm backdrop-blur dark:border-white/10 dark:bg-white/8 dark:text-white lg:hidden"
+          <IconButton
+            label="Open navigation"
+            className="lg:hidden"
             onClick={() => setMobileOpen(true)}
-            aria-label="Open navigation"
           >
             <Menu className="h-5 w-5" />
-          </button>
+          </IconButton>
         </div>
       </header>
 
@@ -170,11 +160,15 @@ export function SiteHeader() {
       <MobileMenu
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
-        nav={resolvedNav}
+        nav={mainNav}
         theme={theme}
         setTheme={setTheme}
         t={t}
         isAdmin={Boolean(isAuthenticated && isAdmin)}
+        onSearch={() => {
+          setMobileOpen(false);
+          setSearchOpen(true);
+        }}
       />
     </>
   );

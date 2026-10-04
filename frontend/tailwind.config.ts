@@ -33,23 +33,16 @@ const config: Config = {
           slate: "#0F172A",
           cyan: "#06B6D4"
         },
-        navy,
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))"
-        }
+        navy
       },
       boxShadow: {
         xs: "0 1px 2px 0 rgb(15 23 42 / 0.06)",
         soft: "0 18px 50px rgba(15, 23, 42, 0.08)"
       },
       spacing: {
-        "4.5": "1.125rem"
+        "4.5": "1.125rem",
+        18: "4.5rem", /* 72px — section top */
+        30: "7.5rem" /* 120px — section bottom */
       },
       fontFamily: {
         sans: ["var(--font-sans)", "Helvetica Neue", "Helvetica", "Arial", "system-ui", "sans-serif"],

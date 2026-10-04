@@ -1,6 +1,6 @@
-# RVS Trust Solutions Cambodia Frontend
+# RVS Techsolution Frontend
 
-Next.js 15 frontend for the RVS Trust Solutions Cambodia public website, user portal, and admin dashboard.
+Next.js 15 frontend for the RVS Techsolution public website, user portal, and admin dashboard.
 
 ## Stack
 

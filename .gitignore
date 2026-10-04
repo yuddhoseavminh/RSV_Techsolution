@@ -4,6 +4,7 @@ backend/vendor/
 
 # Build output
 frontend/.next/
+frontend/.next-*/
 frontend/out/
 frontend/tsconfig.tsbuildinfo
 

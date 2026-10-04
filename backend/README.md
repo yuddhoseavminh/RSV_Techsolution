@@ -1,6 +1,6 @@
-# KT Solution Backend
+# RVS Techsolution Backend
 
-Laravel 12 API scaffold for KT Solution public website content, client portal, and admin management system.
+Laravel 12 API scaffold for RVS Techsolution public website content, client portal, and admin management system.
 
 ## Stack
 

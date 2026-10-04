@@ -1,6 +1,7 @@
 "use client";
 
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import {
   AlertCircle,
   Building2,
@@ -242,13 +243,15 @@ export function AdminSettings() {
                   {/* Logo Preview */}
                   <div className="relative flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-slate-300 bg-white p-2 text-xs transition hover:border-slate-400">
                     {companyLogo ? (
-                      <img
+                      <Image
                         src={companyLogo}
                         alt="Company Logo Preview"
+                        width={112}
+                        height={112}
+                        unoptimized
                         className="h-full w-full object-contain"
                         onError={(e) => {
-                          // Handle broken image fallback
-                          (e.target as HTMLImageElement).src = "";
+                          e.currentTarget.src = "";
                         }}
                       />
                     ) : (
@@ -336,7 +339,7 @@ export function AdminSettings() {
                   <Input
                     value={settings.company?.name ?? ""}
                     onChange={(e) => updateValue("company", "name", e.target.value)}
-                    placeholder="e.g. KT Solution"
+                    placeholder="e.g. RVS Techsolution"
                   />
                 </label>
 
@@ -346,7 +349,7 @@ export function AdminSettings() {
                     type="email"
                     value={settings.company?.email ?? ""}
                     onChange={(e) => updateValue("company", "email", e.target.value)}
-                    placeholder="e.g. contact@ktsolution.com"
+                    placeholder="e.g. contact@rvstechsolution.com"
                   />
                 </label>
 
@@ -419,7 +422,7 @@ export function AdminSettings() {
                       </span>
                     </div>
                     <p className="mt-2.5 text-xs text-slate-600 leading-relaxed">
-                      Controls the demo card and auto-login button for <strong className="font-mono text-slate-700">admin@ktsolution.local</strong> on the login page and terminal.
+                      Controls the demo card and auto-login button for <strong className="font-mono text-slate-700">admin@rvstechsolution.local</strong> on the login page and terminal.
                     </p>
                   </div>
 
@@ -430,7 +433,7 @@ export function AdminSettings() {
                     <button
                       type="button"
                       onClick={toggleDemoAdmin}
-                      className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden ${
+                      className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-inset focus:ring-navy-400/60 ${
                         isDemoAdminEnabled ? "bg-navy-600" : "bg-slate-300"
                       }`}
                       role="switch"
@@ -480,7 +483,7 @@ export function AdminSettings() {
                     <button
                       type="button"
                       onClick={toggleDemoClient}
-                      className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden ${
+                      className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-inset focus:ring-navy-400/60 ${
                         isDemoClientEnabled ? "bg-emerald-600" : "bg-slate-300"
                       }`}
                       role="switch"

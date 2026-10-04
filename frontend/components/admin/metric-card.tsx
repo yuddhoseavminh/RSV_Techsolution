@@ -1,6 +1,4 @@
 import type { LucideIcon } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { TrendingUp, Activity, Inbox, ShieldCheck } from "lucide-react";
 
 type MetricCardProps = {
   label: string;

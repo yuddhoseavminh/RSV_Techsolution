@@ -1,7 +1,6 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
 import { apiClient, clearStoredToken, getStoredToken, setStoredToken } from "@/lib/api-client";
 
 export type AuthUser = {
@@ -152,43 +151,4 @@ export function useAuth() {
   }
 
   return context;
-}
-
-export function RequireAuth({
-  children,
-  roles,
-  redirectTo = "/login"
-}: {
-  children: React.ReactNode;
-  roles?: string[];
-  redirectTo?: string;
-}) {
-  const { user, isLoading, hasAnyRole } = useAuth();
-  const router = useRouter();
-  const pathname = usePathname();
-
-  useEffect(() => {
-    if (isLoading) {
-      return;
-    }
-
-    if (!user) {
-      router.replace(`${redirectTo}?redirect=${encodeURIComponent(pathname)}`);
-      return;
-    }
-
-    if (roles?.length && !hasAnyRole(roles)) {
-      router.replace("/portal/dashboard");
-    }
-  }, [hasAnyRole, isLoading, pathname, redirectTo, roles, router, user]);
-
-  if (isLoading || !user || (roles?.length && !hasAnyRole(roles))) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50 text-sm font-medium text-slate-600">
-        Loading account...
-      </div>
-    );
-  }
-
-  return children;
 }

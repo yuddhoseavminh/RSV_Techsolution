@@ -11,7 +11,7 @@ export const metadata = {
 export default function VerifyEmailPage() {
   return (
     <PublicLayout>
-      <section className="bg-slate-50 py-20">
+      <section className="bg-slate-50 pt-28 pb-20">
         <div className="section-shell flex justify-center">
           <Card className="w-full max-w-md">
             <CardHeader>

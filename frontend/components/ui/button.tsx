@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-offset-[#0A0A0A]",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap border border-transparent rounded-lg text-sm font-[450] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-offset-[#0A0A0A]",
   {
     variants: {
       variant: {
@@ -16,7 +16,12 @@ const buttonVariants = cva(
       size: {
         default: "h-11 px-5",
         sm: "h-9 px-3 text-xs",
-        lg: "h-12 px-7"
+        lg: "h-12 px-7",
+        /* Hero call-to-action: Antigravity's pill metrics — 17.5/25.38 type with
+           10px × 24px padding and a 1px border land on a 47.4px tall pill. */
+        cta:
+          "rounded-full px-6 py-2.5 text-[17.5px] leading-[25.38px] tracking-[0.18px] " +
+          "max-[1024px]:text-[15px] max-[1024px]:leading-[22px] max-[1024px]:tracking-[0.16px]"
       }
     },
     defaultVariants: {

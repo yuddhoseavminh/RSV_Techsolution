@@ -111,7 +111,7 @@ function LoginFormContent() {
 
   return (
     <PublicLayout>
-      <section className="min-h-[85vh] bg-gradient-to-b from-slate-50 via-white to-slate-100 py-16 px-4">
+      <section className="min-h-[85vh] bg-gradient-to-b from-slate-50 via-white to-slate-100 pt-28 pb-16 px-4">
         <div className={`mx-auto ${showDemoSection ? "max-w-4xl" : "max-w-md"}`}>
           <div className={showDemoSection ? "grid gap-8 lg:grid-cols-12 lg:items-center" : ""}>
             {/* Left Column: Form */}
@@ -198,7 +198,7 @@ function LoginFormContent() {
                         required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="e.g. admin@ktsolution.local"
+                        placeholder="e.g. admin@rvstechsolution.local"
                         className="h-11 bg-white"
                       />
                     </div>
@@ -304,7 +304,7 @@ function LoginFormContent() {
                               <p className="text-xs font-medium uppercase tracking-wider text-slate-700">
                                 {isKhmer ? "អ្នកគ្រប់គ្រងប្រព័ន្ធ" : "Administrator"}
                               </p>
-                              <p className="capitalize font-medium text-slate-900">admin@ktsolution.local</p>
+                              <p className="capitalize font-medium text-slate-900">admin@rvstechsolution.local</p>
                             </div>
                           </div>
                           <span className="rounded bg-slate-200 px-1.5 py-0.5 font-mono text-[11px] text-slate-700">
@@ -324,7 +324,7 @@ function LoginFormContent() {
                             variant="outline"
                             size="sm"
                             disabled={isSubmitting}
-                            onClick={() => handleQuickFill("admin@ktsolution.local", "password", "admin", false)}
+                            onClick={() => handleQuickFill("admin@rvstechsolution.local", "password", "admin", false)}
                             className="h-8 flex-1 text-xs bg-white"
                           >
                             {isKhmer ? "បំពេញទិន្នន័យ" : "Auto-fill"}
@@ -333,7 +333,7 @@ function LoginFormContent() {
                             type="button"
                             size="sm"
                             disabled={isSubmitting}
-                            onClick={() => handleQuickFill("admin@ktsolution.local", "password", "admin", true)}
+                            onClick={() => handleQuickFill("admin@rvstechsolution.local", "password", "admin", true)}
                             className="h-8 flex-1 text-xs bg-brand-slate hover:bg-slate-800 text-white"
                           >
                             {isKhmer ? "ចូលជា Admin" : "Login as Admin"}
@@ -424,7 +424,7 @@ export default function LoginPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex min-h-[85vh] items-center justify-center bg-slate-50">
+        <div className="flex min-h-[85vh] items-center justify-center bg-slate-50 pt-28">
           <div className="flex flex-col items-center gap-3">
             <Loader2 className="h-8 w-8 animate-spin text-navy-600" />
             <p className="text-sm text-slate-600">Loading sign in...</p>

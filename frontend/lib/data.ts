@@ -6,12 +6,8 @@ import {
   Cloud,
   Code2,
   Database,
-  Globe,
   GraduationCap,
-  Handshake,
-  Layers3,
   LayoutDashboard,
-  LineChart,
   MonitorSmartphone,
   PackageCheck,
   PanelTop,
@@ -25,26 +21,17 @@ import {
   UsersRound,
   Workflow
 } from "lucide-react";
-import type { BlogPost, NavigationItem, Project, Service } from "@/types";
+import type { BlogPost, Project, Service } from "@/types";
 
 export const siteConfig = {
-  name: "RVS Trust Solutions Cambodia",
+  name: "RVS Techsolution",
   headline: "Trusted Technology Solutions for Growing Cambodian Businesses",
   subheadline:
     "Custom Software, Web Applications, Mobile Apps, and Enterprise Systems Built with Integrity",
-  email: "hello@rvstrustsolutions.com",
+  email: "hello@rvstechsolution.com",
   phone: "+855 12 345 678",
   address: "Phnom Penh, Cambodia"
 };
-
-export const navigation: NavigationItem[] = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Services", href: "/services" },
-  { label: "Portfolio", href: "/portfolio" },
-  { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/contact" }
-];
 
 export const services: Service[] = [
   {
@@ -128,36 +115,16 @@ export const stats = [
   { label: "Support Coverage", value: "24/7" }
 ];
 
-export const whyChooseUs = [
-  {
-    title: "Enterprise Architecture",
-    description: "Clean API boundaries, clear permissions, scalable database design, and maintainable code.",
-    icon: Layers3
-  },
-  {
-    title: "Security First",
-    description: "Sanctum authentication, role permissions, audit-friendly workflows, and careful data access.",
-    icon: ShieldCheck
-  },
-  {
-    title: "Business Reporting",
-    description: "Operational dashboards, revenue views, project progress, and data your team can act on.",
-    icon: LineChart
-  },
-  {
-    title: "Long-Term Partner",
-    description: "We support planning, delivery, deployment, training, and iteration after launch.",
-    icon: Handshake
-  }
-];
-
 export const technologies = [
   "Laravel",
   "Next.js",
   "TypeScript",
   "React",
+  "MUI",
   "Tailwind CSS",
   "MySQL",
+  "PostgreSQL",
+  "Redis",
   "Sanctum",
   "Framer Motion",
   "Flutter",
@@ -238,47 +205,6 @@ export const posts: BlogPost[] = [
   }
 ];
 
-export const testimonials = [
-  {
-    quote:
-      "RVS Trust Solutions Cambodia helped us replace spreadsheets with a clean POS and inventory system that our team actually enjoys using.",
-    name: "Sokha Lim",
-    role: "Operations Director, Acme Retail"
-  },
-  {
-    quote:
-      "The project dashboard gave our managers real visibility into support tickets, invoices, and rollout progress.",
-    name: "Dara Chea",
-    role: "Managing Partner, Metro Supply"
-  },
-  {
-    quote:
-      "They understood the business process first, then built software around how our school really works.",
-    name: "Malis Chan",
-    role: "Principal, Bright Academy"
-  }
-];
-
-export const companyValues = [
-  { title: "Trust", description: "We build every relationship around honesty, clear communication, and dependable delivery." },
-  { title: "Quality", description: "We care about reliable systems, clean interfaces, maintainable code, and practical results." },
-  { title: "Integrity", description: "We keep commitments visible and make technical decisions that protect the client long term." },
-  { title: "Partnership", description: "We stay close after launch with support, iteration, training, and long-term collaboration." }
-];
-
-export const team = [
-  { name: "Raj", role: "Co-Founder", focus: "Technology strategy and trusted client solutions" },
-  { name: "Vun", role: "Co-Founder", focus: "Software delivery and operational systems" },
-  { name: "Siev Meng", role: "Co-Founder", focus: "Product quality, support, and long-term partnerships" }
-];
-
-export const timeline = [
-  { year: "Origin", title: "RVS Founded", description: "RVS Trust Solutions Cambodia was created through the close collaboration of Raj, Vun, and Siev Meng." },
-  { year: "Identity", title: "Trust Solutions", description: "The name reflects a commitment to reliable technology solutions clients can trust." },
-  { year: "Practice", title: "Business Systems Focus", description: "The team delivers websites, software platforms, POS, inventory, ERP, CRM, and mobile applications." },
-  { year: "Growth", title: "Long-Term Client Partner", description: "RVS focuses on quality, integrity, and lasting relationships with every client." }
-];
-
 export const adminModules = [
   { title: "Dashboard", href: "/admin", icon: LayoutDashboard, count: "Overview" },
   { title: "Users", href: "/admin/users", icon: UsersRound, count: "CRUD" },
@@ -297,11 +223,4 @@ export const adminModules = [
   { title: "Tickets", href: "/admin/tickets", icon: ShieldCheck, count: "Update" },
   { title: "Invoices", href: "/admin/invoices", icon: Database, count: "CRUD" },
   { title: "Settings", href: "/admin/settings", icon: Cloud, count: "Update" }
-];
-
-export const dashboardRows = [
-  ["Retail POS Suite", "Acme Retail", "Active", "62%"],
-  ["School Operations Portal", "Bright Academy", "Delivered", "100%"],
-  ["Inventory Control", "Metro Supply", "Review", "86%"],
-  ["Construction CRM", "BuildPro", "Planning", "24%"]
 ];

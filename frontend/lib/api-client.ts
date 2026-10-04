@@ -1,5 +1,5 @@
 export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api/v1";
-export const AUTH_TOKEN_KEY = "kt_solution_auth_token";
+export const AUTH_TOKEN_KEY = "rvs_techsolution_auth_token";
 
 type ApiEnvelope<T> = {
   message?: string;

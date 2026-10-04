@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { LayoutDashboard, Moon, Sparkles, Sun, X } from "lucide-react";
+import { LayoutDashboard, Moon, Search, Sparkles, Sun, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BrandLogo } from "@/components/ui/brand-logo";
 import { LanguageSwitcher } from "@/components/ui/language-switcher";
@@ -17,7 +17,8 @@ export function MobileMenu({
   theme,
   setTheme,
   t,
-  isAdmin
+  isAdmin,
+  onSearch
 }: {
   open: boolean;
   onClose: () => void;
@@ -26,6 +27,7 @@ export function MobileMenu({
   setTheme: (value: "light" | "dark") => void;
   t: (key: keyof Translations, fallback?: string) => string;
   isAdmin?: boolean;
+  onSearch?: () => void;
 }) {
   return (
     <AnimatePresence>
@@ -69,7 +71,15 @@ export function MobileMenu({
               ))}
             </div>
             <div className="mt-auto grid gap-3">
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid gap-2">
+                <button
+                  type="button"
+                  onClick={onSearch}
+                  className="flex h-11 items-center justify-center gap-2 rounded-lg border border-slate-200 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover:text-navy-400 dark:border-white/10 dark:text-white dark:hover:bg-white/8"
+                >
+                  <Search className="h-4 w-4" />
+                  {t("nav_search")}
+                </button>
                 <button
                   type="button"
                   onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -83,14 +93,14 @@ export function MobileMenu({
                 </div>
               </div>
               {isAdmin && (
-                <Button asChild className="rounded-lg bg-navy-600 hover:bg-navy-700 text-white dark:bg-navy-500 dark:hover:bg-navy-400">
+                <Button asChild className="rounded bg-navy-600 hover:bg-navy-700 text-white dark:bg-navy-500 dark:hover:bg-navy-400">
                   <Link href="/admin" onClick={onClose}>
                     <LayoutDashboard className="h-4 w-4" />
                     {t("nav_admin")} Console
                   </Link>
                 </Button>
               )}
-              <Button asChild className="rounded-lg">
+              <Button asChild className="rounded">
                 <Link href="/contact" onClick={onClose}>
                   <Sparkles className="h-4 w-4" />
                   {t("nav_consultation")}

@@ -62,11 +62,6 @@ export type AdminResourceConfig = {
   searchPlaceholder?: string;
 };
 
-const activeOptions: AdminOption[] = [
-  { label: "Active", value: "active" },
-  { label: "Inactive", value: "inactive" }
-];
-
 const statusOptions = {
   user: [
     { label: "Active", value: "active" },

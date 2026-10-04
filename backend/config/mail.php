@@ -19,7 +19,7 @@ return [
         ],
     ],
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@ktsolution.local'),
-        'name' => env('MAIL_FROM_NAME', 'KT Solution'),
+        'address' => env('MAIL_FROM_ADDRESS', 'hello@rvstechsolution.com'),
+        'name' => env('MAIL_FROM_NAME', 'RVS Techsolution'),
     ],
 ];

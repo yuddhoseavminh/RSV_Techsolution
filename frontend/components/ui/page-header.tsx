@@ -17,7 +17,7 @@ export function PageHeader({ title, description, actions, className }: PageHeade
       )}
     >
       <div>
-        <h1 className="text-3xl font-bold text-slate-950">{title}</h1>
+        <h1 className="text-3xl font-[450] tracking-[-0.02em] text-slate-950">{title}</h1>
         {description ? (
           <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">{description}</p>
         ) : null}

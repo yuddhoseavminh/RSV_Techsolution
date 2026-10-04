@@ -6,18 +6,14 @@ import { useEffect, useRef, useState } from "react";
 import {
   Bell,
   ChevronDown,
-  ExternalLink,
   Globe,
-  Languages,
   LogOut,
   Search,
   Settings,
   ShieldAlert,
   Loader2,
-  ShieldCheck,
   Menu,
-  X,
-  Mail
+  X
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { useAuth } from "@/components/auth/auth-provider";
@@ -51,7 +47,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const { user, isLoading, isAuthenticated, isAdmin, logout } = useAuth();
-  const { language, toggleLanguage, isKhmer } = useLanguage();
+  const { isKhmer } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
@@ -253,7 +249,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
               <button
                 type="button"
                 onClick={() => setUserMenuOpen((prev) => !prev)}
-                className="flex items-center gap-2.5 rounded-lg p-1.5 transition hover:bg-slate-100 focus:outline-hidden"
+                className="flex items-center gap-2.5 rounded-lg p-1.5 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-navy-400/60"
                 aria-expanded={userMenuOpen}
                 aria-haspopup="true"
               >
@@ -300,7 +296,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
                     <Link
                       href="/admin/settings"
                       onClick={() => setUserMenuOpen(false)}
-                      className="flex items-center gap-2.5 rounded-lg p-1.5 transition hover:bg-slate-100 focus:outline-hidden"
+                      className="flex items-center gap-2.5 rounded-lg p-1.5 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-navy-400/60"
                     >
                       <Settings className="h-4 w-4 text-slate-500" />
                       <span>{isKhmer ? "ការកំណត់ក្រុមហ៊ុន និងប្រព័ន្ធ" : "Company & System Settings"}</span>
@@ -309,7 +305,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
                       href="/"
                       target="_blank"
                       onClick={() => setUserMenuOpen(false)}
-                      className="flex items-center gap-2.5 rounded-lg p-1.5 transition hover:bg-slate-100 focus:outline-hidden"
+                      className="flex items-center gap-2.5 rounded-lg p-1.5 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-navy-400/60"
                     >
                       <Globe className="h-4 w-4 text-slate-500" />
                       <span>{isKhmer ? "មើលគេហទំព័រផ្សាយផ្ទាល់ (CMS)" : "View Live Website (CMS)"}</span>

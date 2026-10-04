@@ -14,12 +14,18 @@ type CalloutProps = React.HTMLAttributes<HTMLDivElement> & {
   tone?: CalloutTone;
 };
 
-export function Callout({ tone = "error", className, ...props }: CalloutProps) {
+export function Callout({ tone = "error", className, children, ...props }: CalloutProps) {
+  // Every call site binds nullable state (`{error}`, `{message}`) — render
+  // nothing rather than an empty tinted bar when there is no message yet.
+  if (!children) return null;
+
   return (
     <div
       role={tone === "error" ? "alert" : "status"}
       className={cn("mb-4 rounded-xl border p-3 text-sm", tones[tone], className)}
       {...props}
-    />
+    >
+      {children}
+    </div>
   );
 }

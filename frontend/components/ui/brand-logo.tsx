@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useSettings } from "@/lib/settings-context";
+import { LogoPlaceholder } from "@/components/ui/logo-placeholder";
 
 type BrandLogoProps = {
   href?: string;
@@ -33,48 +35,40 @@ export function BrandLogo({
   const sizeStyles = {
     sm: {
       image: "h-8 max-w-[110px]",
-      badge: "h-8 w-8 text-xs",
+      badge: "h-8 w-8",
       name: "text-sm",
       sub: "text-[10px]"
     },
     md: {
       image: "h-10 max-w-[140px]",
-      badge: "h-10 w-10 text-sm",
+      badge: "h-10 w-10",
       name: "text-base",
       sub: "text-xs"
     },
     lg: {
       image: "h-12 max-w-[180px]",
-      badge: "h-12 w-12 text-base",
+      badge: "h-12 w-12",
       name: "text-lg",
       sub: "text-xs"
     }
   }[size];
 
-  // Initials fallback
-  const initials = (companyName || "KT")
-    .split(" ")
-    .map((w) => w[0])
-    .filter(Boolean)
-    .slice(0, 3)
-    .join("")
-    .toUpperCase();
-
   const content = (
     <div className={`flex items-center gap-3 ${className}`}>
       {logoUrl && !imageError ? (
-        <img
+        <Image
           src={logoUrl}
           alt={companyName}
+          width={160}
+          height={40}
+          unoptimized
           className={`${sizeStyles.image} object-contain transition-transform duration-200 hover:scale-105 ${imageClassName}`}
           onError={() => setImageError(true)}
         />
       ) : (
-        <span
-          className={`flex ${sizeStyles.badge} items-center justify-center rounded-lg bg-brand-slate font-bold text-white shadow-sm ${badgeClassName}`}
-        >
-          {initials || "KT"}
-        </span>
+        <LogoPlaceholder
+          className={`${sizeStyles.badge} shrink-0 transition-transform duration-200 hover:scale-105 ${badgeClassName}`}
+        />
       )}
 
       {showText && (
@@ -92,7 +86,11 @@ export function BrandLogo({
 
   if (href) {
     return (
-      <Link href={href} onClick={onClick} className="inline-flex items-center focus:outline-hidden">
+      <Link
+        href={href}
+        onClick={onClick}
+        className="inline-flex items-center rounded-lg focus:outline-none focus:ring-2 focus:ring-inset focus:ring-navy-400/60"
+      >
         {content}
       </Link>
     );

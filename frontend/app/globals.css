@@ -6,12 +6,7 @@
 
 :root {
   --background: 0 0% 98%;
-  --foreground: 222 47% 11%;
-  --muted: 210 40% 96%;
-  --muted-foreground: 215 16% 47%;
   --border: 220 14% 91%;
-  --input: 220 14% 91%;
-  --ring: 237 100% 9%;
   /* Latin first, Khmer second: Inter carries no Khmer glyphs, so Khmer
      characters fall through to Kantumruy Pro while Latin stays in the brand face.
      Reversing the order would set embedded English in Kantumruy's Latin. */
@@ -27,7 +22,8 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 96px;
+  /* 64px header + 1px border + 15px breathing room. */
+  scroll-padding-top: 80px;
 }
 
 body {
@@ -40,6 +36,13 @@ body {
   letter-spacing: 0;
   text-rendering: optimizeLegibility;
   font-synthesis: none;
+}
+
+/* Scroll reveals ship opacity:0 in the SSR HTML. Without JS framer-motion
+   never runs, so force those nodes visible rather than leaving them blank. */
+html:not(.js) [style*="opacity:0"] {
+  opacity: 1 !important;
+  transform: none !important;
 }
 
 /* Headings use the display face, matching the reference pairing.
@@ -99,11 +102,6 @@ html[lang="km"] .eyebrow {
   font-size: 0.8125rem;
 }
 
-html.dark {
-  /* Focus rings must stay visible on #0a0a0a — brand navy-600 does not. */
-  --ring: 217 88% 51%;
-}
-
 html.dark body {
   background: #0a0a0a;
   color: #f8fafc;
@@ -145,7 +143,7 @@ html.dark ::-webkit-scrollbar-thumb {
 
 @layer components {
   .section-shell {
-    width: min(1180px, calc(100% - 32px));
+    width: min(1360px, calc(100% - 32px));
     margin-inline: auto;
   }
 
@@ -154,6 +152,67 @@ html.dark ::-webkit-scrollbar-thumb {
     font-weight: 500;
     letter-spacing: 0.18em;
     text-transform: uppercase;
+  }
+
+  /* Caret for TypedHeadline: a full-em bar that sits on the baseline after
+     the last revealed character and blinks once every half second
+     (`0 0.1 1` → dark for 10% of the cycle, then out). Mirrors Antigravity's
+     `.blinking-cursor`. */
+  .caret {
+    display: inline-block;
+    width: 0.055em;
+    height: 0.86em;
+    margin-left: 0.06em;
+    background: currentColor;
+    vertical-align: baseline;
+    transform: translateY(0.1em);
+    animation: caret-blink 0.5s infinite;
+  }
+
+  /* Hero headline — the Antigravity type ladder, measured live:
+     >1600 → 107/107/-2.14 · 1025–1600 → 72/72.04/-1.44 · ≤1024 → 56/56.04/-1.12
+     ≤767 → 40/44.04/-0.8 · ≤425 → 44/46.04/-0.6 (px / px / letter-spacing px).
+     Order matters: each block only overrides widths it applies to.
+     `line-height` is `!important` so it beats the blanket `h1` rule above
+     (0,0,1) — `html[lang="km"] h1` (0,1,2) still wins, which is what we want:
+     Khmer needs the looser 1.45 leading and no tracking. */
+  .hero-headline {
+    font-weight: 450;
+    font-size: 72px;
+    line-height: 72.04px !important;
+    letter-spacing: -1.44px;
+  }
+
+  @media (min-width: 1601px) {
+    .hero-headline {
+      font-size: 107px;
+      line-height: 107px !important;
+      letter-spacing: -2.14px;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .hero-headline {
+      font-size: 56px;
+      line-height: 56.04px !important;
+      letter-spacing: -1.12px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .hero-headline {
+      font-size: 40px;
+      line-height: 44.04px !important;
+      letter-spacing: -0.8px;
+    }
+  }
+
+  @media (max-width: 425px) {
+    .hero-headline {
+      font-size: 44px;
+      line-height: 46.04px !important;
+      letter-spacing: -0.6px;
+    }
   }
 
   .premium-grid {
@@ -169,26 +228,46 @@ html.dark ::-webkit-scrollbar-thumb {
       linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   }
-
-  .focus-ring {
-    outline: 2px solid transparent;
-    outline-offset: 2px;
-  }
-
-  .focus-ring:focus-visible {
-    outline-color: #00022e;
-  }
-
-  html.dark .focus-ring:focus-visible {
-    outline-color: #1468f0;
-  }
-
 }
 
-/* Dropdown / toast entrances. Hand-rolled rather than pulling in a plugin. */
+/* Dropdown / toast entrances. Hand-rolled rather than pulling in a plugin.
+ *
+ * Tailwind's `duration-*` utility only writes `transition-duration`, so the
+ * value is also mirrored onto `--tw-duration` below. Without that,
+ * `.animate-in` had `animation-name` but a 0s duration and the entrance
+ * never played.
+ */
 @layer utilities {
+  .duration-75 {
+    --tw-duration: 75ms;
+  }
+  .duration-100 {
+    --tw-duration: 100ms;
+  }
+  .duration-150 {
+    --tw-duration: 150ms;
+  }
+  .duration-200 {
+    --tw-duration: 200ms;
+  }
+  .duration-300 {
+    --tw-duration: 300ms;
+  }
+  .duration-500 {
+    --tw-duration: 500ms;
+  }
+  .duration-700 {
+    --tw-duration: 700ms;
+  }
+  .duration-1000 {
+    --tw-duration: 1000ms;
+  }
+
   .animate-in {
     animation-name: enter;
+    animation-duration: var(--tw-duration, 150ms);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    animation-fill-mode: both;
   }
 
   .fade-in {
@@ -197,6 +276,18 @@ html.dark ::-webkit-scrollbar-thumb {
 
   .zoom-in-95 {
     --tw-enter-scale: 0.95;
+  }
+}
+
+@keyframes caret-blink {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
 

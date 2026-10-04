@@ -1,22 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { 
-  CreditCard, 
-  FolderKanban, 
-  Inbox, 
-  Ticket, 
-  UsersRound, 
-  Plus, 
-  FileText, 
-  Settings, 
-  Activity, 
-  ArrowUpRight, 
-  CheckCircle2, 
-  Clock,
+import { useEffect, useState } from "react";
+import {
+  CreditCard,
+  FolderKanban,
+  UsersRound,
+  Plus,
+  FileText,
+  CheckCircle2,
   GraduationCap,
-  MessageSquare,
-  Sparkles,
   Trash2,
   AlertCircle,
   Search,
@@ -25,11 +17,9 @@ import {
   Wallet,
   ChevronDown
 } from "lucide-react";
-import Link from "next/link";
 import { DataTable } from "@/components/admin/data-table";
 import { apiClient, apiMessage } from "@/lib/api-client";
 import { formatCurrency } from "@/lib/utils";
-import { useAuth } from "@/components/auth/auth-provider";
 
 type DashboardData = {
   cards: {
@@ -42,17 +32,9 @@ type DashboardData = {
   monthly_revenue: Record<string, number | string>;
 };
 
-type ProjectRow = {
-  name?: string;
-  client?: { name?: string } | string | null;
-  status?: string;
-  progress?: number;
-};
-
 export function AdminDashboard() {
-  const { user } = useAuth();
   const [dashboard, setDashboard] = useState<DashboardData | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   
   // Tabs active state
