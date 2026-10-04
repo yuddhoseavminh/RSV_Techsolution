@@ -6,6 +6,7 @@ import { Hero } from "./hero";
 import { Industries } from "./industries";
 import { Pricing } from "./pricing";
 import { Process } from "./process";
+import { ProductCover } from "./product-cover";
 import { Proof } from "./proof";
 import { ServicesBand } from "./services-band";
 import { WorkBand } from "./work-band";
@@ -21,6 +22,7 @@ export function LandingPage() {
   return (
     <>
       <Hero />
+      <ProductCover />
       <CapabilityStrip />
       <Capabilities />
       <ServicesBand />
