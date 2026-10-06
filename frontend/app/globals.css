@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&family=Kantumruy+Pro:ital,wght@0,300..700;1,300..700&display=swap');
+/* Inter + Kantumruy Pro are loaded in app/layout.tsx via preconnect + <link>
+   (Antigravity's approach). A CSS @import would only start the font fetch
+   after this stylesheet parses, leaving the fallback face on screen longer
+   and shifting text when the real face swaps in. */
 
 @tailwind base;
 @tailwind components;
@@ -169,6 +172,13 @@ html.dark ::-webkit-scrollbar-thumb {
     animation: caret-blink 0.5s infinite;
   }
 
+  /* The caret stays on screen after the last char, then fades out over 0.5s —
+     Antigravity's `cursor-persists: false` hand-off, during which the rest of
+     the hero is still hidden. */
+  .caret-fade {
+    animation: caret-out 0.5s ease forwards;
+  }
+
   /* Hero headline — the Antigravity type ladder, measured live:
      >1600 → 107/107/-2.14 · 1025–1600 → 72/72.04/-1.44 · ≤1024 → 56/56.04/-1.12
      ≤767 → 40/44.04/-0.8 · ≤425 → 44/46.04/-0.6 (px / px / letter-spacing px).
@@ -213,6 +223,46 @@ html.dark ::-webkit-scrollbar-thumb {
       line-height: 46.04px !important;
       letter-spacing: -0.6px;
     }
+  }
+
+  /* Hero entrance — Antigravity's welcome timeline, expressed as CSS:
+       1. TypedHeadline types the headline (JS, the only piece that must wait
+          for React),
+       2. the caret fades out over 0.5s,
+       3. logo (1em rise) + CTA (50px rise) reveal over 2s and the backdrop
+          fades in over 4s — all together, all power2.out.
+     `html.js` holds all three hidden from first paint so nothing pops before
+     React can start typing; without JS the rules never apply and the hero
+     simply shows. Reveals only animate once `.hero-typed` lands on the
+     section, with `animation-delay` covering the caret's fade. Only
+     opacity/transform are ever touched, so the layout never shifts. */
+  html.js .hero-enter-logo,
+  html.js .hero-enter-cta,
+  html.js .hero-enter-backdrop {
+    opacity: 0;
+  }
+
+  .hero-typed .hero-enter-logo,
+  .hero-typed .hero-enter-cta,
+  .hero-typed .hero-enter-backdrop {
+    animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+    animation-fill-mode: both;
+    animation-delay: 0.5s;
+  }
+
+  .hero-typed .hero-enter-logo {
+    animation-name: hero-rise;
+    animation-duration: 2s;
+  }
+
+  .hero-typed .hero-enter-cta {
+    animation-name: hero-rise-50;
+    animation-duration: 2s;
+  }
+
+  .hero-typed .hero-enter-backdrop {
+    animation-name: hero-fade;
+    animation-duration: 4s;
   }
 
   .premium-grid {
@@ -291,6 +341,49 @@ html.dark ::-webkit-scrollbar-thumb {
   }
 }
 
+/* Hero entrance keyframes — see `.hero-enter-*` above. */
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(1em);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes hero-rise-50 {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Backdrop: Antigravity fades the particle field in over 4s — opacity only,
+   no scale. */
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes caret-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 @keyframes enter {
   from {
     opacity: var(--tw-enter-opacity, 1);
@@ -304,6 +397,7 @@ html.dark ::-webkit-scrollbar-thumb {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;

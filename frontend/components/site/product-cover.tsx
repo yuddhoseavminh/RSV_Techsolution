@@ -1,14 +1,44 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { revealItem } from "@/components/motion/fade-in";
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { Section, SectionHeading } from "@/components/ui/section";
 import { useLanguage } from "@/lib/language-context";
 
-/** Framed product shot sitting directly under the hero. */
+/**
+ * Framed product shot sitting directly under the hero.
+ *
+ * The frame plays Antigravity's intro-box move: as it scrolls in it grows
+ * from small to full size, scrubbed to the scroll (their GSAP recipe —
+ * `scale 0.5 → 1`, trigger `top bottom → top center`, `scrub: 1`,
+ * `power2.out`; 0.92 on ≤768px, disabled under reduced motion).
+ */
 export function ProductCover() {
   const { isKhmer } = useLanguage();
+  const figureRef = useRef<HTMLElement>(null);
+  const reduceMotion = useReducedMotion();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    const sync = () => setIsMobile(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  const { scrollYProgress } = useScroll({
+    target: figureRef,
+    offset: ["start end", "start center"],
+  });
+  // Overdamped spring ≈ GSAP's 1s scrub catch-up: smooth, never bounces.
+  const smooth = useSpring(scrollYProgress, { stiffness: 100, damping: 25, mass: 1 });
+  const from = reduceMotion ? 1 : isMobile ? 0.92 : 0.5;
+  const scale = useTransform(smooth, (value) => {
+    const eased = 1 - Math.pow(1 - value, 3); // power2.out ≡ cubic-bezier(0.33, 1, 0.68, 1)
+    return from + (1 - from) * eased;
+  });
 
   return (
     <Section
@@ -25,7 +55,7 @@ export function ProductCover() {
         }
       />
 
-      <motion.figure variants={revealItem} className="relative">
+      <motion.figure ref={figureRef} style={{ scale }} className="relative">
         {/* Brand glow lifting the frame off the page. */}
         <div
           aria-hidden

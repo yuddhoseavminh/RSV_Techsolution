@@ -94,6 +94,7 @@ Route::prefix('v1')->group(function (): void {
             Route::get('/settings', [SettingController::class, 'index']);
             Route::put('/settings', [SettingController::class, 'update']);
             Route::post('/settings/logo', [SettingController::class, 'uploadLogo']);
+            Route::post('/settings/favicon', [SettingController::class, 'uploadFavicon']);
         });
     });
 });

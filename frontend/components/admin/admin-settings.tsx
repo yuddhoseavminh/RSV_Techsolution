@@ -60,10 +60,12 @@ export function AdminSettings() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isUploadingLogo, setIsUploadingLogo] = useState(false);
+  const [isUploadingFavicon, setIsUploadingFavicon] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const faviconInputRef = useRef<HTMLInputElement>(null);
 
   const loadSettings = async () => {
     setIsLoading(true);
@@ -137,6 +139,49 @@ export function AdminSettings() {
     setMessage("Logo removed. Click 'Save Settings' to apply changes.");
   };
 
+  const handleFaviconUpload = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      setError("Favicon file size cannot exceed 5MB.");
+      return;
+    }
+
+    setIsUploadingFavicon(true);
+    setError(null);
+    setMessage(null);
+
+    try {
+      const formData = new FormData();
+      formData.append("favicon", file);
+
+      const response = await apiClient<{ url: string }>("/admin/settings/favicon", {
+        method: "POST",
+        body: formData
+      });
+
+      if (response?.url) {
+        updateValue("seo", "favicon", response.url);
+        // Same fetch the site uses, so the tab icon swaps without a reload.
+        void refreshGlobalSettings();
+        setMessage("Favicon uploaded successfully!");
+      }
+    } catch (requestError) {
+      setError(apiMessage(requestError));
+    } finally {
+      setIsUploadingFavicon(false);
+      if (faviconInputRef.current) {
+        faviconInputRef.current.value = "";
+      }
+    }
+  };
+
+  const handleRemoveFavicon = () => {
+    updateValue("seo", "favicon", "");
+    setMessage("Favicon removed. Click 'Save Settings' to apply changes.");
+  };
+
   const addSetting = () => {
     if (!newGroup.trim() || !newKey.trim()) {
       setError("Group and key are required.");
@@ -170,6 +215,7 @@ export function AdminSettings() {
   };
 
   const companyLogo = settings.company?.logo || "";
+  const favicon = settings.seo?.favicon || "";
 
   const isDemoAdminEnabled = settings.auth?.demo_admin_login !== "0" && settings.auth?.demo_admin_login !== "false";
   const isDemoClientEnabled = settings.auth?.demo_client_login !== "0" && settings.auth?.demo_client_login !== "false";
@@ -383,6 +429,113 @@ export function AdminSettings() {
               </div>
             </Card>
 
+            {/* Favicon Upload Card */}
+            <Card className="p-6 border-slate-200 text-xs">
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-navy-50 text-navy-600">
+                  <ImageIcon className="h-5 w-5" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-slate-950">Site Icon (Favicon)</h2>
+                  <p className="text-xs text-slate-500">
+                    Browser-tab icon for the whole site. SVG, PNG, WebP or JPG (max 5MB) — falls back to the built-in icon when empty.
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-4 flex flex-col gap-5 sm:flex-row sm:items-center">
+                {/* Favicon Preview */}
+                <div className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-slate-300 bg-white p-2 text-xs transition hover:border-slate-400">
+                  {favicon ? (
+                    <Image
+                      src={favicon}
+                      alt="Favicon Preview"
+                      width={64}
+                      height={64}
+                      unoptimized
+                      className="h-full w-full object-contain"
+                      onError={(e) => {
+                        e.currentTarget.src = "";
+                      }}
+                    />
+                  ) : (
+                    <div className="flex flex-col items-center justify-center gap-1 text-slate-500">
+                      <ImageIcon className="h-6 w-6 stroke-[1.5]" />
+                      <span className="text-[10px] font-medium text-slate-800">Default</span>
+                    </div>
+                  )}
+
+                  {isUploadingFavicon && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm">
+                      <Loader2 className="h-5 w-5 animate-spin text-navy-600" />
+                    </div>
+                  )}
+                </div>
+
+                {/* Upload Controls */}
+                <div className="flex flex-1 flex-col gap-3">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <input
+                      ref={faviconInputRef}
+                      type="file"
+                      accept="image/png,image/jpeg,image/jpg,image/webp,image/svg+xml"
+                      className="hidden"
+                      onChange={handleFaviconUpload}
+                      id="site-favicon-upload"
+                    />
+                    <Button
+                      type="button"
+                      variant="default"
+                      size="sm"
+                      disabled={isUploadingFavicon}
+                      onClick={() => faviconInputRef.current?.click()}
+                      className="gap-2 bg-navy-600 hover:bg-navy-700 text-white dark:bg-navy-500 dark:hover:bg-navy-400"
+                    >
+                      {isUploadingFavicon ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <Upload className="h-4 w-4" />
+                      )}
+                      <span>{favicon ? "Change Favicon" : "Upload Favicon"}</span>
+                    </Button>
+
+                    {favicon && (
+                      <>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={handleRemoveFavicon}
+                          className="gap-1.5 text-rose-600 hover:bg-rose-50 hover:text-rose-700 border-slate-200"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                          <span>Remove</span>
+                        </Button>
+
+                        <Button asChild variant="ghost" size="sm" className="grid gap-1.5 text-slate-500 text-xs">
+                          <a href={favicon} target="_blank" rel="noopener noreferrer">
+                            <ExternalLink className="h-3.5 w-3.5" />
+                            <span>View Full</span>
+                          </a>
+                        </Button>
+                      </>
+                    )}
+                  </div>
+
+                  {/* Favicon URL Input (optional manual entry) */}
+                  <div className="grid gap-1">
+                    <span className="text-xs font-medium text-slate-800">Or enter Favicon Image URL:</span>
+                    <Input
+                      value={favicon}
+                      onChange={(e) => updateValue("seo", "favicon", e.target.value)}
+                      placeholder="https://example.com/favicon.svg"
+                      className="h-9 text-xs bg-white"
+                    />
+                  </div>
+                </div>
+              </div>
+            </Card>
+
             {/* Demo Login Access Controls Card */}
             <Card className="p-6 border-slate-200 text-xs">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
@@ -510,14 +663,18 @@ export function AdminSettings() {
                     <p className="text-xs text-slate-500">Configure parameters for the {group} group.</p>
                   </div>
                   <div className="mt-4 grid gap-4 md:grid-cols-2">
-                    {Object.entries(items).map(([key, value]) => (
-                      <label key={`${group}-${key}`} className="grid gap-1.5">
-                        <span className="text-sm font-medium text-slate-700 capitalize">
-                          {key.replace(/_/g, " ")}
-                        </span>
-                        <Input value={value} onChange={(event) => updateValue(group, key, event.target.value)} />
-                      </label>
-                    ))}
+                    {Object.entries(items)
+                      // `favicon` has its own upload card above; it would just
+                      // duplicate the URL as a raw text field here.
+                      .filter(([key]) => !(group === "seo" && key === "favicon"))
+                      .map(([key, value]) => (
+                        <label key={`${group}-${key}`} className="grid gap-1.5">
+                          <span className="text-sm font-medium text-slate-700 capitalize">
+                            {key.replace(/_/g, " ")}
+                          </span>
+                          <Input value={value} onChange={(event) => updateValue(group, key, event.target.value)} />
+                        </label>
+                      ))}
                   </div>
                 </Card>
               ))}

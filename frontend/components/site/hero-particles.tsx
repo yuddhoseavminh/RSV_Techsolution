@@ -17,10 +17,13 @@ import { useEffect, useRef } from "react";
  *      capsule rotated to face the ring, tinted by a three-stop noise colour
  *      ramp and dimmed by its own velocity.
  *
- * Camera, scale, colour ramps, ring constants and type sizes are the measured
- * Antigravity values: PerspectiveCamera(40°, z = 3.1), mesh scale 5,
- * ring 0.006 / 0.107 / displacement 0.62, particles-scale 0.59. Density (272)
- * and AMBIENT_SPEED are ours: ~2x the points, drifting ~3x slower.
+ * Camera, scale, ring constants, eases and time base are Antigravity's own
+ * measured values — PerspectiveCamera(40°, z = 3.1), mesh scale 5,
+ * ring 0.006 / 0.107 / displacement 0.62, density 230, particles-scale 0.59,
+ * hover ease 0.02 / idle ease 0.01, cursor tracked on window — so the field
+ * flows and follows the pointer at exactly their pace. The only additions of
+ * ours are CENTRE_LIFT (a little extra ink under the headline) and capping
+ * devicePixelRatio at 2.
  */
 
 const SIM_SIZE = 256;
@@ -30,18 +33,18 @@ const CAM_Z = 3.1;
 const NEAR = 0.1;
 const FAR = 1000;
 const MESH_SCALE = 5;
-const PARTICLES_SCALE = 0.70;
-const DENSITY = 272;
-/** Global clock divisor — the field drifts ~3x slower than the raw sim. */
-const AMBIENT_SPEED = 0.15;
-/** Per-frame ring easing. Hover lags the cursor so it reads as a slow wave. */
+const PARTICLES_SCALE = 0.59;
+const DENSITY = 230;
+/** Global clock divisor — 1 = raw elapsed seconds, Antigravity's time base. */
+const AMBIENT_SPEED = 1;
+/** Per-frame ring easing — Antigravity's: hover 0.02, idle 0.01. */
 const HOVER_EASE = 0.02;
-const IDLE_EASE = 0.002;
+const IDLE_EASE = 0.01;
 /** Extra ink over the middle of the field, where the headline sits. */
 const CENTRE_LIFT_RADIUS = 0.3;
 const CENTRE_LIFT_AMOUNT = 0.3;
-const RING_WIDTH = 0.06;
-const RING_WIDTH2 = 0.006;
+const RING_WIDTH = 0.006;
+const RING_WIDTH2 = 0.107;
 const RING_DISPLACEMENT = 0.62;
 /** Antigravity multiplies the raycast hit by 0.175 to reach sim space. */
 const CURSOR_GAIN = 0.175;
@@ -165,7 +168,6 @@ const SIM_FS = `
     pos *= .8;
 
     float dist = distance(curentPos.xy, uRingPos);
-    float ripple = 1. - smoothstep(.1, .45, dist);
     float noise0 = snoise(vec3(curentPos.xy * .2 + vec2(18.4924, 72.9744), time * 0.5));
     float dist1 = distance(curentPos.xy + (noise0 * .005), uRingPos);
 
@@ -193,13 +195,13 @@ const SIM_FS = `
     vec2 disp = vec2(noise1, noise2) * .03;
     disp += vec2(noise3, noise4) * .005;
 
-    disp.x += sin((refPos.x * 20.) + (time * 4.)) * .008 * ripple;
-    disp.y += cos((refPos.y * 20.) + (time * 3.)) * .008 * ripple;
+    disp.x += sin((refPos.x * 20.) + (time * 4.)) * .02 * clamp(dist, 0., 1.);
+    disp.y += cos((refPos.y * 20.) + (time * 3.)) * .02 * clamp(dist, 0., 1.);
 
     pos -= (uRingPos - (curentPos + disp)) * pow(t2, .75) * uRingDisplacement;
 
     float scaleDiff = t - scale;
-    scaleDiff *= mix(.03, .2, ripple);
+    scaleDiff *= .2;
     scale += scaleDiff;
 
     vec2 finalPos = curentPos + disp + (pos * .25);
@@ -403,8 +405,7 @@ export function HeroParticles() {
 
   useEffect(() => {
     const canvas = ref.current;
-    const host = canvas?.parentElement;
-    if (!canvas || !host) return;
+    if (!canvas) return;
 
     const gl = canvas.getContext("webgl2", {
       alpha: true,
@@ -539,14 +540,19 @@ export function HeroParticles() {
     let everRendered = false;
 
     const ringPos = { x: 0, y: 0 };
-    const pointer = { ndcX: 0, ndcY: 0, active: false };
+    // Raw window-level cursor position (Antigravity tracks `mousemove` on
+    // window); ndc + active are recomputed against the canvas rect every frame.
+    const pointer = { x: -1e4, y: -1e4, ndcX: 0, ndcY: 0, active: false };
     let pixelRatio = 1;
     let cssW = 1;
     let cssH = 1;
     let running = false;
     let onScreen = true;
     let frame = 0;
-    let started = 0;
+    // Seconds accumulated before the current run segment — keeps uTime
+    // continuous across visibility/intersection pauses (AG's clock never resets).
+    let elapsedBase = 0;
+    let segmentStart = 0;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     const palette = (): Palette =>
@@ -554,7 +560,25 @@ export function HeroParticles() {
 
     const radiusAt = (time: number) => 0.175 + Math.sin(time) * 0.03 + Math.cos(time * 3) * 0.02;
 
+    // Per-frame cursor→ndc mapping, straight from Antigravity's bounds check:
+    // the cursor counts as "over" the field only while it is inside the canvas
+    // rect, so hovering hero text/buttons (siblings, not descendants) can't
+    // interrupt it the way element-level pointerenter/leave did.
+    const syncPointer = () => {
+      const rect = canvas.getBoundingClientRect();
+      if (!rect.width || !rect.height) {
+        pointer.active = false;
+        return;
+      }
+      const nx = ((pointer.x - rect.left) / rect.width) * 2 - 1;
+      const ny = 1 - ((pointer.y - rect.top) / rect.height) * 2;
+      pointer.ndcX = nx;
+      pointer.ndcY = ny;
+      pointer.active = nx >= -1 && nx <= 1 && ny >= -1 && ny <= 1;
+    };
+
     const updateRing = (time: number) => {
+      syncPointer();
       const t = valueNoise(time * 0.66 + 94.234) * 2 - 1;
       const n = valueNoise(time * 0.75 + 21.028) * 2 - 1;
       let cx: number;
@@ -654,9 +678,11 @@ export function HeroParticles() {
       draw(0);
     };
 
+    const elapsed = () => elapsedBase + (performance.now() - segmentStart) / 1000;
+
     const tick = () => {
       if (!running) return;
-      const time = ((performance.now() - started) / 1000) * AMBIENT_SPEED;
+      const time = elapsed() * AMBIENT_SPEED;
       updateRing(time);
       const radius = radiusAt(time);
       simStep(time, radius);
@@ -667,11 +693,14 @@ export function HeroParticles() {
     const start = () => {
       if (running || reducedMotion.matches) return;
       running = true;
-      started = performance.now();
+      segmentStart = performance.now();
       frame = window.requestAnimationFrame(tick);
     };
     const stop = () => {
-      running = false;
+      if (running) {
+        elapsedBase += (performance.now() - segmentStart) / 1000;
+        running = false;
+      }
       window.cancelAnimationFrame(frame);
     };
     const syncRun = () => {
@@ -691,14 +720,9 @@ export function HeroParticles() {
     };
 
     const onPointerMove = (event: PointerEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      pointer.ndcX = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-      pointer.ndcY = 1 - ((event.clientY - rect.top) / rect.height) * 2;
-      pointer.active = true;
-      if (reducedMotion.matches) draw(0);
-    };
-    const onPointerLeave = () => {
-      pointer.active = false;
+      pointer.x = event.clientX;
+      pointer.y = event.clientY;
+      syncPointer();
       if (reducedMotion.matches) draw(0);
     };
 
@@ -711,8 +735,7 @@ export function HeroParticles() {
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(canvas);
 
-    host.addEventListener("pointermove", onPointerMove);
-    host.addEventListener("pointerleave", onPointerLeave);
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
     document.addEventListener("visibilitychange", syncRun);
     reducedMotion.addEventListener("change", syncRun);
 
@@ -732,8 +755,7 @@ export function HeroParticles() {
       stop();
       observer.disconnect();
       resizeObserver.disconnect();
-      host.removeEventListener("pointermove", onPointerMove);
-      host.removeEventListener("pointerleave", onPointerLeave);
+      window.removeEventListener("pointermove", onPointerMove);
       document.removeEventListener("visibilitychange", syncRun);
       reducedMotion.removeEventListener("change", syncRun);
       gl.deleteTexture(refTex);
