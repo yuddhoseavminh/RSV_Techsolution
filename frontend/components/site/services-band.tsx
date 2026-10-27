@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { ArrowUpRight, Check } from "lucide-react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { revealItem, stagger } from "@/components/motion/fade-in";
 import { Section, SectionHeading } from "@/components/ui/section";
 import { services } from "@/lib/data";
@@ -11,7 +11,11 @@ import { localizeService } from "@/lib/i18n/service-copy";
 import { useLanguage } from "@/lib/language-context";
 import { cn } from "@/lib/utils";
 
-const SWAP = 0.28 as const;
+/** Panel swap: quick fade/drift out, then the new card pops up and fades in. */
+const SWAP_OUT = 0.14 as const;
+const SWAP_IN = 0.34 as const;
+/** Same expo-out curve the reveal variants use, so the motion family matches. */
+const EXPO_OUT: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 /**
  * Services index with a live preview.
@@ -63,7 +67,7 @@ export function ServicesBand() {
                   onFocus={() => setActive(index)}
                   aria-current={isActive ? "true" : undefined}
                   className={cn(
-                    "group flex items-center gap-4 border-l-2 py-4 pl-4 pr-3 transition-colors sm:gap-5 sm:py-5 sm:pl-5",
+                    "group flex items-center gap-4 border-l-2 py-4 pl-4 pr-3 transition-colors duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] sm:gap-5 sm:py-5 sm:pl-5",
                     isActive
                       ? "border-navy-400 bg-white dark:border-navy-400 dark:bg-white/[0.05]"
                       : "border-transparent hover:bg-white dark:hover:bg-white/[0.03]"
@@ -71,7 +75,7 @@ export function ServicesBand() {
                 >
                   <span
                     className={cn(
-                      "text-sm font-semibold tabular-nums transition-colors",
+                      "text-sm font-semibold tabular-nums transition-colors duration-200",
                       isActive ? "text-navy-600 dark:text-navy-300" : "text-slate-400 dark:text-slate-500"
                     )}
                   >
@@ -81,7 +85,7 @@ export function ServicesBand() {
                   <span className="flex min-w-0 flex-1 items-start gap-3">
                     <Icon
                       className={cn(
-                        "mt-0.5 h-5 w-5 shrink-0 transition-colors",
+                        "mt-0.5 h-5 w-5 shrink-0 transition-colors duration-200",
                         isActive ? "text-navy-400" : "text-slate-400 dark:text-slate-500"
                       )}
                     />
@@ -97,7 +101,7 @@ export function ServicesBand() {
 
                   <ArrowUpRight
                     className={cn(
-                      "h-5 w-5 shrink-0 transition-all",
+                      "h-5 w-5 shrink-0 transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]",
                       isActive
                         ? "-translate-y-0.5 translate-x-0.5 text-navy-600 dark:text-navy-300"
                         : "text-slate-300 dark:text-slate-600"
@@ -110,13 +114,15 @@ export function ServicesBand() {
         </motion.ul>
 
         <motion.div variants={revealItem} className="hidden lg:sticky lg:top-28 lg:block">
-          <motion.div
-            key={current.slug}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: SWAP, ease: [0.22, 1, 0.36, 1] }}
-            className="rounded-2xl border border-slate-200 bg-white p-7 shadow-soft dark:border-white/10 dark:bg-white/[0.04]"
-          >
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={current.slug}
+              initial={{ opacity: 0, y: 16, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -6, transition: { duration: SWAP_OUT, ease: "easeOut" } }}
+              transition={{ duration: SWAP_IN, ease: EXPO_OUT }}
+              className="rounded-2xl border border-slate-200 bg-white p-7 shadow-soft dark:border-white/10 dark:bg-white/[0.04]"
+            >
             <div className="flex items-start justify-between gap-4">
               <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-navy-600 text-white dark:bg-navy-400 dark:text-navy-600">
                 <CurrentIcon className="h-6 w-6" />
@@ -163,7 +169,8 @@ export function ServicesBand() {
               {isKhmer ? "មើលព័ត៌មានលម្អិត" : "View details"}
               <ArrowUpRight className="h-4 w-4" />
             </Link>
-          </motion.div>
+            </motion.div>
+          </AnimatePresence>
         </motion.div>
       </div>
     </Section>
