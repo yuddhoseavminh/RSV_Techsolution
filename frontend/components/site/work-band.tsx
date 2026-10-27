@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Section, SectionHeading } from "@/components/ui/section";
 import { projects } from "@/lib/data";
+import { ProjectThumb } from "@/components/site/project-thumb";
 import { useLanguage } from "@/lib/language-context";
 
 /** Three featured builds; the full catalogue lives on /portfolio. */
@@ -33,8 +34,10 @@ export function WorkBand() {
             key={project.title}
             variants={revealItem}
             whileHover={{ y: -4, transition: { duration: 0.15, ease: [0.4, 0, 0.2, 1] } }}
-            className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white transition-[border-color,box-shadow] hover:shadow-soft dark:border-white/10 dark:bg-white/[0.04] dark:hover:border-white/20"
+            className="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white transition-[border-color,box-shadow] hover:shadow-soft dark:border-white/10 dark:bg-white/[0.04] dark:hover:border-white/20"
           >
+            <ProjectThumb seed={project.title} />
+
             <div className="flex items-center justify-between gap-3 border-b border-slate-200 px-6 py-4 dark:border-white/10">
               <Badge>{project.category}</Badge>
               <span className="truncate text-xs font-medium text-slate-400 dark:text-slate-500">

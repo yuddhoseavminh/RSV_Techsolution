@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HeroParticles } from "@/components/site/hero-particles";
-import { LogoPlaceholder } from "@/components/ui/logo-placeholder";
+import { RvsMark } from "@/components/ui/rvs-mark";
 import { TypedHeadline } from "@/components/site/typed-headline";
 import { useLanguage } from "@/lib/language-context";
 import { useSettings } from "@/lib/settings-context";
@@ -83,7 +83,7 @@ export function Hero() {
                 className="h-[30px] w-auto max-w-[160px] object-contain"
               />
             ) : (
-              <LogoPlaceholder className="h-[30px] w-[30px]" />
+              <RvsMark className="h-[30px] w-[30px]" />
             )}
             <span className="whitespace-nowrap text-[21px] font-[450] leading-[30px] tracking-[-0.015em]">
               {companyName}

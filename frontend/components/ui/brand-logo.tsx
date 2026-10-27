@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSettings } from "@/lib/settings-context";
-import { LogoPlaceholder } from "@/components/ui/logo-placeholder";
+import { RvsMark } from "@/components/ui/rvs-mark";
 
 type BrandLogoProps = {
   href?: string;
@@ -66,7 +66,7 @@ export function BrandLogo({
           onError={() => setImageError(true)}
         />
       ) : (
-        <LogoPlaceholder
+        <RvsMark
           className={`${sizeStyles.badge} shrink-0 transition-transform duration-200 hover:scale-105 ${badgeClassName}`}
         />
       )}

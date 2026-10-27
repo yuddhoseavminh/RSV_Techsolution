@@ -3,6 +3,7 @@
 import type { HTMLAttributes, ReactNode } from "react";
 import { motion } from "framer-motion";
 import { Reveal, revealItem } from "@/components/motion/fade-in";
+import { WordReveal } from "@/components/motion/word-reveal";
 import { cn } from "@/lib/utils";
 
 export type SectionTone = "base" | "dark";
@@ -84,7 +85,7 @@ export function SectionHeading({ eyebrow, title, description, align = "center", 
           tone === "dark" ? "text-white" : "text-slate-950 dark:text-white"
         )}
       >
-        {title}
+        <WordReveal text={title} />
       </Heading>
       {description ? (
         <p className={cn("mt-5 text-base leading-7", tone === "dark" ? "text-slate-300" : "text-slate-600 dark:text-slate-400")}>

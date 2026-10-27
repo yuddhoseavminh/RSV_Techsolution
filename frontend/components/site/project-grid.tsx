@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Layers3 } from "lucide-react";
 import { FadeIn } from "@/components/motion/fade-in";
+import { ProjectThumb } from "@/components/site/project-thumb";
 import { Badge } from "@/components/ui/badge";
 import { apiClient } from "@/lib/api-client";
 import { projects } from "@/lib/data";
@@ -15,6 +16,9 @@ type Project = {
   category: string;
   description: string;
   client?: string | null;
+  /** API spelling; mapped onto `client` before render. */
+  client_name?: string | null;
+  thumbnail_url?: string | null;
   technologies: string[];
 };
 
@@ -44,6 +48,12 @@ function extractRows(payload: unknown): Project[] {
   return [];
 }
 
+/** The API spells the owner `client_name`; the components read `client`. */
+function normalize(row: Project): Project {
+  const { client_name: clientName, ...rest } = row;
+  return { ...rest, client: rest.client ?? clientName ?? null };
+}
+
 /** Filterable project grid for /portfolio. */
 export function ProjectGrid() {
   const { isKhmer } = useLanguage();
@@ -52,8 +62,13 @@ export function ProjectGrid() {
 
   useEffect(() => {
     async function load() {
-      const payload = extractRows(await apiClient<unknown>("/portfolio"));
-      if (payload.length) setItems(payload);
+      const rows = extractRows(await apiClient<unknown>("/portfolio")).map(normalize);
+      // CMS rows lead (an edit there wins), static projects fill any title the
+      // CMS has not published yet — so a thin database never empties the page.
+      if (rows.length) {
+        const published = new Set(rows.map((row) => row.title));
+        setItems([...rows, ...fallbackProjects.filter((row) => !published.has(row.title))]);
+      }
     }
     void load().catch(() => undefined);
   }, []);
@@ -89,7 +104,9 @@ export function ProjectGrid() {
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {visible.map((project, index) => (
             <FadeIn key={project.id ?? project.title} delay={index * 0.05}>
-              <article className="flex h-full flex-col overflow-hidden rounded-xl border border-slate-200 bg-white transition-all hover:-translate-y-1 hover:border-navy-400/60 hover:shadow-soft dark:border-white/10 dark:bg-white/[0.04] dark:hover:border-navy-400/50">
+              <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-slate-200 bg-white transition-all hover:-translate-y-1 hover:border-navy-400/60 hover:shadow-soft dark:border-white/10 dark:bg-white/[0.04] dark:hover:border-navy-400/50">
+                <ProjectThumb seed={project.title} src={project.thumbnail_url} />
+
                 <div className="flex items-center justify-between gap-3 border-b border-slate-200 px-6 py-4 dark:border-white/10">
                   <Badge>{project.category}</Badge>
                   <Layers3 className="h-4 w-4 shrink-0 text-slate-300 dark:text-slate-600" />
